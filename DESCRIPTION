@@ -5,8 +5,7 @@ Version: 0.0-1
 Date: 2014-06-22
 Author: Benjamin Mack
 Maintainer: Benjamin Mack <benjamin.mack@kit.edu>
-Description: A set of analysis tools to perform and
-    evaluate one-class classification.
+Description: A set of analysis tools to perform and evaluate one-class classification.
 License: GPL-2
 LazyLoad: yes
 Depends:
