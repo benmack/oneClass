@@ -202,7 +202,8 @@ evaluate.oneClass <- function (x, y, th=NULL, idx=NULL, u=NULL, positive=NULL,
       }
     }
     if (length(rtrn)>1) {
-      rtrn <- list(train=x$results[models,], test=rtrn, model=x$modelInfo$label)
+      rtrn <- list(train=x$results[models,], test=rtrn, 
+                   model=x$modelInfo$label, metric=x$metric)
       class(rtrn) <- "ModelSelectionEvaluation"
     } else {
       rtrn <- rtrn[[1]]

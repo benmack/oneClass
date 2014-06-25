@@ -16,21 +16,26 @@
 #' @return ...
 #' @export
 featurespace <- function (x, thresholds=NULL, positive=NULL, x.tr=NULL, 
-                          borders=NULL, nCells=c(100, 100), ...) {
-  
+                          borders=NULL, nCells=c(100, 100), main=NULL, ...) {
   if (is.null(thresholds))
     thresholds=NULL
   
   grid <- nCells
-  
+
   if ((class(x)[1]=='oneClass' | class(x)[1]=='ensemble') & is.null(x.tr)) {
     sub <- as.matrix(x$trainingData[, -3])
     y <- as.matrix(x$trainingData[, 3])
-  } else {
-    sub <- as.matrix(x.tr[, colnames(x.tr)!='y'])
-    y <- as.matrix(x.tr[, 'y'])
+  } else if (!is.null(x.tr)) {
+    yCol <- colnames(x.tr)=='y'
+    sub <- as.matrix(x.tr[, !yCol])
+    if (any(yCol)) {
+      y <- as.matrix(x.tr[, 'y'])
+    } else {
+      y <- rep('pos', nrow(x.tr))
+    }
   }
   
+  #Lbrowser()
   if (is.null(borders)) {
     yr <- seq(min(sub[, 2]), max(sub[, 2]), length = grid[2]) # plots on y-axis
     xr <- seq(min(sub[, 1]), max(sub[, 1]), length = grid[1]) # plots on x-axis
@@ -46,10 +51,17 @@ featurespace <- function (x, thresholds=NULL, positive=NULL, x.tr=NULL,
   
   if (class(x)[1]=='oneClass') {
     preds <- predict(x, new, type = "prob", ...)
-  } else {
+    if (is.null(main))
+      if (is.null(main))
+        main <- x$modelInfo$label
+  } else if (class(x)[1]=='ensemble') {
+    if (is.null(main))
+      main <- x$modelInfo$label
     preds <- predict(x, new, ...)$committee
     if (any(colnames(preds)=='pos'))
       preds <- data.frame(pos=preds[, 'pos', drop=FALSE])
+  } else {
+    preds <- predict(x, new, ...)
   }
   
   lvl <- 37
@@ -75,7 +87,7 @@ featurespace <- function (x, thresholds=NULL, positive=NULL, x.tr=NULL,
   filled.contour(xr, yr, matrix(as.numeric(unlist(preds)), 
                                 nrow = length(xr), byrow = FALSE), col = mycols, 
                  levels = mylevels, nlevels = lvl, 
-                 plot.title = title(main = x$modelInfo$label, 
+                 plot.title = title(main = main, 
                                     xlab = xylb[1], ylab = xylb[2]), 
                  plot.axes = {
                    axis(1)

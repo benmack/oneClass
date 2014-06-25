@@ -1,6 +1,5 @@
 ### borrowed from caret: 
 ### https://github.com/topepo/caret/tree/master/models
-
 wd <- getwd()
 setwd("inst/models/files/")
 modelFiles <- list.files(pattern = "\\.R$")

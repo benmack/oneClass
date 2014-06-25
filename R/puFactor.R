@@ -13,21 +13,36 @@
 #' @export
 puFactor <- function (y, positive=NULL) { # , labels=c("un", "pos")
   
-  
   labels=c("un", "pos")
+  uy <- unique(y)
   
-  
-  if ( ( identical(levels(y), c("un", "pos")) & is.ordered(y) ) ) {
+  if ( length(uy)==1) {
+    if (is.null(positive)) {
+      stop('Only one unique value in \'y\'. Argument \'positive\' required for creating an pu-factor.')
+    } else {
+      if (positive==uy) {
+        y <- factor(dummy, levels=uy, labels='pos', ordered=TRUE)
+        y <- factor(y, levels=c('un', 'pos'), labels=c('un', 'pos'), ordered=TRUE)
+      } else {
+        y <- factor(y, levels=uy, labels='un', ordered=TRUE)
+        y <- factor(y, levels=c('un', 'pos'), labels=c('un', 'pos'), ordered=TRUE)
+      }
+      return(y)
+    }
+  } else if ( ( identical(levels(y), c("un", "pos")) & is.ordered(y) ) ) {
     return(y)  
   } else if (all(sort(unique(y))==c(0, 1))) {
-    y <- factor(y, levels=c(0, 1), labels=labels, ordered=TRUE)
+    if (is.logical(y)) {
+      y <- factor(y, levels=c(FALSE, TRUE), labels=labels, ordered=TRUE)
+    } else {
+      y <- factor(y, levels=c(0, 1), labels=labels, ordered=TRUE)
+    }
     return(y)
   } else  {
-    
     if (is.null(positive))
       positive <- .positiveLabel(y)
     
-    uy <- unique(y)
+    # uy <- unique(y)
     
     if (length(uy)>2) {
       y[y!=positive] <- uy[uy!=positive][1]

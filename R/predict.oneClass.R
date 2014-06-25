@@ -29,22 +29,16 @@ predict.oneClass <- function(object, newdata, type = "prob", allowParallel=TRUE,
     
     if ( any(search()%in%"package:foreach") & require('spatial.tools', quietly=TRUE) & 
            allowParallel & is.null(mask)) { 
-      predictions <- predict_rasterEngine(object, newdata=newdata, ...)
+      predictions <- predict_rasterEngine(object, newdata=newdata, type = type, ...)
     } else {
-      predictions <- predict(object=newdata, model=object, type='prob', fun=predict.train)
+      predictions <- predict(object=newdata, model=object, type=type, fun=predict.train)
     }
     
     
   } else if (class(newdata)=='rasterTiled') {
-  
-    
-    predictions <- predict.rasterTiled(object=newdata, model=object, allowParallel=allowParallel, ...)
-  
-  
+    predictions <- predict.rasterTiled(object=newdata, model=object, type = type, allowParallel=allowParallel, ...)
   }
-  
   if ( (class(newdata)=='rasterTiled' | .is.raster(newdata) ) & !returnRaster  ) {
-    
     if (!is.null(mask)) {
       predictions <- predictions[which(!is.na(values(mask)))]
     } else {

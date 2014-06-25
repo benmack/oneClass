@@ -176,7 +176,7 @@ update.oneClass <- function ( object , u=NULL,
     object$timeOc <- NULL
     object$predUn <- NULL
     class(object) <- 'train'
-    
+
     nwTrn <- update(object, param = mp$param)
     nwOc <- .constructOneClass(nwTrn, u=u, mask=mask, time.train=time.train, 
                                  funcCall=funcCallOc, funcCallUpdate=funcCallUpdate)

@@ -65,6 +65,8 @@ oneClass <- function ( x, y, u=NULL, method="biasedsvm", metric=NULL,
   if (is.null(metric))
     metric <- switch(method, 
                      "biasedsvm" = "puF", 
+                     "bsvm" = "puF", 
+                     "ocsvm" = "puF", 
                      "maxent" = "puAuc")
   
   
@@ -92,20 +94,20 @@ oneClass <- function ( x, y, u=NULL, method="biasedsvm", metric=NULL,
                                 allowParallel = allowParallel)
     }
   }
-  load(system.file("models", "models.RData", package = "caret"))
+  
+  load(system.file("models", "models.RData", package = "oneClass"))
+  
+  # source("inst/models/parseModels.R")
+  
   ### check ...
   ###########################################################################
   ###########################################################################
-  
   if (!is.list(method))
-    if (is.null(method)) {
-      oneClassClassifier <- maxent4train()
-    } else {
       oneClassClassifier <- switch(method, 
-                                   "biasedsvm" = getModelInfoOneClass("biasedsvm", regex = FALSE)[[1]] )#, 
-#                                   "maxent" = maxent4train())
-    }
-  
+                                   "biasedsvm" = getModelInfoOneClass("biasedsvm", regex = FALSE)[[1]],
+                                   "bsvm" = getModelInfoOneClass("biasedsvm", regex = FALSE)[[1]], 
+                                   "ocsvm" = getModelInfoOneClass("ocsvm", regex = FALSE)[[1]],
+                                   "maxent" = getModelInfoOneClass("maxent", regex = FALSE)[[1]])
   ### -----------------------------------------------------------------------
   ### run train ...
   dong <- proc.time()

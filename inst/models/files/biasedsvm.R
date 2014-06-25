@@ -1,6 +1,5 @@
-
 modelInfo <- 
-  list(label="biasedsvm", 
+  list(label="biased svm", 
        library="kernlab",
        loop=NULL,
        type="Classification",

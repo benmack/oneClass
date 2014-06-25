@@ -10,7 +10,7 @@
 #' 
 #' @return a list of the toy data set with two data frames (\code{tr} and 
 #' \code{te}) both containing the columns \code{y}, \code{x1}, and \code{x2}.
-#' in the training set the column \code{y} \in \{0, 1\} indicates if a sample 
+#' in the training set the column \code{y} in \{0, 1\} indicates if a sample 
 #' belongs to the positive class (1) or if it is unlabeled (0), and in the test 
 #' set \code{te} if it belongs to the positive class (1) or the negative class 
 #' (0). \code{x1} and \code{x2} are the features or predictors.

@@ -17,16 +17,16 @@
 #' @rdname plot.ModelSelectionEvaluation
 #' @method plot ModelSelectionEvaluation
 #' @export
-plot.ModelSelectionEvaluation <- function(x, fromEvaluation="max.kappa", fromTrain=NULL, rowNumbers=FALSE, ...) {
+plot.ModelSelectionEvaluation <- function(x, fromEvaluation="max.kappa", fromTrain=x$metric, rowNumbers=FALSE, ...) {
 # @param text.cex numeric character expansion factor for the character size of the numbers. 
 # @param text.pos position of the label.  Values of 1, 2, 3 and 4, respectively indicate positions below, to the left of, above and to the right of the specified coordinates.
 
-  if (is.null(fromTrain))
-    if (x$model=='biasedsvm') {
-      fromTrain <- 'puF' } 
-  else if (x$model=='maxent') {
-      fromTrain <- 'puAuc'
-    } 
+#   if (is.null(fromTrain))
+#     if (x$model=='biasedsvm') {
+#       fromTrain <- 'puF' } 
+#   else if (x$model=='maxent') {
+#       fromTrain <- 'puAuc'
+#     } 
     
   te <- lapply(x$test, evaluate, fromEvaluation)
   # te <- evaluate(x, th=fromEvaluation)#, ...)
@@ -36,7 +36,6 @@ plot.ModelSelectionEvaluation <- function(x, fromEvaluation="max.kappa", fromTra
   
   tr <- x$train[,colnames(x$train)==fromTrain] 
   #   expr <- parse(text=paste("e@", fromEvaluation, sep="")) 
-  
   plot(tr, te, xlab=paste(fromTrain, "(train)"), 
        ylab=paste(fromEvaluation, "(test)"), ...)
   

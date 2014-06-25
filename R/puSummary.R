@@ -26,6 +26,7 @@ puSummary <- function(data, lev = NULL, model = NULL,
   if (!all(levels(data[, "pred"]) == levels(data[, "obs"]))) 
     stop("levels of observed and predicted data do not match")
   
+  require(pROC)
   rocObject <- try(pROC::roc(response=data$obs, predictor=data[, 'pos'], 
                              levels=c('pos', 'un')), silent = TRUE)
   rocAUC <- ifelse (class(rocObject)[1] == "try-error", 0, rocObject$auc)
