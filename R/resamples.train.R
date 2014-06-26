@@ -1,3 +1,21 @@
+#' @name resamples.train
+#' @aliases resamples
+#' @aliases resamples.train
+#'
+#'@title ... .
+#'
+#' @description ... .   
+#' 
+#' @param x an object of class \code{\link{oneClass}} (DOES IT WORK FOR TRAIN OBJECTS?).
+#' @param modParam a data frame with the desired modParameters. 
+#' @param modRow the index of the model, i.e. the row in the  \code{object$results} table.
+#' @param modRank the model at the modelRank-th position after sorting after the performance metric. The performance metric can be specified by \code{by}. 
+#' @param metric if modRank is used, which metric should be used for the ranking?
+#' @param ... ...
+#' @examples
+#' ### to do
+#' @method resamples train
+#' @export
 resamples.train <- function (x, modParam=NULL, modRow=NULL, modRank=NULL, metric=NULL, ...) { # , ... for e.g. modelNames
   
   if (x$control$returnResamp != "all")

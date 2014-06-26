@@ -1,4 +1,7 @@
 ################################################################################
+#' @aliases predict
+#' @aliases predict.oneClass
+#' 
 #' @title Predict method for \code{\link{oneClass}} object 
 #'
 #' @description ... .
@@ -16,6 +19,7 @@
 #' @return committee predictions and if desired predictions of individual classifiers.
 #' @examples
 #' # to do
+#' @method predict oneClass
 #' @export
 predict.oneClass <- function(object, newdata, type = "prob", allowParallel=TRUE, returnRaster=TRUE, mask=NULL, ...) { ##ä# , mask=NULL ???
   
@@ -36,7 +40,7 @@ predict.oneClass <- function(object, newdata, type = "prob", allowParallel=TRUE,
     
     
   } else if (class(newdata)=='rasterTiled') {
-    predictions <- predict.rasterTiled(object=newdata, model=object, type = type, allowParallel=allowParallel, ...)
+    predictions <- predict(object=newdata, model=object, type = type, allowParallel=allowParallel, ...)
   }
   if ( (class(newdata)=='rasterTiled' | .is.raster(newdata) ) & !returnRaster  ) {
     if (!is.null(mask)) {

@@ -61,7 +61,15 @@ Sys.setenv(TEXINPUTS=getwd(),
 \newpage
 
 \section{One-class classification}
-The purpose of \textbf{one-class classifier} is to classify new data based on a 
+% A purpose of a one-class classifier is the same than the one of a binary classifier. 
+% It is used to classify unknown data samples (e.g. pixels of a remote sensing image)
+% to one of two classes. 
+% In the case of one-class classification these two classes are often termed positive/negative, presence/absence, or class of interest/rest. 
+% In both cases the classification models are learned from data but with an important difference. 
+% A binary classification model is trained with labeled data of both classes, and eventually unlabeled data.
+% Insted, a one-class classifier is trained with labele data of one class only 
+
+The purpose of \textbf{one-class classifier} is identical to the to classify new data based on a 
 classification model learned from labeled examples.
 For the training of the classifier labeled samples are only required for the 
 positive class, i.e. the class of interest.
@@ -136,13 +144,12 @@ Thus the extensive functionalitie of \Sexpr{'train()'} can be used for model sel
 
 Currently the package is still not on R CRAN but can be downloaded from GitHub 
 (\url{https://github.com/benmack/oneClass}).
-It can be installed in R with the package \code{devtools} and the following commands:
+It can be installed in R with the package \code{devtools} and the following commands (This may take a while...):
 
 <<inst, eval=FALSE>>=
 library(devtools) 
 install_github('benmack/oneClass')
 @
-
 
 \section{Synthetic data: bananas}
 \label{sec:data}
@@ -220,7 +227,7 @@ Of course, if the data is very large, it is possible to use a subset here.
 load('oneClass_intro/oc_default.RData')
 @
 
-<<default_oneClass, eval=FALSE, echo=-6>>=
+<<default_oneClass, eval=FALSE, echo=-c(1, 12)>>=
 # index <- createResamplePu( tr.y, times = 25, index.indep = 276:500)
 set.seed(seed)
 index <- createFolds( tr.y, k=10, returnTrain=TRUE )
@@ -317,9 +324,12 @@ We can also examine the table which is printed when printing an object of class 
 Here we do not print the full table, as it is too large but an ordered and subsetted version 
 of the complete table.
 
-<<print, size='footnotesize'>>=
+<<print_f, size='footnotesize'>>=
 # oc # --> prints the whole large table with performance metrics of all models
 sort(oc, printTable=TRUE, rows=1:10, by='puF', digits=2)
+@
+
+<<print_auc, size='footnotesize'>>=
 sort(oc, printTable=TRUE, rows=1:10, by='puAuc', digits=2)
 @
 
@@ -382,7 +392,7 @@ oc.candidate3 <- update(oc, u=bananas$x, modRow=candidates[3])
 # save(oc.candidate1, oc.candidate2, oc.candidate3, file='oneClass_intro/ocUpdated.RData')
 load('oneClass_intro/ocUpdated.RData')
 @
-
+\newpage
 \begin{multicols}{3}
 <<update1_hist, echo=FALSE, warning=FALSE, message=FALSE>>=
 hist(oc.candidate1, ylim=c(0, .2), main=candidates[1], cex.main=3, cex.axis=1, cex.lab=1.5)

@@ -97,7 +97,15 @@
 \newpage
 
 \section{One-class classification}
-The purpose of \textbf{one-class classifier} is to classify new data based on a 
+% A purpose of a one-class classifier is the same than the one of a binary classifier. 
+% It is used to classify unknown data samples (e.g. pixels of a remote sensing image)
+% to one of two classes. 
+% In the case of one-class classification these two classes are often termed positive/negative, presence/absence, or class of interest/rest. 
+% In both cases the classification models are learned from data but with an important difference. 
+% A binary classification model is trained with labeled data of both classes, and eventually unlabeled data.
+% Insted, a one-class classifier is trained with labele data of one class only 
+
+The purpose of \textbf{one-class classifier} is identical to the to classify new data based on a 
 classification model learned from labeled examples.
 For the training of the classifier labeled samples are only required for the 
 positive class, i.e. the class of interest.
@@ -172,7 +180,7 @@ Thus the extensive functionalitie of \hlkwd{train}\hlstd{()} can be used for mod
 
 Currently the package is still not on R CRAN but can be downloaded from GitHub 
 (\url{https://github.com/benmack/oneClass}).
-It can be installed in R with the package \code{devtools} and the following commands:
+It can be installed in R with the package \code{devtools} and the following commands (This may take a while...):
 
 \begin{knitrout}
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
@@ -182,7 +190,6 @@ It can be installed in R with the package \code{devtools} and the following comm
 \end{alltt}
 \end{kframe}
 \end{knitrout}
-
 
 \section{Synthetic data: bananas}
 \label{sec:data}
@@ -283,17 +290,16 @@ Of course, if the data is very large, it is possible to use a subset here.
 \begin{knitrout}
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
 \begin{alltt}
-\hlcom{# index <- createResamplePu( tr.y, times = 25, index.indep = 276:500)}
 \hlkwd{set.seed}\hlstd{(seed)}
 \hlstd{index} \hlkwb{<-} \hlkwd{createFolds}\hlstd{( tr.y,} \hlkwc{k}\hlstd{=}\hlnum{10}\hlstd{,} \hlkwc{returnTrain}\hlstd{=}\hlnum{TRUE} \hlstd{)}
 \hlstd{trControl} \hlkwb{<-} \hlkwd{trainControl}\hlstd{(}\hlkwc{method}\hlstd{=}\hlstr{'cv'}\hlstd{,}
                           \hlkwc{index}\hlstd{=index,}
+                          \hlkwc{summaryFunction} \hlstd{= puSummary,}  \hlcom{# PU-performance metrics}
                           \hlkwc{classProbs}\hlstd{=}\hlnum{TRUE}\hlstd{,}              \hlcom{# important }
                           \hlkwc{savePredictions} \hlstd{=} \hlnum{TRUE}\hlstd{,}       \hlcom{# important}
                           \hlkwc{returnResamp} \hlstd{=} \hlstr{'all'}\hlstd{)}         \hlcom{# for resamples.train }
 \hlstd{oc} \hlkwb{<-} \hlkwd{oneClass}\hlstd{(} \hlkwc{x} \hlstd{= tr.x,} \hlkwc{y} \hlstd{= tr.y,} \hlkwc{trControl} \hlstd{= trControl )}
 \hlstd{pred} \hlkwb{<-} \hlkwd{predict}\hlstd{(oc, bananas}\hlopt{$}\hlstd{x)}
-\hlstd{pred} \hlkwb{<-} \hlkwd{readAll}\hlstd{(pred)}
 \end{alltt}
 \end{kframe}
 \end{knitrout}
@@ -436,6 +442,11 @@ of the complete table.
 ## 44   0.1 2.6e+02          16  0.89 4.8 0.80  0.14   0.117   2.4  0.26   0.049
 ## 51   0.1 2.0e+03          16  0.85 4.4 0.65  0.13   0.144   2.9  0.41   0.047
 \end{verbatim}
+\end{kframe}
+\end{knitrout}
+
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
 \begin{alltt}
 \hlkwd{sort}\hlstd{(oc,} \hlkwc{printTable}\hlstd{=}\hlnum{TRUE}\hlstd{,} \hlkwc{rows}\hlstd{=}\hlnum{1}\hlopt{:}\hlnum{10}\hlstd{,} \hlkwc{by}\hlstd{=}\hlstr{'puAuc'}\hlstd{,} \hlkwc{digits}\hlstd{=}\hlnum{2}\hlstd{)}
 \end{alltt}
@@ -531,7 +542,7 @@ It can be helpful to investigate the diagnostic histogram plot of the whole unla
 \end{knitrout}
 
 
-
+\newpage
 \begin{multicols}{3}
 \begin{knitrout}
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}

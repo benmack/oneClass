@@ -40,6 +40,8 @@ createFoldsPu <- function (y, k, positive=NULL, index.indep=NULL, seed=NULL) {
       y <- puFactor(y, positive)
     }
   }
+  if (is.logical(index.indep))
+    index.indep <- which(index.indep)
   
   idx <- 1:length(y)
   idx.un <- which(y=='un')
