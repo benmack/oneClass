@@ -120,7 +120,6 @@ evaluate.oneClass <- function (x, y, th=NULL, idx=NULL, u=NULL, positive=NULL,
                                modParam=NULL, modRow=NULL, modRank=NULL, 
                                by=NULL, decreasing=TRUE, # allowParallel=FALSE,
                                ...) {
-  
   if (!is.null(u))
     x$predUn <- predict(x, u)
   
@@ -133,10 +132,13 @@ evaluate.oneClass <- function (x, y, th=NULL, idx=NULL, u=NULL, positive=NULL,
     th <- as.vector(seq(min(x$predUn, na.rm=TRUE), max(x$predUn, na.rm=TRUE), length.out=100))
   
   
-  
   ### evlauation of selected model, no u required
   if (allModels==FALSE & is.null(modParam) & is.null(modRow) & is.null(modRank) ) {
-    rtrn <- evaluate(p=x$predUn[idx][y=='pos'], a=x$predUn[idx][y!='pos'], tr=th)
+    #if (class(x)=='oneClass') {
+      rtrn <- dismo::evaluate(p=x$predUn[idx][y=='pos'], a=x$predUn[idx][y!='pos'], tr=th)
+    #} else if (class(x)=='numeric') {
+    #  rtrn <- evaluate(p=x[y=='pos'], a=x[y!='pos'], tr=th)
+    #}
     
     ### evlauation of one or more models other than the selected model. u required
   } else if (allModels==TRUE | (!is.null(modParam) | !is.null(modRow) | !is.null(modRank) ) ) {
@@ -197,7 +199,7 @@ evaluate.oneClass <- function (x, y, th=NULL, idx=NULL, u=NULL, positive=NULL,
         cat(paste(i, ".", sep=""))
         xU <- update(x, modParam=evalParamList[i, , drop=FALSE], u=u)
         #cat(paste("Evaluate model.\n", sep=""))
-        rtrn[[i]] <- evaluate(p=xU$predUn[y=='pos'], a=xU$predUn[y!='pos'], tr=th)
+        rtrn[[i]] <- dismo::evaluate(p=xU$predUn[y=='pos'], a=xU$predUn[y!='pos'], tr=th)
         #}
       }
     }
@@ -219,7 +221,7 @@ evaluate.oneClass <- function (x, y, th=NULL, idx=NULL, u=NULL, positive=NULL,
 
 #' @rdname evaluate
 #' @export
-evaluate.default <- function (x, y, ...) {
+evaluate.default <- function (x, y, tr=NULL, positive=1, ...) {
   #   myEvaluate is a copy of dismo::evaluate by with 6 lines exchanged:
   #   in the following lines it differs by adding 'as.numeric' to avoid the 
   #   'integer overflow' problem when large numbers of test data is used.
@@ -232,6 +234,7 @@ evaluate.default <- function (x, y, ...) {
   #   c = as.numeric(res[, 3])
   #   d = as.numeric(res[, 4])
   #   [...]
+  
   myEvaluate <- function (p, a, model, x, tr, ...) 
   {
     if (!missing(x)) {
@@ -317,9 +320,10 @@ evaluate.default <- function (x, y, ...) {
     return(xc)
   }
   
-  
   if (missing(x)) {
     rtrn <- myEvaluate(...)
+  #} else if (!missing(x) & !missing(y)) {
+  #  rtrn <- myEvaluate(p=x[y==positive], a=x[y!=positive], tr, ...)
   } else {
     rtrn <- myEvaluate(x=x, ...)
   }

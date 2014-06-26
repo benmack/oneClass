@@ -11,7 +11,7 @@ evaluate(x, y, ...)
   positive = NULL, allModels = FALSE, modParam = NULL, modRow = NULL,
   modRank = NULL, by = NULL, decreasing = TRUE, ...)
 
-\method{evaluate}{default}(x, y, ...)
+\method{evaluate}{default}(x, y, tr = NULL, positive = 1, ...)
 }
 \arguments{
 \item{x}{an object of class \code{oneClass} or \code{iterative},}

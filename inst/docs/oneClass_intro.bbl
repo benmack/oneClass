@@ -1,0 +1,338 @@
+% $ biblatex auxiliary file $
+% $ biblatex version 2.2 $
+% Do not modify the above lines!
+%
+% This is an auxiliary file used by the 'biblatex' package.
+% This file may safely be deleted. It will be recreated as
+% required.
+%
+\begingroup
+\makeatletter
+\@ifundefined{ver@biblatex.sty}
+  {\@latex@error
+     {Missing 'biblatex' package}
+     {The bibliography requires the 'biblatex' package.}
+      \aftergroup\endinput}
+  {}
+\endgroup
+
+\entry{Kuhn.2014}{manual}{}
+  \name{author}{8}{}{%
+    {{}%
+     {Jed~Wing}{J.~W.}%
+     {Max Kuhn.~Contributions}{M.~K.~C.}%
+     {from}{f.}%
+     {}{}}%
+    {{}%
+     {Weston}{W.}%
+     {Steve}{S.}%
+     {}{}%
+     {}{}}%
+    {{}%
+     {Williams}{W.}%
+     {Andre}{A.}%
+     {}{}%
+     {}{}}%
+    {{}%
+     {Keefer}{K.}%
+     {Chris}{C.}%
+     {}{}%
+     {}{}}%
+    {{}%
+     {Engelhardt}{E.}%
+     {Allan}{A.}%
+     {}{}%
+     {}{}}%
+    {{}%
+     {Cooper}{C.}%
+     {Tony}{T.}%
+     {}{}%
+     {}{}}%
+    {{}%
+     {Mayer}{M.}%
+     {Zachary}{Z.}%
+     {}{}%
+     {}{}}%
+    {{}%
+     {R~Core~Team}{R.~C.~T.}%
+     {}{}%
+     {the}{t.}%
+     {}{}}%
+  }
+  \strng{namehash}{JWMKCf+1}
+  \strng{fullhash}{JWMKCfWSWAKCEACTMZRCTt1}
+  \field{note}{R package version 6.0-24}
+  \field{title}{caret: Classification and Regression Training}
+  \verb{url}
+  \verb http://CRAN.R-project.org/package=caret
+  \endverb
+  \field{year}{2014}
+\endentry
+
+\entry{BingLiu.2002}{inproceedings}{}
+  \name{author}{4}{}{%
+    {{}%
+     {{Bing Liu}}{B.}%
+     {}{}%
+     {}{}%
+     {}{}}%
+    {{}%
+     {{Wee Sun Lee}}{W.}%
+     {}{}%
+     {}{}%
+     {}{}}%
+    {{}%
+     {{Philip S. Yu}}{P.}%
+     {}{}%
+     {}{}%
+     {}{}}%
+    {{}%
+     {{Xiaoli Li}}{X.}%
+     {}{}%
+     {}{}%
+     {}{}}%
+  }
+  \strng{namehash}{B+1}
+  \strng{fullhash}{BWPX1}
+  \field{pages}{387\bibrangedash 394}
+  \field{title}{Partially Supervised Classification of Text Documents}
+  \field{year}{2002}
+\endentry
+
+\entry{Liu.2003}{inproceedings}{}
+  \name{author}{5}{}{%
+    {{}%
+     {Liu}{L.}%
+     {Bing}{B.}%
+     {}{}%
+     {}{}}%
+    {{}%
+     {Dai}{D.}%
+     {Yang}{Y.}%
+     {}{}%
+     {}{}}%
+    {{}%
+     {Li}{L.}%
+     {Xiaoli}{X.}%
+     {}{}%
+     {}{}}%
+    {{}%
+     {Lee}{L.}%
+     {Wee~Sun}{W.~S.}%
+     {}{}%
+     {}{}}%
+    {{}%
+     {Yu}{Y.}%
+     {Philip~S.}{P.~S.}%
+     {}{}%
+     {}{}}%
+  }
+  \strng{namehash}{LB+1}
+  \strng{fullhash}{LBDYLXLWSYPS1}
+  \field{booktitle}{In: Intl. Conf. on Data Mining}
+  \field{pages}{179\bibrangedash 188}
+  \field{title}{Building text classifiers using positive and unlabeled
+  examples}
+  \field{year}{2003}
+\endentry
+
+\entry{Elith.2011}{article}{}
+  \name{author}{6}{}{%
+    {{}%
+     {Elith}{E.}%
+     {Jane}{J.}%
+     {}{}%
+     {}{}}%
+    {{}%
+     {Phillips}{P.}%
+     {Steven~J.}{S.~J.}%
+     {}{}%
+     {}{}}%
+    {{}%
+     {Hastie}{H.}%
+     {Trevor}{T.}%
+     {}{}%
+     {}{}}%
+    {{}%
+     {Dud{\'i}k}{D.}%
+     {Miroslav}{M.}%
+     {}{}%
+     {}{}}%
+    {{}%
+     {Chee}{C.}%
+     {Yung~En}{Y.~E.}%
+     {}{}%
+     {}{}}%
+    {{}%
+     {Yates}{Y.}%
+     {Colin~J.}{C.~J.}%
+     {}{}%
+     {}{}}%
+  }
+  \strng{namehash}{EJ+1}
+  \strng{fullhash}{EJPSJHTDMCYEYCJ1}
+  \field{number}{1}
+  \field{pages}{43\bibrangedash 57}
+  \field{title}{A statistical explanation of MaxEnt for ecologists}
+  \field{volume}{17}
+  \field{journaltitle}{Diversity and Distributions}
+  \field{year}{2011}
+\endentry
+
+\entry{Phillips.2008b}{article}{}
+  \name{author}{2}{}{%
+    {{}%
+     {Phillips}{P.}%
+     {Steven~J.}{S.~J.}%
+     {}{}%
+     {}{}}%
+    {{}%
+     {Dud{\'i}k}{D.}%
+     {Miroslav}{M.}%
+     {}{}%
+     {}{}}%
+  }
+  \strng{namehash}{PSJDM1}
+  \strng{fullhash}{PSJDM1}
+  \field{number}{2}
+  \field{pages}{161\bibrangedash 175}
+  \field{title}{Modeling of species distributions with Maxent: new extensions
+  and a comprehensive evaluation}
+  \field{volume}{31}
+  \field{journaltitle}{Ecography}
+  \field{year}{2008}
+\endentry
+
+\entry{Scholkopf.2001}{article}{}
+  \name{author}{5}{}{%
+    {{}%
+     {Sch{\"o}lkopf}{S.}%
+     {Bernhard}{B.}%
+     {}{}%
+     {}{}}%
+    {{}%
+     {Platt}{P.}%
+     {John~C.}{J.~C.}%
+     {}{}%
+     {}{}}%
+    {{}%
+     {Shawe-Taylor}{S.-T.}%
+     {John}{J.}%
+     {}{}%
+     {}{}}%
+    {{}%
+     {Smola}{S.}%
+     {Alex~J.}{A.~J.}%
+     {}{}%
+     {}{}}%
+    {{}%
+     {Williamson}{W.}%
+     {Robert~C.}{R.~C.}%
+     {}{}%
+     {}{}}%
+  }
+  \strng{namehash}{SB+1}
+  \strng{fullhash}{SBPJCSTJSAJWRC1}
+  \verb{doi}
+  \verb 10.1162/089976601750264965
+  \endverb
+  \field{issn}{0899-7667}
+  \field{number}{7}
+  \field{pages}{1443\bibrangedash 1471}
+  \field{title}{Estimating the Support of a High-Dimensional Distribution}
+  \field{volume}{13}
+  \field{journaltitle}{Neural Computation}
+  \field{year}{2001}
+\endentry
+
+\entry{Karatzoglou.2004}{article}{}
+  \name{author}{4}{}{%
+    {{}%
+     {Karatzoglou}{K.}%
+     {Alexandros}{A.}%
+     {}{}%
+     {}{}}%
+    {{}%
+     {Smola}{S.}%
+     {Alex}{A.}%
+     {}{}%
+     {}{}}%
+    {{}%
+     {Hornik}{H.}%
+     {Kurt}{K.}%
+     {}{}%
+     {}{}}%
+    {{}%
+     {Zeileis}{Z.}%
+     {Achim}{A.}%
+     {}{}%
+     {}{}}%
+  }
+  \strng{namehash}{KA+1}
+  \strng{fullhash}{KASAHKZA1}
+  \field{number}{9}
+  \field{pages}{1\bibrangedash 20}
+  \field{title}{kernlab -- An S4 Package for Kernel Methods in R}
+  \verb{url}
+  \verb http://www.jstatsoft.org/v11/i09/
+  \endverb
+  \field{volume}{11}
+  \field{journaltitle}{Journal of Statistical Software}
+  \field{year}{2004}
+\endentry
+
+\entry{Hijmans.2013}{misc}{}
+  \name{author}{4}{}{%
+    {{}%
+     {Hijmans}{H.}%
+     {Robert~J.}{R.~J.}%
+     {}{}%
+     {}{}}%
+    {{}%
+     {Phillips}{P.}%
+     {Steven}{S.}%
+     {}{}%
+     {}{}}%
+    {{}%
+     {Leathwick}{L.}%
+     {John}{J.}%
+     {}{}%
+     {}{}}%
+    {{}%
+     {Elith}{E.}%
+     {Jane}{J.}%
+     {}{}%
+     {}{}}%
+  }
+  \strng{namehash}{HRJ+1}
+  \strng{fullhash}{HRJPSLJEJ1}
+  \field{title}{dismo: Species distribution modeling}
+  \verb{url}
+  \verb http://CRAN.R-project.org/package=dismo
+  \endverb
+  \field{year}{2013}
+\endentry
+
+\entry{knitr2013}{manual}{}
+  \name{author}{1}{}{%
+    {{}%
+     {Xie}{X.}%
+     {Yihui}{Y.}%
+     {}{}%
+     {}{}}%
+  }
+  \strng{namehash}{XY1}
+  \strng{fullhash}{XY1}
+  \field{note}{R package version 1.4.1}
+  \field{title}{knitr: A general-purpose package for dynamic report generation
+  in R}
+  \verb{url}
+  \verb http://yihui.name/knitr/
+  \endverb
+  \field{year}{2013}
+\endentry
+
+\lossort
+\endlossort
+
+\endinput

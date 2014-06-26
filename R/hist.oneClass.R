@@ -28,7 +28,7 @@ hist.oneClass <- function(x, predUn=NULL, th=NULL, ylim=NULL, ...) {
   
   if (!is.null(predUn)) {
     predictive.value <- predUn
-  } else if (!is.null(predUn)) {
+  } else if (!is.null(x$predUn)) {
     predictive.value <- x$predUn
   } else if ( is.null(predUn) & !is.null(x$predUn) ) {
     warning('No predicted unlabeled data found. Hold-out predictions used to build the histogram.')

@@ -1,0 +1,553 @@
+%% LyX 2.0.6 created this file.  For more info, see http://www.lyx.org/.
+%% Do not edit unless you really know what you are doing.
+\documentclass{article}
+<<setup, include=FALSE>>= 
+library(highr)
+knit_hooks$set(inline = function(x) { 
+  if (is.numeric(x)) return(knitr:::format_sci(x, 'latex')) 
+  hi_latex(x) 
+}) 
+
+opts_chunk$set(fig.path='figures/plots-', fig.align='center', fig.show='hold', eval=TRUE, echo=TRUE)
+options(replace.assign=TRUE,width=80)
+setwd('D:/Dropbox/docsInConstruction/oneClass_intro/')
+Sys.setenv(TEXINPUTS=getwd(),
+           BIBINPUTS=getwd(),
+           BSTINPUTS=getwd())
+@ 
+\usepackage{mathpazo}
+\renewcommand{\sfdefault}{lmss}
+\renewcommand{\ttdefault}{lmtt}
+\usepackage[T1]{fontenc}
+\usepackage{geometry}
+\geometry{verbose,tmargin=2.5cm,bmargin=2.5cm,lmargin=2.5cm,rmargin=2.5cm}
+\usepackage{setspace}
+\onehalfspacing
+\usepackage{url}
+\usepackage{xspace}
+\usepackage{multicol}
+\usepackage[backend=bibtex, sorting=none]{biblatex}
+\usepackage{lineno}
+%\usepackage[authoryear]{natbib}
+\usepackage{hyperref}
+\bibliography{references}
+
+\makeatletter
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% User specified LaTeX commands.
+% \VignetteIndexEntry{An Introduction to knitr}
+% \VignetteEngine{knitr::knitr}
+\newcommand{\pkg}[1]{{\fontseries{b}\selectfont #1}}
+\renewcommand{\pkg}[1]{{\textsf{#1}}}
+
+\newcommand{\code}[1]{\texttt{#1}}
+
+\newcommand{\note}[1]{\textcolor{cyan}{\textbf{#1}}\xspace}
+
+\newcommand{\analyst}{\textit{analyst}\xspace}
+\newcommand{\developer}{\textit{developer}\xspace}
+
+\makeatother
+
+\begin{document}
+\linenumbers
+
+
+
+\title{An Introduction to one-class classification with the \pkg{oneClass} Package}
+\author{Benjamin Mack}
+\maketitle
+\tableofcontents
+
+\newpage
+
+\section{One-class classification}
+The purpose of \textbf{one-class classifier} is to classify new data based on a 
+classification model learned from labeled examples.
+For the training of the classifier labeled samples are only required for the 
+positive class, i.e. the class of interest.
+Here is the difference to a binary classifier which has to be trained with
+labeled data of both the positive and the negative class.
+Thus, a one-class classifier is employed when the acquisition of 
+representative labeled data for the negative class is expensive or not possible 
+at all. 
+
+The convenience of not requiring negative training data comes at a price
+because OCC challenging due to the limited information contained in the training 
+set.
+Unlabeled training data can, and usually should, be used to build more accurate
+predictive models. 
+However, the process is still uncertain and the classification outcome has to be 
+treated with caution. 
+
+\note{A paragraph about the importance of model selection, the difficulty when 
+only PU-data is available, about resampling and performance metrics ... .}
+
+The package \pkg{oneClass} shall serve the requirements of \textbf{two potential 
+users}, the \analyst and the \developer. These are extrem characters and in 
+reality one will usually be located somewhere in between.
+
+The \textbf{\analyst} is faced with a particular one-class classification 
+problem, i.e. a set of positive training samples and the unlabeled data to be 
+classified.
+It is assumed that no complete and representative test set is 
+available for the purpose of validation and testing.
+In such a situation a careful evaluation of the classification outcome based on 
+the available (positive and unlabeled) data is required in order to select the 
+most promising final model. 
+In section\ref{sec:analyst} the analysis strategy presented in 
+\note{REF} is followed and the main functions are illustrated.
+Hopefully the package can be helpful to solve a given one-class classification 
+problem more effective and more convenient in practice. 
+
+The \textbf{\developer} is interested in the developement of new and/or optimization of 
+existing methods. Therefore the package provides convenient functionalities.
+The package \pkg{oneClass} builds upon the powerful package \pkg{caret} \cite{Kuhn.2014} and tries
+to adapt the philosophy. 
+
+The package \pkg{caret} allows one to embed own \textbf{custom functionalities} in the 
+rich infrastructure of the \pkg{caret} package, in fact the one-class classification
+methods of the \package{oneClass} are implemented as custom functions which are passed 
+to the function \Sexpr{'train()'}. 
+This infrastructure comprises  methods for pre-processing data, calculating 
+variable importance, model visualizations, and parallel processing. 
+
+The function \Sexpr{'oneClass()'} calls the \Sexpr{'caret::train()'} 
+function with a one-class methods. It returns an object of class \code{oneClass}
+which inherits from the class \code{train}. Thus, many of the powerful analysis 
+tools from the train package can also be used seemlessly when using an object of 
+class \code{oneClass}.
+
+\subsubsection*{One-class classifiers}
+
+The \pkg{oneClass} package is a user-oriented environment for analyzing 
+one-class classification problems.
+It implements two commonly used classifiers, the biased SVM \cite{BingLiu.2002, Liu.2003}, and Maxent \cite{Elith.2011, Phillips.2008b}. 
+
+These classifiers are implemented as costum functions for the 
+\Sexpr{'train()'} function from the \pkg{caret} package \note{[REF]}.
+Thus the extensive functionalitie of \Sexpr{'train()'} can be used for model selection.
+
+\subsubsection*{PU-performance metrics}
+
+...
+
+\section{Installation}
+\label{sec:installation}
+
+Currently the package is still not on R CRAN but can be downloaded from GitHub 
+(\url{https://github.com/benmack/oneClass}).
+It can be installed in R with the package \code{devtools} and the following commands:
+
+<<inst, eval=FALSE>>=
+library(devtools) 
+install_github('benmack/oneClass')
+@
+
+
+\section{Synthetic data: bananas}
+\label{sec:data}
+
+
+In the following the package is demonstrated by means of the synthetic banana data set 
+which is included in the package. 
+
+The \Sexpr{'bananas'} data is stored as \Sexpr{'raster'} data, where \Sexpr{'y'} is a one-band raster with the class patches, i.e. what we want to find out when performing one-class classification with remotely sensed data. 
+\Sexpr{'x'} are the features or predictors based on which the classification has to be build. 
+
+<<loadpkg, eval=FALSE>>=
+require(oneClass)
+require(raster)
+data(bananas)
+plot(stack(bananas$y, bananas$x), nc=3)
+@
+
+<<loadpkg_prelim, echo=FALSE, message=FALSE, warning=FALSE, fig.width=16, fig.height=4, fig.cap='The class membership (left), and the two features (middle and right) of the synthetic bananas data set.'>>=
+# require(oneClass)
+# setwd('inst/docs')
+devtools::load_all("D:/github/oneClass/")
+require(raster)
+data(bananas)
+plot(stack(bananas$y, bananas$x), nc=3)
+require(gridExtra) # also loads grid
+@
+
+In one-class classification a set of positive labeled samples is available for 
+training the classifier.
+Furthermore, unlabeled samples are used, which are usually a random sample of the
+whole data.
+Such a training data set is also stored in the bananas data set. 
+Additionally we generate a test data set consisting of 1.000 random samples of the 
+image. 
+As we mentioned before, we would not expect to have a test set in real-world 
+one-class classification application. 
+But here we also create a PN test data set (PN-data) to show the available 
+(PN-) evaluation methods which are useful when investigating one-class classifiers 
+of developing new methods.
+
+<<traintestdata, tidy=FALSE>>=
+seed <- 123456
+tr.x <- bananas$tr[, -1]
+tr.y <- puFactor(bananas$tr[, 1], positive=1)
+set.seed(seed)
+te.i <- sample(ncell(bananas$y), 1000)
+te.x <- extract(bananas$x, te.i)
+te.y <- extract(bananas$y, te.i)
+@
+
+
+With the two-dimensional synthetic data set we can view the data in the feature 
+space:
+
+<<featurespace_trainTest, fig.width=8, fig.height=4, out.width='0.8\\textwidth'>>=
+par(mfrow=c(1,2), mgp=c(1.75, .75, 0), mar=c(3, 3, .1, .1))
+plot(tr.x, pch=ifelse(tr.y==1, 16, 4) )
+plot(te.x, pch=ifelse(te.y==1, 16, 4) )
+@
+
+A one-class classifier is supposed to learn from the PU-data (left) to optimally 
+classify the PN data (right).
+
+\section{Model selection in the absence of PN-data.}
+\label{sec:analyst}
+
+\Sexpr{'oneClass()'} requires the training data as input.
+We also pass the whole unlabeled data because we want to analyze the predicted 
+outcome of the whole data to better examine the performance of the model.  
+Of course, if the data is very large, it is possible to use a subset here. 
+
+<<default_oneClass_load, echo=FALSE, warning=FALSE>>=
+# save(oc, pred, file='oneClass_intro/oc_default.RData')
+load('oneClass_intro/oc_default.RData')
+@
+
+<<default_oneClass, eval=FALSE, echo=-6>>=
+# index <- createResamplePu( tr.y, times = 25, index.indep = 276:500)
+set.seed(seed)
+index <- createFolds( tr.y, k=10, returnTrain=TRUE )
+trControl <- trainControl(method='cv', 
+                          index=index, 
+                          summaryFunction = puSummary,  # PU-performance metrics
+                          classProbs=TRUE,              # important 
+                          savePredictions = TRUE,       # important
+                          returnResamp = 'all')         # for resamples.train 
+oc <- oneClass( x = tr.x, y = tr.y, trControl = trControl ) 
+pred <- predict(oc, bananas$x)
+pred <- readAll(pred)
+@
+
+In a later section the internal processing steps of \Sexpr{'oneClass()'} are 
+explained in more detail.
+Now we want to understand if the trained model is reasonable. 
+The distributions of the predicted training data (\Sexpr{'tr.x'}) and unlabeled 
+data (\code{bananas\$x}) can help to make a first diagnosis. 
+They are figures in the left plot below which we refer to as the 'diagnostic plot' (histogram: predicted unlabeled data, blue/grey boxplots: held-out predictions of the positive/unlabeled training samples).
+The right plot shows the model, i.e. the separating hyperplane of the biased SVM model (black line)
+and the distances (color coded). 
+Please note that the color code in the right plot corresponds to the x-axis in the left plot. 
+
+Of course, in practice the right plot can not be visualized because the input data 
+space is usually high dimensional. 
+We show it here to facilitate the understanding of the interpretation.
+
+<<hist_featurespace, eval=FALSE>>=
+plot(pred)
+hist(oc, pred)
+featurespace(oc, th=0)
+@
+
+
+\begin{multicols}{3}
+<<img_plot, echo=FALSE, out.width='.95\\linewidth'>>=
+plot(pred)
+@
+
+<<hist_plot, echo=FALSE, out.width='.95\\linewidth', warning=FALSE>>=
+hist(oc, pred)
+@
+
+<<featurespace_plot, echo=FALSE, out.width='.95\\linewidth', message=FALSE>>=
+featurespace(oc, th=0)
+@
+\end{multicols}
+
+From the diagnostic plot important conclusions can be derived about the training data, 
+the class separability, and the suitability of a threshold for binarization, i.e. 
+the conversion of the continuous classifier output in a binary classification. 
+
+In the envisaged strategy, the careful interpretation of the diagnostic plot is 
+a critical element of the whole one-class classification processing chain. It 
+provides the analyst with information based on which decisions are made.
+
+The interpretation of the diagnostic plot reads as follows:
+
+Regarding the \textbf{training data} we can assume that the amount of unlabeled training data is sufficient.
+This is because the positive and unlabeled training data overlaps (recognizable by the boxplots).
+This is very important. 
+Imagine the complete unlabeled training data would be located at very low predictive values. 
+In this case we could not be confident that the the unlableled training contains the relevant 
+information required to build the model. 
+Of course, if the data is well separable and/or the optimal decision boundary is very complex (non-linear) it is still possible to derive a good classifier. 
+However, if this is not the case, the model is likely to be biased and/or to underfit the data. 
+
+Regarding the \textbf{separability} the following conclusions can be made:\\
+The positive training data corresponds well with a distinctive cluster of data in the histogram at high predictive values.
+This cluster is separated by a low density area from the rest of the majority of the data.
+If we assume that the positive data set is representative and sufficiently large for the positive class we can conclude that the classification model is suitable and has a high discriminative power.
+
+Regarding the \textbf{suitability of the threshold} we can assume that any threshold in the low density region leads to relatively high accuracies. 
+
+Nevertheless, it is always a good idea to examine the relationship between the estimated PU-performance and the tuneing parameters.
+\pkt{caret} offers different ploting functions for this purpose \footnote{\url{http://caret.r-forge.r-project.org/training.html}}. 
+For example, here the \code{puF} and \code{puAuc} performance metrics are plotted in a heatmap.
+
+<<levelplots, out.width='.5\\textwidth'>>=
+trellis.par.set(caretTheme()) # nice colors from caret
+plot(oc, metric = 'puF', plotType = "level")
+plot(oc, metric = 'puAuc', plotType = "level")
+@
+
+These plots are informative to evaluate the tuning process and the final model. 
+First, we can see if the parameter space in which we were looking for the optimal model has been reasonable. 
+In the case here this is true because the models with the highest PU-performances are not located at the border of the parameter space. 
+If this would be the case, a moor suitable parameter combination could possibly lead to more powerful model.
+Also in the case where the optimal models are located at intermedate parameter values it is possible to find better models by repeating the model tuning over a finer grid of parameters in the space of optimal models. 
+This is particularly recommendable if the estimated performance does not change smoothly with the parameters.  
+
+We can also examine the table which is printed when printing an object of class \code{train} or its inheriting child \code{oneClass}.
+Here we do not print the full table, as it is too large but an ordered and subsetted version 
+of the complete table.
+
+<<print, size='footnotesize'>>=
+# oc # --> prints the whole large table with performance metrics of all models
+sort(oc, printTable=TRUE, rows=1:10, by='puF', digits=2)
+sort(oc, printTable=TRUE, rows=1:10, by='puAuc', digits=2)
+@
+
+Thus, according to the \code{puF}-performance metric the model with the parameters
+\code{sigma}=0.1, \code{cNeg}=100, and \code{cMultiplier}=8 is the best.
+But other models are close behind the metric. 
+Furthermore, there are other performance metrics, e.g. the \code{puAuc} which do not
+agree with the ranking of the \code{puF}.
+
+It is difficult to say which metric is better. 
+They both have different characteristics. 
+The f1Pu is a measure which only evaluates at the default threshold 0. 
+Thus, even models with high discriminative power can be placed at a low rank when 
+the threshold 0 is unsuitable. 
+The puAuc instead measures the discriminative over the whole range of possible threshold values. 
+However, this can also introduce misleading measures, due to the fact that 
+thresholds influence the measure which are far from beeing rational choices \textcolor{red}{[REF]}.
+
+% We have seen that there is a positive relationship between the PU-performance metrics and the test accuracy. 
+% But that a model with a high PU can also sometimes have low test accuracy. 
+
+Inspectation of the resampling distributions of differnet models can give more evidence on which the model selection can be founded. 
+Let us first find ten models which are ranked highest by the \code{puF} and/or the \code{puAuc}. 
+
+<<candidates, tidy=FALSE>>=
+puF.ranking   <- sort (oc, by='puF', print=FALSE)
+puAuc.ranking <- sort (oc, by='puAuc', print=FALSE)
+
+candidates <- as.numeric(unique(c(rownames(puF.ranking),
+                                  rownames(puAuc.ranking)) [ 
+                                    rep(1:10, each=2)+rep(c(0, 10), 10) ]))
+candidates[1:10]
+@
+
+For these models let us extract the performance metrics of the resamples and 
+compare the resampling distributions between the models. 
+
+<<resamps_echo, eval=FALSE>>=
+resamps <- resamples.train(oc, modParam=oc$results[candidates,1:3])
+bwplot(resamps, metric='puF')
+@
+
+<<resamps_eval, echo=FALSE, out.width='0.75\\textwidth'>>=
+# save(resamps, file='oneClass_intro/resamps.RData')
+load('oneClass_intro/resamps.RData')
+bwplot(resamps, metric='puF')
+@
+
+As we can see that the model ranked highest by the \code{puF} measure (second boxplot from the top) has competing models with very similar and resampling distributions. 
+These models are not significantly different in terms of the resampling distributions so any one of them is a potential final model. 
+It can be helpful to investigate the diagnostic histogram plot of the whole unlabeled data in order to gain more insight in the model characteristics.
+
+<<updateCandidates, eval=FALSE>>=
+oc.candidate1 <- update(oc, u=bananas$x, modRow=candidates[1])
+oc.candidate2 <- update(oc, u=bananas$x, modRow=candidates[2])
+oc.candidate3 <- update(oc, u=bananas$x, modRow=candidates[3])
+@
+
+<<update_candidates_load, echo=FALSE>>=
+# save(oc.candidate1, oc.candidate2, oc.candidate3, file='oneClass_intro/ocUpdated.RData')
+load('oneClass_intro/ocUpdated.RData')
+@
+
+\begin{multicols}{3}
+<<update1_hist, echo=FALSE, warning=FALSE, message=FALSE>>=
+hist(oc.candidate1, ylim=c(0, .2), main=candidates[1], cex.main=3, cex.axis=1, cex.lab=1.5)
+@
+
+<<update1_fs, echo=FALSE, warning=FALSE, message=FALSE>>=
+featurespace(oc.candidate1, th=0)
+@
+
+<<update2_hist, echo=FALSE, warning=FALSE, message=FALSE>>=
+hist(oc.candidate2, ylim=c(0, .2), main=candidates[2], cex.main=3, cex.axis=1, cex.lab=1.5)
+@
+
+<<update2_fs, echo=FALSE, warning=FALSE, message=FALSE>>=
+featurespace(oc.candidate2, th=0)
+@
+
+<<update3_hist, echo=FALSE, warning=FALSE, message=FALSE>>=
+hist(oc.candidate3, ylim=c(0, .2), main=candidates[3], cex.main=3, cex.axis=1, cex.lab=1.5)
+@
+
+<<update3_fs, echo=FALSE, warning=FALSE, message=FALSE>>=
+featurespace(oc.candidate3, th=0)
+@
+
+\end{multicols}
+
+Note that the model \#35 (i.e. the model in the 35th row of the \code{oc\$results} data frame) 
+is ranked highest in the resamples-plot \note{Find out how the ranking works? Median? Can it be customized?}. 
+Second the dagnostic histogram plot shows a clear distinctive data cluster at high predictive values separated by a low density ara from the large part of the data.
+From the diagnostic histgram plot we would intuitively identify the one of model \#35 as the one which shows highest discriminative power, or in other words smallest overlapping between the positive and the negative class distributions. 
+If we require a binary classification result we would intuitively threshold the predictive outcome at around 0, i.e. somewhere in the separating low density area.
+
+Instead, in model #26 we should expect a higher overlap and it is less trivial to make a decision about a binarization threshold.
+
+\section{Evaluation with PN-data}
+\label{sec:evaluation}
+
+
+<<evaluation_load, echo=FALSE>>=
+# save(ev, ev.modsel, file='oneClass_intro/eval.RData')
+load('oneClass_intro/eval.RData')
+@
+
+
+In the last section we assumed that no complete and representative test data is avaialble when the model has to be constructed. 
+In other situations PN-data might be available and 
+
+However, in other  many situations PN-data is available which makes a traditional accuracy assessment possible.
+There are different aspects we might want to evaluate. 
+Given a particular model and threshold have been selected the confusion matrix and thereof derived accuracy measures for the binary classification result are of interest.
+We can calculate this with the function evaluate:
+
+<<accuracyTh0, size='footnotesize'>>=
+te.pred <- predict(oc, bananas$x[te.i])
+ev <- dismo::evaluate(p=te.pred[te.y==1], a=te.pred[te.y!=1])
+ev.th0 <- evaluate(ev, th=0)
+ev.th0
+@
+
+If we are interested in the evolution of the accuracy over different thresholds 
+we can also specify a vector of threshold or just leave the argument away in which 
+case several thresholds are generated automatically over the range of the predictive values.
+From this we might also derive maximum achievable accuracy, i.e. the accuracy at the threshold which optimizes a given accuracy metric, e.g. the $\kappa$ coefficient.
+
+<<accuracyThs, eval=FALSE>>=
+plot(ev)
+evaluate(ev, th='max.kappa')
+@
+
+\begin{multicols}{2}
+<<evalDepTh_plot, warning=FALSE, message=FALSE, echo=FALSE>>=
+#par(cex=2)
+plot(ev)
+@
+
+<<eval_maxK, warning=FALSE, message=FALSE, echo=FALSE, size='footnotesize'>>=
+print(evaluate(ev, th='max.kappa'))
+@
+\end{multicols}
+
+Finally, we might also want to evaluate the whole model selection process, e.g. by 
+calculating the maximum achievable accuracy for all models.
+This can be useful, e.g. to compare differnet model selection approaches, in particular, the performance metrics and/or the resampling approaches to estimate these metrics \note{[REF]}.
+Here for example, the best achievable $\kappa$ (y-axis) of each model is plotted against the \code{puF} (x-axis, left plot) and the \code{puAuc} (x-axis, right plot) metric.  
+
+<<evaluation, eval=FALSE>>=
+ev.modsel <- evaluate(oc, y=te.y, u=te.x, allModels=TRUE, positive=1)
+@
+
+\begin{multicols}{2}
+<<evalModsel_puF, warning=FALSE, message=FALSE, echo=-1>>=
+par(cex=2)
+plot(ev.modsel, fromTrain='puF')
+@
+
+<<evalModsel_puAuc, warning=FALSE, message=FALSE, echo=-1>>=
+par(cex=2)
+plot(ev.modsel, fromTrain='puAuc')
+@
+\end{multicols}
+
+\section {More one-class classifiers...}
+\label{sec:occ}
+
+Currently three classifiers are implemented: the biaseed SVM \cite{Liu.2003} 
+and one-class SVM \cite{Scholkopf.2001} 
+via the package \Sexpr{'kernlab'} \cite{Karatzoglou.2004}
+and maxent \cite{Phillips.2008b} via the package dismo \cite{Hijmans.2013}.
+
+You can see the definition of the interfaces, or custom \Sexpr{'train()'} methods, 
+with the \Sexpr{'getModelInfoOneClass()'}
+If you want to use your own one-class classifier with the \Sexpr{'oneClass'}/\Sexpr{'caret'} 
+infrastructure you can use these models as examples, but see also the explanations 
+on \url{http://caret.r-forge.r-project.org/custom_models.html}.
+
+\section {Parallel processing}
+\label{sec:parallel}
+
+Some tasks, e.g. model selection and predictions (see below), can be processed in parallel via the foreach package. 
+If you want to use the parallel processing capabilities you need to register a foreach parallel backend.
+This can be done as follows:
+<<eval=FALSE>>=
+require(foreach)
+require(doParallel)
+cl <- makeCluster(detectCores()-1) # leave one core free
+registerDoParallel(cl)
+@
+
+\section {Prediction of large raster data}
+\label{sec:largedata}
+
+If you have large raster files you might want to work with a \Sexexpr('rasterTiled') object. The package can also be downloaded from GitHub \url{https://github.com/benmack/rasterTiled}.
+This is a straightforward way of predicting large raster files in parallel. 
+
+The function \Sexpr{'rasterTiled()'} returns an S3 object, say \Sexpr{'rt'} which holds
+the raster, the valid cells and the start and end indices of the tiles. 
+
+<<>>=
+require(rasterTiled)
+rt <- rasterTiled(bananas$x)
+names(rt)
+
+rt # also estimates the approximate size of the tiles in memory
+
+@
+
+See also the package \Sexexpr{'spatial.tools'} ...
+
+Show an example...
+
+\section {Future work ...}
+\label{sec:outlook}
+
+\begin{itemize}
+  \item Improve PU-performance metrics
+  \item Feature selection
+  \item A Posteriori probabilities form the one-class output
+  \item Efficient handling of unlabeled data: an iterative approach
+  \item Merging one-class classification outputs of different classes
+\end{itemize}
+
+\section*{Acknowledgements}
+This document was produced in RStudio using the knitr package \cite{knitr2013}.
+ 
+\printbibliography
+
+\end{document}
