@@ -1,3 +1,24 @@
+context('Prediction method for oneClass objects.')
+
+# require(devtools)
+# load_all(pkg='D:/github/rasterTiled/')
+data(bananas)
+u <- bananas$x
+
+### ----------------------------------------------------------------------------
+### parallel backend
+require(doParallel)
+cl <- makeCluster(detectCores())
+registerDoParallel(cl)
+
+### ----------------------------------------------------------------------------
+### get some training data
+seed <- 123456
+tr.x <- bananas$tr[, -1]
+tr.y <- puFactor(bananas$tr[, 1])
+
+### ----------------------------------------------------------------------------
+### the model
 modelInfo <- 
   list(label="biased svm", 
        library="kernlab",
@@ -45,5 +66,15 @@ modelInfo <-
        ### sort
        sort=function(x) x[order(-x$sigma, -x$cNeg, -x$cMultiplier), ],
        ### varImp
-       varimp=NULL)  
-### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### 
+       varimp=NULL) 
+
+### ----------------------------------------------------------------------------
+### train
+tuneGrid=expand.grid(sigma=c(.1, 1),  # BSVM parameters
+                       cNeg=2^seq(-3, 15, 3), 
+                       cMultiplier=2^seq(2, 8, 2) )
+tr <- train(x=tr.x, y=tr.y, method=modelInfo, tuneGrid=tuneGrid, 
+            trControl=trainControl(summaryFunction=puSummary))
+
+
+

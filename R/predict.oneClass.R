@@ -21,27 +21,35 @@
 #' # to do
 #' @method predict oneClass
 #' @export
-predict.oneClass <- function(object, newdata, type = "prob", allowParallel=TRUE, returnRaster=TRUE, mask=NULL, ...) { ##ä# , mask=NULL ???
+predict.oneClass <- function(object, newdata, type = "prob", allowParallel=TRUE, returnRaster=TRUE, mask=NULL, ...) { 
   
-  if (is.data.frame(newdata) | is.matrix(newdata)) {
-    
-    
+  if (is.data.frame(newdata) | is.matrix(newdata)) 
+  {
     predictions <- predict.train(object=object, newdata=newdata, type=type, ...)[, 'pos']
-    
-    
-  } else if (.is.raster(newdata)) {
-    
-    if ( any(search()%in%"package:foreach") & require('spatial.tools', quietly=TRUE) & 
-           allowParallel & is.null(mask)) { 
-      predictions <- predict_rasterEngine(object, newdata=newdata, type = type, ...)
-    } else {
+  } 
+  else if (.is.raster(newdata)) 
+  {
+    if ( any(search()%in%"package:foreach") & require('spatial.tools', quietly=TRUE) )
+    {
+      if (is.null(mask)) 
+      {
+        predictions <- predict_rasterEngine(object, newdata=newdata, type = type, ...)
+      } else
+      {
+        predictions <- rasterEngine(inraster=bananas$x,mask=mask,fun=.oneClass_raster_predict,
+                             processing_unit="chunk",
+                             args=list(ocModel=oc,type="prob",disable_masking=FALSE))
+      }
+    } else 
+    {
       predictions <- predict(object=newdata, model=object, type=type, fun=predict.train)
     }
-    
-    
-  } else if (class(newdata)=='rasterTiled') {
+  } else if (class(newdata)=='rasterTiled') 
+  {
     predictions <- predict(object=newdata, model=object, type = type, allowParallel=allowParallel, ...)
   }
+  
+  
   if ( (class(newdata)=='rasterTiled' | .is.raster(newdata) ) & !returnRaster  ) {
     if (!is.null(mask)) {
       predictions <- predictions[which(!is.na(values(mask)))]
