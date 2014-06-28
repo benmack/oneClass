@@ -96,6 +96,17 @@
 
 \newpage
 
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlkwd{setwd}\hlstd{(}\hlstr{"inst/docs/"}\hlstd{)}
+\end{alltt}
+
+
+{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error: kann Arbeitsverzeichnis nicht wechseln}}\end{kframe}
+\end{knitrout}
+
+
 \section{One-class classification}
 % A purpose of a one-class classifier is the same than the one of a binary classifier. 
 % It is used to classify unknown data samples (e.g. pixels of a remote sensing image)
@@ -105,8 +116,7 @@
 % A binary classification model is trained with labeled data of both classes, and eventually unlabeled data.
 % Insted, a one-class classifier is trained with labele data of one class only 
 
-The purpose of \textbf{one-class classifier} is identical to the to classify new data based on a 
-classification model learned from labeled examples.
+The purpose of \textbf{one-class classifier} is identical to the to classify new data based on a classification model learned from labeled examples.
 For the training of the classifier labeled samples are only required for the 
 positive class, i.e. the class of interest.
 Here is the difference to a binary classifier which has to be trained with
@@ -123,8 +133,8 @@ predictive models.
 However, the process is still uncertain and the classification outcome has to be 
 treated with caution. 
 
-\note{A paragraph about the importance of model selection, the difficulty when 
-only PU-data is available, about resampling and performance metrics ... .}
+%\note{A paragraph about the importance of model selection, the difficulty when 
+%only PU-data is available, about resampling and performance metrics ... .}
 
 The package \pkg{oneClass} shall serve the requirements of \textbf{two potential 
 users}, the \analyst and the \developer. These are extrem characters and in 
@@ -173,19 +183,26 @@ Thus the extensive functionalitie of \hlkwd{train}\hlstd{()} can be used for mod
 
 \subsubsection*{PU-performance metrics}
 
+In the one-class classfication setting model selection has to be build upon positive and unlabeled (PU) data. 
+
+Some performance metrics have been defined which can be derived from predicted positive and unlabeled data. 
+Tow of them are implemented in the function \hlkwd{puSummary}\hlstd{()}. 
+
+Some words about \hlstd{puAuc}, \hlstd{puF}, \hlstd{Tpr}, and \hlstd{puPpv} ...
+
 ...
 
 \section{Installation}
 \label{sec:installation}
 
-Currently the package is still not on R CRAN but can be downloaded from GitHub 
+The package can be downloaded from GitHub 
 (\url{https://github.com/benmack/oneClass}).
-It can be installed in R with the package \code{devtools} and the following commands (This may take a while...):
+It can be installed in R with the package \code{devtools} and the following commands (This may take a moment ...):
 
 \begin{knitrout}
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
 \begin{alltt}
-\hlkwd{library}\hlstd{(devtools)}
+\hlkwd{require}\hlstd{(devtools)}
 \hlkwd{install_github}\hlstd{(}\hlstr{'benmack/oneClass'}\hlstd{)}
 \end{alltt}
 \end{kframe}
@@ -193,7 +210,6 @@ It can be installed in R with the package \code{devtools} and the following comm
 
 \section{Synthetic data: bananas}
 \label{sec:data}
-
 
 In the following the package is demonstrated by means of the synthetic banana data set 
 which is included in the package. 
@@ -205,22 +221,19 @@ The \hlstd{bananas} data is stored as \hlstd{raster} data, where \hlstd{y} is a 
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
 \begin{alltt}
 \hlkwd{require}\hlstd{(oneClass)}
+\hlkwd{require}\hlstd{(caret)}
 \hlkwd{require}\hlstd{(raster)}
 \hlkwd{data}\hlstd{(bananas)}
 \hlkwd{plot}\hlstd{(}\hlkwd{stack}\hlstd{(bananas}\hlopt{$}\hlstd{y, bananas}\hlopt{$}\hlstd{x),} \hlkwc{nc}\hlstd{=}\hlnum{3}\hlstd{)}
 \end{alltt}
-\end{kframe}
-\end{knitrout}
-
-\begin{knitrout}
-\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{figure}[]
+\end{kframe}\begin{figure}[]
 
 
-{\centering \includegraphics[width=\maxwidth]{figures/plots-loadpkg_prelim} 
+{\centering \includegraphics[width=\maxwidth]{figures/plots-loadpkg} 
 
 }
 
-\caption[The class membership (left), and the two features (middle and right) of the synthetic bananas data set]{The class membership (left), and the two features (middle and right) of the synthetic bananas data set.\label{fig:loadpkg_prelim}}
+\caption[The class membership (left), and the two features (middle and right) of the synthetic bananas data set]{The class membership (left), and the two features (middle and right) of the synthetic bananas data set.\label{fig:loadpkg}}
 \end{figure}
 
 
@@ -235,7 +248,7 @@ Additionally we generate a test data set consisting of 1.000 random samples of t
 image. 
 As we mentioned before, we would not expect to have a test set in real-world 
 one-class classification application. 
-But here we also create a PN test data set (PN-data) to show the available 
+But here we also create a test data set with positive and negative (PN) data to show the available 
 (PN-) evaluation methods which are useful when investigating one-class classifiers 
 of developing new methods.
 
@@ -260,8 +273,7 @@ space:
 \begin{knitrout}
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
 \begin{alltt}
-\hlkwd{par}\hlstd{(}\hlkwc{mfrow}\hlstd{=}\hlkwd{c}\hlstd{(}\hlnum{1}\hlstd{,}\hlnum{2}\hlstd{),} \hlkwc{mgp}\hlstd{=}\hlkwd{c}\hlstd{(}\hlnum{1.75}\hlstd{,} \hlnum{.75}\hlstd{,} \hlnum{0}\hlstd{),} \hlkwc{mar}\hlstd{=}\hlkwd{c}\hlstd{(}\hlnum{3}\hlstd{,} \hlnum{3}\hlstd{,} \hlnum{.1}\hlstd{,} \hlnum{.1}\hlstd{))}
-\hlkwd{plot}\hlstd{(tr.x,} \hlkwc{pch}\hlstd{=}\hlkwd{ifelse}\hlstd{(tr.y}\hlopt{==}\hlnum{1}\hlstd{,} \hlnum{16}\hlstd{,} \hlnum{4}\hlstd{) )}
+\hlkwd{plot}\hlstd{(tr.x,} \hlkwc{pch}\hlstd{=}\hlkwd{ifelse}\hlstd{(tr.y}\hlopt{==}\hlstr{"pos"}\hlstd{,} \hlnum{16}\hlstd{,} \hlnum{4}\hlstd{) )}
 \hlkwd{plot}\hlstd{(te.x,} \hlkwc{pch}\hlstd{=}\hlkwd{ifelse}\hlstd{(te.y}\hlopt{==}\hlnum{1}\hlstd{,} \hlnum{16}\hlstd{,} \hlnum{4}\hlstd{) )}
 \end{alltt}
 \end{kframe}
@@ -364,7 +376,7 @@ We show it here to facilitate the understanding of the interpretation.
 \end{knitrout}
 \end{multicols}
 
-From the diagnostic plot important conclusions can be derived about the training data, 
+From the diagnostic histogram plot important conclusions can be derived about the training data, 
 the class separability, and the suitability of a threshold for binarization, i.e. 
 the conversion of the continuous classifier output in a binary classification. 
 
@@ -510,7 +522,7 @@ compare the resampling distributions between the models.
 \begin{knitrout}
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
 \begin{alltt}
-\hlstd{resamps} \hlkwb{<-} \hlkwd{resamples.train}\hlstd{(oc,} \hlkwc{modParam}\hlstd{=oc}\hlopt{$}\hlstd{results[candidates,}\hlnum{1}\hlopt{:}\hlnum{3}\hlstd{])}
+\hlstd{resamps} \hlkwb{<-} \hlkwd{resamples}\hlstd{(oc,} \hlkwc{modRow}\hlstd{=candidates[}\hlnum{1}\hlopt{:}\hlnum{10}\hlstd{])}
 \hlkwd{bwplot}\hlstd{(resamps,} \hlkwc{metric}\hlstd{=}\hlstr{'puF'}\hlstd{)}
 \end{alltt}
 \end{kframe}
@@ -640,7 +652,7 @@ We can calculate this with the function evaluate:
 \begin{alltt}
 \hlstd{te.pred} \hlkwb{<-} \hlkwd{predict}\hlstd{(oc, bananas}\hlopt{$}\hlstd{x[te.i])}
 \hlstd{ev} \hlkwb{<-} \hlstd{dismo::}\hlkwd{evaluate}\hlstd{(}\hlkwc{p}\hlstd{=te.pred[te.y}\hlopt{==}\hlnum{1}\hlstd{],} \hlkwc{a}\hlstd{=te.pred[te.y}\hlopt{!=}\hlnum{1}\hlstd{])}
-\hlstd{ev.th0} \hlkwb{<-} \hlkwd{evaluate}\hlstd{(ev,} \hlkwc{th}\hlstd{=}\hlnum{0}\hlstd{)}
+\hlstd{ev.th0} \hlkwb{<-} \hlkwd{evaluateAtTh}\hlstd{(ev,} \hlkwc{th}\hlstd{=}\hlnum{0}\hlstd{)}
 \hlstd{ev.th0}
 \end{alltt}
 \begin{verbatim}
@@ -671,7 +683,7 @@ From this we might also derive maximum achievable accuracy, i.e. the accuracy at
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
 \begin{alltt}
 \hlkwd{plot}\hlstd{(ev)}
-\hlkwd{evaluate}\hlstd{(ev,} \hlkwc{th}\hlstd{=}\hlstr{'max.kappa'}\hlstd{)}
+\hlkwd{evaluateAtTh}\hlstd{(ev,} \hlkwc{th}\hlstd{=}\hlstr{'max.kappa'}\hlstd{)}
 \end{alltt}
 \end{kframe}
 \end{knitrout}
@@ -718,16 +730,19 @@ Here for example, the best achievable $\kappa$ (y-axis) of each model is plotted
 \begin{knitrout}
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
 \begin{alltt}
-\hlstd{ev.modsel} \hlkwb{<-} \hlkwd{evaluate}\hlstd{(oc,} \hlkwc{y}\hlstd{=te.y,} \hlkwc{u}\hlstd{=te.x,} \hlkwc{allModels}\hlstd{=}\hlnum{TRUE}\hlstd{,} \hlkwc{positive}\hlstd{=}\hlnum{1}\hlstd{)}
+\hlstd{ev.modsel} \hlkwb{<-} \hlkwd{evaluateOneClass}\hlstd{(oc,} \hlkwc{y}\hlstd{=te.y,} \hlkwc{u}\hlstd{=te.x,} \hlkwc{allModels}\hlstd{=}\hlnum{TRUE}\hlstd{,} \hlkwc{positive}\hlstd{=}\hlnum{1}\hlstd{)}
+\hlstd{evList} \hlkwb{<-} \hlkwd{print}\hlstd{(ev.modsel,} \hlkwc{invisible}\hlstd{=}\hlnum{TRUE}\hlstd{)}
 \end{alltt}
 \end{kframe}
 \end{knitrout}
 
-\begin{multicols}{2}
+
+
+\begin{multicols}{3}
 \begin{knitrout}
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
 \begin{alltt}
-\hlkwd{plot}\hlstd{(ev.modsel,} \hlkwc{fromTrain}\hlstd{=}\hlstr{'puF'}\hlstd{)}
+\hlkwd{plot}\hlstd{(evList}\hlopt{$}\hlstd{puF, evList}\hlopt{$}\hlstd{mxK.K,} \hlkwc{xlab}\hlstd{=}\hlstr{"puF"}\hlstd{,} \hlkwc{ylab}\hlstd{=}\hlstr{"max. kappa"}\hlstd{)}
 \end{alltt}
 \end{kframe}
 
@@ -742,11 +757,26 @@ Here for example, the best achievable $\kappa$ (y-axis) of each model is plotted
 \begin{knitrout}
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
 \begin{alltt}
-\hlkwd{plot}\hlstd{(ev.modsel,} \hlkwc{fromTrain}\hlstd{=}\hlstr{'puAuc'}\hlstd{)}
+\hlkwd{plot}\hlstd{(evList}\hlopt{$}\hlstd{puAuc, evList}\hlopt{$}\hlstd{mxK.K,} \hlkwc{xlab}\hlstd{=}\hlstr{"puAuc"}\hlstd{,} \hlkwc{ylab}\hlstd{=}\hlstr{"max. kappa"}\hlstd{)}
 \end{alltt}
 \end{kframe}
 
 {\centering \includegraphics[width=\maxwidth]{figures/plots-evalModsel_puAuc} 
+
+}
+
+
+
+\end{knitrout}
+
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlkwd{plot}\hlstd{(evList}\hlopt{$}\hlstd{puPpv, evList}\hlopt{$}\hlstd{Tpr,} \hlkwc{xlab}\hlstd{=}\hlstr{"probability of positive prediction"}\hlstd{,} \hlkwc{ylab}\hlstd{=}\hlstr{"true positive rate"}\hlstd{)}
+\end{alltt}
+\end{kframe}
+
+{\centering \includegraphics[width=\maxwidth]{figures/plots-evalModsel_tpr} 
 
 }
 
@@ -789,9 +819,19 @@ This can be done as follows:
 \section {Prediction of large raster data}
 \label{sec:largedata}
 
-If you have large raster files you might want to work with a \Sexexpr('rasterTiled') object. The package can also be downloaded from GitHub \url{https://github.com/benmack/rasterTiled}.
-This is a straightforward way of predicting large raster files in parallel. 
+If you have large raster files you might want to predict in parallel.
 
+If the \pkg{spatial.tools} is installed \hlkwd{rasterEngine}\hlstd{()} will be used for 
+prediction. 
+Thus, if a parallel backend is registered that can be used with \pgk{foreach} \cite{foreach}
+the raster will be predicted in parallel. 
+If some areas are masked out with the \hlstd{mask} argument the computational cost is 
+reduced because the masked pixels will not be processed. 
+
+Note that with the \hlkwd{rasterEngine}\hlstd{()} the masked pixels are still loaded from the file, they will just not be predicted. 
+If the masked pixels is a large fraction of the whole image the \pkg{rasterTiled}\footnote{The package can also be downloaded from GitHub \url{https://github.com/benmack/rasterTiled}} package can be used and it will probably be faster. 
+.
+This is a straightforward way of predicting large raster files in parallel. 
 The function \hlkwd{rasterTiled}\hlstd{()} returns an S3 object, say \hlstd{rt} which holds
 the raster, the valid cells and the start and end indices of the tiles. 
 
@@ -836,9 +876,6 @@ the raster, the valid cells and the start and end indices of the tiles.
 \end{kframe}
 \end{knitrout}
 
-See also the package \Sexexpr{'spatial.tools'} ...
-
-Show an example...
 
 \section {Future work ...}
 \label{sec:outlook}

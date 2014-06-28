@@ -2,20 +2,20 @@ Package: oneClass
 Type: Package
 Title: One-class classification
 Version: 0.0-4
-Date: 2014-06-26
+Date: 2014-06-28
 Author: Benjamin Mack
 Maintainer: Benjamin Mack <benjamin.mack@kit.edu>
 Description: A set of analysis tools to perform and evaluate one-class
     classification.
 License: GPL-2
 LazyLoad: yes
-Depends:
-    caret
 Imports:
+    caret,
     pROC,
-    kernlab,
-    rJava,
     dismo
 Suggests:
-    raster
+    kernlab,
+    raster,
+    spatial.tools,
+    rJava
 Roxygen: list(wrap = FALSE)

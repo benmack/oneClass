@@ -17,7 +17,6 @@
 #' @param newMetric a function that meet the requirements of a \code{summaryFunction} (see ...). 
 #' This updates the \code{oneClass$train$results} data frame with the new metric(s) returned from function.
 #' This can only be done when \code{savePredictions} has been set to \code{TRUE}.
-#' @param returnResamp see \code{\link{trainControl}}
 #' @param aggregatePredictions The efault is \code{FALSE}, which means that the performance metric is calculated for
 #' each set of hold-out predictions and the metrics are then aggregated. The mean and the standard deviation is returned in the 
 #' \code{object$results} table. If \code{TRUE} the held out predictions are first aggregated and the \code{newMetric} is calculated once. 
@@ -32,6 +31,9 @@ update.oneClass <- function ( object , u=NULL,
                               modParam=NULL, modRow=NULL, modRank=NULL, by=NULL, 
                               newMetric=NULL, aggregatePredictions=FALSE, 
                               mask=NULL, ... ) {
+  
+### ' @param returnResamp see \code{\link{trainControl}}
+     
   
   funcCallUpdate <- match.call(expand.dots = TRUE)
   

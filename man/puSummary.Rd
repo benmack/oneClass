@@ -3,8 +3,7 @@
 \alias{puSummary}
 \title{puSummary}
 \usage{
-puSummary(data, lev = NULL, model = NULL, metrics = c("aucPu", "fPu",
-  "rpr"))
+puSummary(data, lev = NULL, model = NULL)
 }
 \arguments{
 \item{data}{...}

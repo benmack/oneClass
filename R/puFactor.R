@@ -21,7 +21,7 @@ puFactor <- function (y, positive=NULL) { # , labels=c("un", "pos")
       stop('Only one unique value in \'y\'. Argument \'positive\' required for creating an pu-factor.')
     } else {
       if (positive==uy) {
-        y <- factor(dummy, levels=uy, labels='pos', ordered=TRUE)
+        y <- factor(y, levels=uy, labels='pos', ordered=TRUE)
         y <- factor(y, levels=c('un', 'pos'), labels=c('un', 'pos'), ordered=TRUE)
       } else {
         y <- factor(y, levels=uy, labels='un', ordered=TRUE)

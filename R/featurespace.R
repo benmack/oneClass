@@ -3,7 +3,7 @@
 #'
 #' @description Plot the decision values of a \code{\link{oneClass}} object in its two dimensional feature space.
 #'
-#' @details This function is an adaptation of the \code{\link{plot.ksvm}}.
+#' @details This function is an adaptation of \code{plot.ksvm} from the \code{kernlab} package.
 #'
 #' @param x An object of class \code{\link{oneClass}}.
 #' @param thresholds a scalar or numeric vector used to plot additional contour lines.   
@@ -12,6 +12,7 @@
 #' @param borders names list (x, y) with two vectors of length two specifiying the 
 #' borders of the feature space in horizontal/x- and vertical/y- directions.
 #' @param nCells number of cells in horizontal/x- and vertical/y- directions.
+#' @param main character string for the plot title
 #' @param ... other arguments that can be passed to \code{\link{predict}}.
 #' @return ...
 #' @export

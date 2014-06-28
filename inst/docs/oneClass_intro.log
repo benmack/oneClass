@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.1415926-2.5-1.40.14 (MiKTeX 2.9 64-bit) (preloaded format=pdflatex 2013.8.21)  26 JUN 2014 12:56
+This is pdfTeX, Version 3.1415926-2.5-1.40.14 (MiKTeX 2.9 64-bit) (preloaded format=pdflatex 2013.8.21)  28 JUN 2014 13:13
 entering extended mode
 **oneClass_intro.tex
 (D:\github\oneClass\inst\docs\oneClass_intro.tex
@@ -744,11 +744,19 @@ LaTeX Font Info:    Font shape `T1/ppl/bx/n' in size <10> not available
  [1
 
 {C:/ProgramData/MiKTeX/2.9/pdftex/config/pdftex.map}]
+Package color Info: Redefining color shadecolor on input line 100.
+LaTeX Font Info:    Try loading font information for T1+lmtt on input line 101.
+
+ ("D:\Software\MiKTeX 2.9\tex\latex\lm\t1lmtt.fd"
+File: t1lmtt.fd 2009/10/30 v1.6 Font defs for Latin Modern
+)
+LaTeX Font Info:    Font shape `T1/lmtt/bx/n' in size <10> not available
+(Font)              Font shape `T1/lmtt/b/n' tried instead on input line 102.
 LaTeX Font Info:    Font shape `T1/ppl/bx/it' in size <10> not available
-(Font)              Font shape `T1/ppl/b/it' tried instead on input line 133.
+(Font)              Font shape `T1/ppl/b/it' tried instead on input line 143.
 
 ! Undefined control sequence.
-l.153 methods of the \package
+l.163 methods of the \package
                              {oneClass} are implemented as custom functions ...
 The control sequence at the end of the top line
 of your error message was never \def'ed. If you have
@@ -756,76 +764,67 @@ misspelled it (e.g., `\hobx'), type `I' and the correct
 spelling (e.g., `I\hbox'). Otherwise just continue,
 and I'll forget about whatever was undefined.
 
-LaTeX Font Info:    Try loading font information for T1+lmtt on input line 159.
-
-("D:\Software\MiKTeX 2.9\tex\latex\lm\t1lmtt.fd"
-File: t1lmtt.fd 2009/10/30 v1.6 Font defs for Latin Modern
-) [2]
-Package color Info: Redefining color shadecolor on input line 186.
-LaTeX Font Info:    Font shape `T1/lmtt/bx/n' in size <10> not available
-(Font)              Font shape `T1/lmtt/b/n' tried instead on input line 188.
-LaTeX Font Info:    Try loading font information for TS1+lmtt on input line 189
+[2]
+Package color Info: Redefining color shadecolor on input line 203.
+LaTeX Font Info:    Try loading font information for TS1+lmtt on input line 206
 .
-
-("D:\Software\MiKTeX 2.9\tex\latex\lm\ts1lmtt.fd"
+ ("D:\Software\MiKTeX 2.9\tex\latex\lm\ts1lmtt.fd"
 File: ts1lmtt.fd 2009/10/30 v1.6 Font defs for Latin Modern
 )
-Package color Info: Redefining color shadecolor on input line 205.
-Package color Info: Redefining color shadecolor on input line 216.
+Package color Info: Redefining color shadecolor on input line 221.
 
 
 LaTeX Warning: No positions in optional float specifier.
-               Default added (so using `tbp') on input line 216.
+               Default added (so using `tbp') on input line 229.
 
-<figures/plots-loadpkg_prelim.pdf, id=80, 1156.32pt x 289.08pt>
-File: figures/plots-loadpkg_prelim.pdf Graphic file (type pdf)
+<figures/plots-loadpkg.pdf, id=80, 1156.32pt x 289.08pt>
+File: figures/plots-loadpkg.pdf Graphic file (type pdf)
 
-<use figures/plots-loadpkg_prelim.pdf>
-Package pdftex.def Info: figures/plots-loadpkg_prelim.pdf used on input line 21
-9.
+<use figures/plots-loadpkg.pdf>
+Package pdftex.def Info: figures/plots-loadpkg.pdf used on input line 232.
 (pdftex.def)             Requested size: 472.03123pt x 118.00748pt.
-Package color Info: Redefining color shadecolor on input line 243.
- [3 <D:/github/oneClass/inst/docs/figures/plots-loadpkg_prelim.pdf>]
-Package color Info: Redefining color shadecolor on input line 261.
+ [3 <D:/github/oneClass/inst/docs/figures/plots-loadpkg.pdf>]
+Package color Info: Redefining color shadecolor on input line 256.
+Package color Info: Redefining color shadecolor on input line 274.
 
-<figures/plots-featurespace_trainTest.pdf, id=102, 578.16pt x 289.08pt>
+<figures/plots-featurespace_trainTest.pdf, id=100, 578.16pt x 289.08pt>
 File: figures/plots-featurespace_trainTest.pdf Graphic file (type pdf)
 
 <use figures/plots-featurespace_trainTest.pdf>
 Package pdftex.def Info: figures/plots-featurespace_trainTest.pdf used on input
- line 269.
+ line 281.
 (pdftex.def)             Requested size: 377.62642pt x 188.81284pt.
-Package color Info: Redefining color shadecolor on input line 291.
+Package color Info: Redefining color shadecolor on input line 303.
 
-Underfull \vbox (badness 10000) detected at line 304
+Underfull \vbox (badness 1776) detected at line 316
  []
 
 [4 <D:/github/oneClass/inst/docs/figures/plots-featurespace_trainTest.pdf>]
-Package color Info: Redefining color shadecolor on input line 322.
 Package color Info: Redefining color shadecolor on input line 334.
+Package color Info: Redefining color shadecolor on input line 346.
 
-<figures/plots-img_plot.pdf, id=112, 505.89pt x 505.89pt>
+<figures/plots-img_plot.pdf, id=110, 505.89pt x 505.89pt>
 File: figures/plots-img_plot.pdf Graphic file (type pdf)
 
 <use figures/plots-img_plot.pdf>
-Package pdftex.def Info: figures/plots-img_plot.pdf used on input line 336.
+Package pdftex.def Info: figures/plots-img_plot.pdf used on input line 348.
 (pdftex.def)             Requested size: 143.14276pt x 143.14575pt.
-Package color Info: Redefining color shadecolor on input line 345.
+Package color Info: Redefining color shadecolor on input line 357.
 
-<figures/plots-hist_plot.pdf, id=113, 505.89pt x 505.89pt>
+<figures/plots-hist_plot.pdf, id=111, 505.89pt x 505.89pt>
 File: figures/plots-hist_plot.pdf Graphic file (type pdf)
 
 <use figures/plots-hist_plot.pdf>
-Package pdftex.def Info: figures/plots-hist_plot.pdf used on input line 347.
+Package pdftex.def Info: figures/plots-hist_plot.pdf used on input line 359.
 (pdftex.def)             Requested size: 143.14276pt x 143.14575pt.
-Package color Info: Redefining color shadecolor on input line 356.
+Package color Info: Redefining color shadecolor on input line 368.
 
-<figures/plots-featurespace_plot.pdf, id=114, 505.89pt x 505.89pt>
+<figures/plots-featurespace_plot.pdf, id=112, 505.89pt x 505.89pt>
 File: figures/plots-featurespace_plot.pdf Graphic file (type pdf)
 
 <use figures/plots-featurespace_plot.pdf>
 Package pdftex.def Info: figures/plots-featurespace_plot.pdf used on input line
- 358.
+ 370.
 (pdftex.def)             Requested size: 143.14276pt x 143.14575pt.
 
 Overfull \vbox (143.14575pt too high) has occurred while \output is active []
@@ -1129,7 +1128,7 @@ Overfull \vbox (45.14575pt too high) has occurred while \output is active []
 s/inst/docs/figures/plots-hist_plot.pdf> <D:/github/oneClass/inst/docs/figures/
 plots-featurespace_plot.pdf>]
 ! Undefined control sequence.
-l.394 \pkt
+l.406 \pkt
           {caret} offers different ploting functions for this purpose \footn...
 The control sequence at the end of the top line
 of your error message was never \def'ed. If you have
@@ -1138,189 +1137,209 @@ spelling (e.g., `I\hbox'). Otherwise just continue,
 and I'll forget about whatever was undefined.
 
 
-Overfull \hbox (1.1833pt too wide) in paragraph at lines 393--396
+Overfull \hbox (1.1833pt too wide) in paragraph at lines 405--408
 []\T1/ppl/m/n/10 Nevertheless, it is al-ways a good idea to ex-am-ine the re-la
 -tion-ship be-tween the es-ti-mated PU-performance
  []
 
-Package color Info: Redefining color shadecolor on input line 398.
-<figures/plots-levelplots1.pdf, id=141, 505.89pt x 505.89pt>
+Package color Info: Redefining color shadecolor on input line 410.
+<figures/plots-levelplots1.pdf, id=139, 505.89pt x 505.89pt>
 File: figures/plots-levelplots1.pdf Graphic file (type pdf)
 
 <use figures/plots-levelplots1.pdf>
-Package pdftex.def Info: figures/plots-levelplots1.pdf used on input line 406.
+Package pdftex.def Info: figures/plots-levelplots1.pdf used on input line 418.
 (pdftex.def)             Requested size: 236.01561pt x 236.01605pt.
 
-<figures/plots-levelplots2.pdf, id=142, 505.89pt x 505.89pt>
+<figures/plots-levelplots2.pdf, id=140, 505.89pt x 505.89pt>
 File: figures/plots-levelplots2.pdf Graphic file (type pdf)
 
 <use figures/plots-levelplots2.pdf>
-Package pdftex.def Info: figures/plots-levelplots2.pdf used on input line 407.
+Package pdftex.def Info: figures/plots-levelplots2.pdf used on input line 419.
 (pdftex.def)             Requested size: 236.01561pt x 236.01605pt.
  [6 <D:/github/oneClass/inst/docs/figures/plots-levelplots1.pdf>]
-Package color Info: Redefining color shadecolor on input line 427.
+Package color Info: Redefining color shadecolor on input line 439.
 LaTeX Font Info:    Font shape `T1/lmtt/bx/n' in size <8> not available
-(Font)              Font shape `T1/lmtt/b/n' tried instead on input line 430.
-Package color Info: Redefining color shadecolor on input line 449.
+(Font)              Font shape `T1/lmtt/b/n' tried instead on input line 442.
+Package color Info: Redefining color shadecolor on input line 461.
 
-Underfull \vbox (badness 10000) detected at line 466
+Underfull \vbox (badness 10000) detected at line 478
  []
 
 [7 <D:/github/oneClass/inst/docs/figures/plots-levelplots2.pdf>]
-Package color Info: Redefining color shadecolor on input line 491.
-Package color Info: Redefining color shadecolor on input line 511.
-Package color Info: Redefining color shadecolor on input line 520.
+Package color Info: Redefining color shadecolor on input line 503.
+Package color Info: Redefining color shadecolor on input line 523.
+Package color Info: Redefining color shadecolor on input line 532.
 
-<figures/plots-resamps_eval.pdf, id=167, 505.89pt x 505.89pt>
+<figures/plots-resamps_eval.pdf, id=165, 505.89pt x 505.89pt>
 File: figures/plots-resamps_eval.pdf Graphic file (type pdf)
 
 <use figures/plots-resamps_eval.pdf>
-Package pdftex.def Info: figures/plots-resamps_eval.pdf used on input line 522.
+Package pdftex.def Info: figures/plots-resamps_eval.pdf used on input line 534.
 
 (pdftex.def)             Requested size: 354.02342pt x 354.02794pt.
  [8]
-Package color Info: Redefining color shadecolor on input line 535.
+Package color Info: Redefining color shadecolor on input line 547.
  [9 <D:/github/oneClass/inst/docs/figures/plots-resamps_eval.pdf>]
-Package color Info: Redefining color shadecolor on input line 548.
+Package color Info: Redefining color shadecolor on input line 560.
 
-<figures/plots-update1_hist.pdf, id=181, 505.89pt x 505.89pt>
+<figures/plots-update1_hist.pdf, id=179, 505.89pt x 505.89pt>
 File: figures/plots-update1_hist.pdf Graphic file (type pdf)
 
 <use figures/plots-update1_hist.pdf>
-Package pdftex.def Info: figures/plots-update1_hist.pdf used on input line 550.
+Package pdftex.def Info: figures/plots-update1_hist.pdf used on input line 562.
 
 (pdftex.def)             Requested size: 150.67708pt x 150.67975pt.
-Package color Info: Redefining color shadecolor on input line 559.
+Package color Info: Redefining color shadecolor on input line 571.
 
-<figures/plots-update1_fs.pdf, id=182, 505.89pt x 505.89pt>
+<figures/plots-update1_fs.pdf, id=180, 505.89pt x 505.89pt>
 File: figures/plots-update1_fs.pdf Graphic file (type pdf)
 
 <use figures/plots-update1_fs.pdf>
-Package pdftex.def Info: figures/plots-update1_fs.pdf used on input line 561.
+Package pdftex.def Info: figures/plots-update1_fs.pdf used on input line 573.
 (pdftex.def)             Requested size: 150.67708pt x 150.67975pt.
-Package color Info: Redefining color shadecolor on input line 570.
+Package color Info: Redefining color shadecolor on input line 582.
 
-<figures/plots-update2_hist.pdf, id=183, 505.89pt x 505.89pt>
+<figures/plots-update2_hist.pdf, id=181, 505.89pt x 505.89pt>
 File: figures/plots-update2_hist.pdf Graphic file (type pdf)
 
 <use figures/plots-update2_hist.pdf>
-Package pdftex.def Info: figures/plots-update2_hist.pdf used on input line 572.
+Package pdftex.def Info: figures/plots-update2_hist.pdf used on input line 584.
 
 (pdftex.def)             Requested size: 150.67708pt x 150.67975pt.
-Package color Info: Redefining color shadecolor on input line 581.
+Package color Info: Redefining color shadecolor on input line 593.
 
-<figures/plots-update2_fs.pdf, id=184, 505.89pt x 505.89pt>
+<figures/plots-update2_fs.pdf, id=182, 505.89pt x 505.89pt>
 File: figures/plots-update2_fs.pdf Graphic file (type pdf)
 
 <use figures/plots-update2_fs.pdf>
-Package pdftex.def Info: figures/plots-update2_fs.pdf used on input line 583.
+Package pdftex.def Info: figures/plots-update2_fs.pdf used on input line 595.
 (pdftex.def)             Requested size: 150.67708pt x 150.67975pt.
-Package color Info: Redefining color shadecolor on input line 592.
+Package color Info: Redefining color shadecolor on input line 604.
 
-<figures/plots-update3_hist.pdf, id=185, 505.89pt x 505.89pt>
+<figures/plots-update3_hist.pdf, id=183, 505.89pt x 505.89pt>
 File: figures/plots-update3_hist.pdf Graphic file (type pdf)
 
 <use figures/plots-update3_hist.pdf>
-Package pdftex.def Info: figures/plots-update3_hist.pdf used on input line 594.
+Package pdftex.def Info: figures/plots-update3_hist.pdf used on input line 606.
 
 (pdftex.def)             Requested size: 150.67708pt x 150.67975pt.
-Package color Info: Redefining color shadecolor on input line 603.
+Package color Info: Redefining color shadecolor on input line 615.
 
-<figures/plots-update3_fs.pdf, id=186, 505.89pt x 505.89pt>
+<figures/plots-update3_fs.pdf, id=184, 505.89pt x 505.89pt>
 File: figures/plots-update3_fs.pdf Graphic file (type pdf)
 
 <use figures/plots-update3_fs.pdf>
-Package pdftex.def Info: figures/plots-update3_fs.pdf used on input line 605.
+Package pdftex.def Info: figures/plots-update3_fs.pdf used on input line 617.
 (pdftex.def)             Requested size: 150.67708pt x 150.67975pt.
 
 ! You can't use `macro parameter character #' in horizontal mode.
-l.621 Instead, in model #
+l.633 Instead, in model #
                          26 we should expect a higher overlap and it is less...
 Sorry, but I'm not programmed to handle this case;
 I'll just pretend that you didn't ask for it.
 If you're in the wrong mode, you might be able to
 return to the right one by typing `I}' or `I$' or `I\par'.
 
-Package color Info: Redefining color shadecolor on input line 639.
+Package color Info: Redefining color shadecolor on input line 651.
 [10 <D:/github/oneClass/inst/docs/figures/plots-update1_hist.pdf> <D:/github/on
 eClass/inst/docs/figures/plots-update1_fs.pdf> <D:/github/oneClass/inst/docs/fi
 gures/plots-update2_hist.pdf> <D:/github/oneClass/inst/docs/figures/plots-updat
 e2_fs.pdf> <D:/github/oneClass/inst/docs/figures/plots-update3_hist.pdf> <D:/gi
 thub/oneClass/inst/docs/figures/plots-update3_fs.pdf>]
-Package color Info: Redefining color shadecolor on input line 671.
-Package color Info: Redefining color shadecolor on input line 681.
+Package color Info: Redefining color shadecolor on input line 683.
+Package color Info: Redefining color shadecolor on input line 693.
 
-<figures/plots-evalDepTh_plot.pdf, id=227, 505.89pt x 505.89pt>
+<figures/plots-evalDepTh_plot.pdf, id=225, 505.89pt x 505.89pt>
 File: figures/plots-evalDepTh_plot.pdf Graphic file (type pdf)
 
 <use figures/plots-evalDepTh_plot.pdf>
-Package pdftex.def Info: figures/plots-evalDepTh_plot.pdf used on input line 68
-3.
+Package pdftex.def Info: figures/plots-evalDepTh_plot.pdf used on input line 69
+5.
 (pdftex.def)             Requested size: 231.01561pt x 231.0217pt.
-Package color Info: Redefining color shadecolor on input line 692.
+Package color Info: Redefining color shadecolor on input line 704.
  [11 <D:/github/oneClass/inst/docs/figures/plots-evalDepTh_plot.pdf>]
-Package color Info: Redefining color shadecolor on input line 719.
-Package color Info: Redefining color shadecolor on input line 728.
+Package color Info: Redefining color shadecolor on input line 731.
+Package color Info: Redefining color shadecolor on input line 743.
 
-<figures/plots-evalModsel_puF.pdf, id=238, 505.89pt x 505.89pt>
+Overfull \hbox (169.57199pt too wide) in paragraph at lines 745--745
+[][]\T1/lmtt/b/n/10 plot[][]\T1/lmtt/m/n/10 (evList[][]$[][]puF, evList[][]$[][
+]mxK.K,[] []xlab[][]=[][]"puF"[][],[] []ylab[][]=[][]"max. kappa"[][])[][] 
+ []
+
+<figures/plots-evalModsel_puF.pdf, id=236, 505.89pt x 505.89pt>
 File: figures/plots-evalModsel_puF.pdf Graphic file (type pdf)
 
 <use figures/plots-evalModsel_puF.pdf>
-Package pdftex.def Info: figures/plots-evalModsel_puF.pdf used on input line 73
-4.
-(pdftex.def)             Requested size: 231.01561pt x 231.0217pt.
-Package color Info: Redefining color shadecolor on input line 743.
+Package pdftex.def Info: figures/plots-evalModsel_puF.pdf used on input line 74
+9.
+(pdftex.def)             Requested size: 150.67708pt x 150.67975pt.
+Package color Info: Redefining color shadecolor on input line 758.
 
-<figures/plots-evalModsel_puAuc.pdf, id=239, 505.89pt x 505.89pt>
+Overfull \hbox (190.57193pt too wide) in paragraph at lines 760--760
+[][]\T1/lmtt/b/n/10 plot[][]\T1/lmtt/m/n/10 (evList[][]$[][]puAuc, evList[][]$[
+][]mxK.K,[] []xlab[][]=[][]"puAuc"[][],[] []ylab[][]=[][]"max. kappa"[][])[][] 
+
+ []
+
+<figures/plots-evalModsel_puAuc.pdf, id=237, 505.89pt x 505.89pt>
 File: figures/plots-evalModsel_puAuc.pdf Graphic file (type pdf)
 
 <use figures/plots-evalModsel_puAuc.pdf>
 Package pdftex.def Info: figures/plots-evalModsel_puAuc.pdf used on input line 
-749.
-(pdftex.def)             Requested size: 231.01561pt x 231.0217pt.
-Package color Info: Redefining color shadecolor on input line 779.
- [12 <D:/github/oneClass/inst/docs/figures/plots-evalModsel_puF.pdf> <D:/github
-/oneClass/inst/docs/figures/plots-evalModsel_puAuc.pdf>]
+764.
+(pdftex.def)             Requested size: 150.67708pt x 150.67975pt.
+Package color Info: Redefining color shadecolor on input line 773.
+
+Overfull \hbox (374.3214pt too wide) in paragraph at lines 775--775
+[][]\T1/lmtt/b/n/10 plot[][]\T1/lmtt/m/n/10 (evList[][]$[][]puPpv, evList[][]$[
+][]Tpr,[] []xlab[][]=[][]"probability of positive prediction"[][],[] []ylab[][]
+=[][]"true positive rate"[][])[][] 
+ []
+
+<figures/plots-evalModsel_tpr.pdf, id=238, 505.89pt x 505.89pt>
+File: figures/plots-evalModsel_tpr.pdf Graphic file (type pdf)
+
+<use figures/plots-evalModsel_tpr.pdf>
+Package pdftex.def Info: figures/plots-evalModsel_tpr.pdf used on input line 77
+9.
+(pdftex.def)             Requested size: 150.67708pt x 150.67975pt.
+Package color Info: Redefining color shadecolor on input line 809.
+
 ! Undefined control sequence.
-l.792 ...es you might want to work with a \Sexexpr
-                                                  ('rasterTiled') object. Th...
+l.826 ... is registered that can be used with \pgk
+                                                  {foreach} \cite{foreach}
 The control sequence at the end of the top line
 of your error message was never \def'ed. If you have
 misspelled it (e.g., `\hobx'), type `I' and the correct
 spelling (e.g., `I\hbox'). Otherwise just continue,
 and I'll forget about whatever was undefined.
 
-Package color Info: Redefining color shadecolor on input line 799.
-! Undefined control sequence.
-l.839 See also the package \Sexexpr
-                                   {'spatial.tools'} ...
-The control sequence at the end of the top line
-of your error message was never \def'ed. If you have
-misspelled it (e.g., `\hobx'), type `I' and the correct
-spelling (e.g., `I\hbox'). Otherwise just continue,
-and I'll forget about whatever was undefined.
+[12 <D:/github/oneClass/inst/docs/figures/plots-evalModsel_puF.pdf> <D:/github/
+oneClass/inst/docs/figures/plots-evalModsel_puAuc.pdf> <D:/github/oneClass/inst
+/docs/figures/plots-evalModsel_tpr.pdf>]
+Package color Info: Redefining color shadecolor on input line 839.
+LaTeX Font Info:    Try loading font information for TS1+ppl on input line 884.
 
-LaTeX Font Info:    Try loading font information for TS1+ppl on input line 847.
 
 ("D:\Software\MiKTeX 2.9\tex\latex\psnfss\ts1ppl.fd"
 File: ts1ppl.fd 2001/06/04 font definitions for TS1/ppl.
 ) [13]
-Package atveryend Info: Empty hook `BeforeClearDocument' on input line 859.
+Package atveryend Info: Empty hook `BeforeClearDocument' on input line 896.
  [14]
-Package atveryend Info: Empty hook `AfterLastShipout' on input line 859.
+Package atveryend Info: Empty hook `AfterLastShipout' on input line 896.
 
 (D:\github\oneClass\inst\docs\oneClass_intro.aux)
-Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 859.
-Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 859.
+Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 896.
+Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 896.
 Package rerunfilecheck Info: File `oneClass_intro.out' has not changed.
 (rerunfilecheck)             Checksum: 3523146A8D63586495B29595573B6EEA;542.
 Package logreq Info: Writing requests to 'oneClass_intro.run.xml'.
  ) 
 Here is how much of TeX's memory you used:
- 11850 strings out of 493921
- 187020 string characters out of 3149293
+ 11858 strings out of 493921
+ 187192 string characters out of 3149293
  377499 words of memory out of 3000000
- 14909 multiletter control sequences out of 15000+200000
+ 14914 multiletter control sequences out of 15000+200000
  50681 words of font info for 93 fonts, out of 3000000 for 9000
  841 hyphenation exceptions out of 8191
  37i,8n,49p,823b,974s stack positions out of 5000i,500n,10000p,200000b,50000s
@@ -1335,9 +1354,9 @@ c/lm/lmtt8.pfb><D:/Software/MiKTeX 2.9/fonts/type1/public/lm/lmtti10.pfb><D:/So
 ftware/MiKTeX 2.9/fonts/type1/urw/palatino/uplb8a.pfb><D:/Software/MiKTeX 2.9/f
 onts/type1/urw/palatino/uplbi8a.pfb><D:/Software/MiKTeX 2.9/fonts/type1/urw/pal
 atino/uplr8a.pfb><D:/Software/MiKTeX 2.9/fonts/type1/urw/palatino/uplri8a.pfb>
-Output written on oneClass_intro.pdf (14 pages, 1758289 bytes).
+Output written on oneClass_intro.pdf (14 pages, 1769855 bytes).
 PDF statistics:
- 341 PDF objects out of 1000 (max. 8388607)
- 40 named destinations out of 1000 (max. 500000)
- 158 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 350 PDF objects out of 1000 (max. 8388607)
+ 42 named destinations out of 1000 (max. 500000)
+ 163 words of extra memory for PDF output out of 10000 (max. 10000000)
 

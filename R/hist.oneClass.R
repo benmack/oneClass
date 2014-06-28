@@ -6,11 +6,8 @@
 #' ... .
 #'
 #' @param x an object of class 'oneClass'.
-#' @param th draw vertical lines in the histogram, indication for a threshold.
 #' @param predUn a vector of unlabeled predictions (if \code{NULL} \code{x$predUn} is used, if existing).
-#' @param main an overall title for the plot.
-#' @param xlab a title for the x axis.
-#' @param ylab a title for the y axis.
+#' @param th draw vertical lines in the histogram, indication for a threshold.
 #' @param ylim the y limits of the plot.
 #' @param ... other arguments that can be passed to \code{\link{plot}}. 
 #' @return ... (invisible).

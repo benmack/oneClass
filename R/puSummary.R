@@ -19,21 +19,20 @@
 #' }
 #' @rdname puSummary
 #' @export 
-puSummary <- function(data, lev = NULL, model = NULL, 
-                            metrics=c('aucPu', 'fPu', 'rpr')) {
+puSummary <- function(data, lev = NULL, model = NULL) { # , metrics=c("puAuc", "puF", "Tpr", "puPpv")
   
+  #if (nrow(data)>11)
+  #  browser()
   
   if (!all(levels(data[, "pred"]) == levels(data[, "obs"]))) 
     stop("levels of observed and predicted data do not match")
   
-  require(pROC)
   rocObject <- try(pROC::roc(response=data$obs, predictor=data[, 'pos'], 
                              levels=c('pos', 'un')), silent = TRUE)
   rocAUC <- ifelse (class(rocObject)[1] == "try-error", 0, rocObject$auc)
   out1 <- c(rocAUC #, sensitivity(data[, "pred"], data[, "obs"], 'pos'), 
             #specificity(data[, "pred"], data[, "obs"], 'un') 
   )
-  
   recall <- sum(data$pred=="pos" & data$obs=="pos")/sum(data$obs=="pos")
   precision.pu <- (sum(data$pred=="pos")/length(data$pred))
   out <- data.frame(fPu=(recall^2)/precision.pu)

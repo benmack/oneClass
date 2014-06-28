@@ -1,4 +1,20 @@
+################################################################################
 
+
+################################################################################
+.dataForSummaryFunction <- function(hop) {
+  
+  obs <- factorPu( rep( c(1, 0), c(length(hop$pos), length(hop$un)) ), positive=1 )
+  pos <- c(hop$pos, hop$un)
+  pred <- obs
+  
+  pred[pos>=0] <- 'pos'
+  pred[pos<0] <- 'un'
+  data <- data.frame(obs=obs, pred=pred, pos=pos)
+  return(data)
+}
+
+################################################################################
 .is.raster <- function(x)
   (class(x)=='RasterLayer' | class(x)=='RasterStack' | class(x)=='RasterBrick')
 

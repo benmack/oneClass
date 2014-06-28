@@ -1,22 +1,29 @@
-#' @name resamples.train
+#' @name resamples
 #' @aliases resamples
-#' @aliases resamples.train
+#' @aliases resamples.oneClass
 #'
 #'@title ... .
 #'
 #' @description ... .   
 #' 
-#' @param x an object of class \code{\link{oneClass}} (DOES IT WORK FOR TRAIN OBJECTS?).
+#' @param x an object of class \code{\link{oneClass}}.
 #' @param modParam a data frame with the desired modParameters. 
 #' @param modRow the index of the model, i.e. the row in the  \code{object$results} table.
 #' @param modRank the model at the modelRank-th position after sorting after the performance metric. The performance metric can be specified by \code{by}. 
 #' @param metric if modRank is used, which metric should be used for the ranking?
 #' @param ... ...
 #' @examples
-#' ### to do
-#' @method resamples train
+#' data(bananas)
+#' oc <- oneClass(x=bananas$tr[, -1], y=bananas$tr[, 1], 
+#'                tuneGrid=expand.grid(sigma=c(0.1,1), ### not so large grid
+#'                                     cNeg=2^seq(-5, 10, 3), 
+#'                                     cMultiplier=2^seq(4, 15, 2)))
+#' # visualize resamples of the ten models with highest (mean) puAuc values
+#' resamps <- resamples(oc, modRank=1:10, metric="puAuc")
+#' bwplot (resamps, metric='puF')
+#' @method resamples oneClass
 #' @export
-resamples.train <- function (x, modParam=NULL, modRow=NULL, modRank=NULL, metric=NULL, ...) { # , ... for e.g. modelNames
+resamples.oneClass <- function (x, modParam=NULL, modRow=NULL, modRank=NULL, metric=NULL, ...) { # , ... for e.g. modelNames
   
   if (x$control$returnResamp != "all")
     stop("Some model did not have 'returnResamp=\"all\".")
@@ -77,7 +84,6 @@ resamples.train <- function (x, modParam=NULL, modRow=NULL, modRank=NULL, metric
   for(i in which(missingResampls)) {
     modelList[[i]] <- xSkeleton
   }
-  
   
   xSkeleton$resample
   

@@ -6,7 +6,7 @@
 aggregate(x, ...)
 }
 \arguments{
-\item{x}{a list as returned from \code{\link{heldOutPredictions}}.}
+\item{x}{a list as returned from \code{\link{holdOutPredictions}}.}
 
 \item{...}{currently unused.}
 }

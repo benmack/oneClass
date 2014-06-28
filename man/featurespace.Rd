@@ -20,6 +20,8 @@ borders of the feature space in horizontal/x- and vertical/y- directions.}
 
 \item{nCells}{number of cells in horizontal/x- and vertical/y- directions.}
 
+\item{main}{character string for the plot title}
+
 \item{...}{other arguments that can be passed to \code{\link{predict}}.}
 }
 \value{
@@ -29,6 +31,6 @@ borders of the feature space in horizontal/x- and vertical/y- directions.}
 Plot the decision values of a \code{\link{oneClass}} object in its two dimensional feature space.
 }
 \details{
-This function is an adaptation of the \code{\link{plot.ksvm}}.
+This function is an adaptation of \code{plot.ksvm} from the \code{kernlab} package.
 }
 

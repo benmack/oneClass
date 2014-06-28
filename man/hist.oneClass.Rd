@@ -8,15 +8,9 @@
 \arguments{
 \item{x}{an object of class 'oneClass'.}
 
-\item{th}{draw vertical lines in the histogram, indication for a threshold.}
-
 \item{predUn}{a vector of unlabeled predictions (if \code{NULL} \code{x$predUn} is used, if existing).}
 
-\item{main}{an overall title for the plot.}
-
-\item{xlab}{a title for the x axis.}
-
-\item{ylab}{a title for the y axis.}
+\item{th}{draw vertical lines in the histogram, indication for a threshold.}
 
 \item{ylim}{the y limits of the plot.}
 

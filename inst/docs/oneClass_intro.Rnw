@@ -60,6 +60,11 @@ Sys.setenv(TEXINPUTS=getwd(),
 
 \newpage
 
+<<setwd>>=
+setwd("inst/docs/")
+@
+
+
 \section{One-class classification}
 % A purpose of a one-class classifier is the same than the one of a binary classifier. 
 % It is used to classify unknown data samples (e.g. pixels of a remote sensing image)
@@ -69,8 +74,7 @@ Sys.setenv(TEXINPUTS=getwd(),
 % A binary classification model is trained with labeled data of both classes, and eventually unlabeled data.
 % Insted, a one-class classifier is trained with labele data of one class only 
 
-The purpose of \textbf{one-class classifier} is identical to the to classify new data based on a 
-classification model learned from labeled examples.
+The purpose of \textbf{one-class classifier} is identical to the to classify new data based on a classification model learned from labeled examples.
 For the training of the classifier labeled samples are only required for the 
 positive class, i.e. the class of interest.
 Here is the difference to a binary classifier which has to be trained with
@@ -87,8 +91,8 @@ predictive models.
 However, the process is still uncertain and the classification outcome has to be 
 treated with caution. 
 
-\note{A paragraph about the importance of model selection, the difficulty when 
-only PU-data is available, about resampling and performance metrics ... .}
+%\note{A paragraph about the importance of model selection, the difficulty when 
+%only PU-data is available, about resampling and performance metrics ... .}
 
 The package \pkg{oneClass} shall serve the requirements of \textbf{two potential 
 users}, the \analyst and the \developer. These are extrem characters and in 
@@ -137,23 +141,29 @@ Thus the extensive functionalitie of \Sexpr{'train()'} can be used for model sel
 
 \subsubsection*{PU-performance metrics}
 
+In the one-class classfication setting model selection has to be build upon positive and unlabeled (PU) data. 
+
+Some performance metrics have been defined which can be derived from predicted positive and unlabeled data. 
+Tow of them are implemented in the function \Sexpr{'puSummary()'}. 
+
+Some words about \Sexpr{'puAuc'}, \Sexpr{'puF'}, \Sexpr{'Tpr'}, and \Sexpr{'puPpv'} ...
+
 ...
 
 \section{Installation}
 \label{sec:installation}
 
-Currently the package is still not on R CRAN but can be downloaded from GitHub 
+The package can be downloaded from GitHub 
 (\url{https://github.com/benmack/oneClass}).
-It can be installed in R with the package \code{devtools} and the following commands (This may take a while...):
+It can be installed in R with the package \code{devtools} and the following commands (This may take a moment ...):
 
 <<inst, eval=FALSE>>=
-library(devtools) 
+require(devtools)
 install_github('benmack/oneClass')
 @
 
 \section{Synthetic data: bananas}
 \label{sec:data}
-
 
 In the following the package is demonstrated by means of the synthetic banana data set 
 which is included in the package. 
@@ -161,17 +171,9 @@ which is included in the package.
 The \Sexpr{'bananas'} data is stored as \Sexpr{'raster'} data, where \Sexpr{'y'} is a one-band raster with the class patches, i.e. what we want to find out when performing one-class classification with remotely sensed data. 
 \Sexpr{'x'} are the features or predictors based on which the classification has to be build. 
 
-<<loadpkg, eval=FALSE>>=
+<<loadpkg, echo=-6, message=FALSE, warning=FALSE, fig.width=16, fig.height=4, fig.cap='The class membership (left), and the two features (middle and right) of the synthetic bananas data set.'>>=
 require(oneClass)
-require(raster)
-data(bananas)
-plot(stack(bananas$y, bananas$x), nc=3)
-@
-
-<<loadpkg_prelim, echo=FALSE, message=FALSE, warning=FALSE, fig.width=16, fig.height=4, fig.cap='The class membership (left), and the two features (middle and right) of the synthetic bananas data set.'>>=
-# require(oneClass)
-# setwd('inst/docs')
-devtools::load_all("D:/github/oneClass/")
+require(caret)
 require(raster)
 data(bananas)
 plot(stack(bananas$y, bananas$x), nc=3)
@@ -187,7 +189,7 @@ Additionally we generate a test data set consisting of 1.000 random samples of t
 image. 
 As we mentioned before, we would not expect to have a test set in real-world 
 one-class classification application. 
-But here we also create a PN test data set (PN-data) to show the available 
+But here we also create a test data set with positive and negative (PN) data to show the available 
 (PN-) evaluation methods which are useful when investigating one-class classifiers 
 of developing new methods.
 
@@ -205,9 +207,9 @@ te.y <- extract(bananas$y, te.i)
 With the two-dimensional synthetic data set we can view the data in the feature 
 space:
 
-<<featurespace_trainTest, fig.width=8, fig.height=4, out.width='0.8\\textwidth'>>=
+<<featurespace_trainTest, echo=-1, fig.width=8, fig.height=4, out.width='0.8\\textwidth'>>=
 par(mfrow=c(1,2), mgp=c(1.75, .75, 0), mar=c(3, 3, .1, .1))
-plot(tr.x, pch=ifelse(tr.y==1, 16, 4) )
+plot(tr.x, pch=ifelse(tr.y=="pos", 16, 4) )
 plot(te.x, pch=ifelse(te.y==1, 16, 4) )
 @
 
@@ -256,7 +258,7 @@ Of course, in practice the right plot can not be visualized because the input da
 space is usually high dimensional. 
 We show it here to facilitate the understanding of the interpretation.
 
-<<hist_featurespace, eval=FALSE>>=
+<<hist_featurespace, eval=FALSE, message=FALSE>>=
 plot(pred)
 hist(oc, pred)
 featurespace(oc, th=0)
@@ -277,7 +279,7 @@ featurespace(oc, th=0)
 @
 \end{multicols}
 
-From the diagnostic plot important conclusions can be derived about the training data, 
+From the diagnostic histogram plot important conclusions can be derived about the training data, 
 the class separability, and the suitability of a threshold for binarization, i.e. 
 the conversion of the continuous classifier output in a binary classification. 
 
@@ -368,7 +370,7 @@ For these models let us extract the performance metrics of the resamples and
 compare the resampling distributions between the models. 
 
 <<resamps_echo, eval=FALSE>>=
-resamps <- resamples.train(oc, modParam=oc$results[candidates,1:3])
+resamps <- resamples(oc, modRow=candidates[1:10])
 bwplot(resamps, metric='puF')
 @
 
@@ -449,7 +451,7 @@ We can calculate this with the function evaluate:
 <<accuracyTh0, size='footnotesize'>>=
 te.pred <- predict(oc, bananas$x[te.i])
 ev <- dismo::evaluate(p=te.pred[te.y==1], a=te.pred[te.y!=1])
-ev.th0 <- evaluate(ev, th=0)
+ev.th0 <- evaluateAtTh(ev, th=0)
 ev.th0
 @
 
@@ -460,7 +462,7 @@ From this we might also derive maximum achievable accuracy, i.e. the accuracy at
 
 <<accuracyThs, eval=FALSE>>=
 plot(ev)
-evaluate(ev, th='max.kappa')
+evaluateAtTh(ev, th='max.kappa')
 @
 
 \begin{multicols}{2}
@@ -470,7 +472,7 @@ plot(ev)
 @
 
 <<eval_maxK, warning=FALSE, message=FALSE, echo=FALSE, size='footnotesize'>>=
-print(evaluate(ev, th='max.kappa'))
+print(evaluateAtTh(ev, th='max.kappa'))
 @
 \end{multicols}
 
@@ -480,18 +482,28 @@ This can be useful, e.g. to compare differnet model selection approaches, in par
 Here for example, the best achievable $\kappa$ (y-axis) of each model is plotted against the \code{puF} (x-axis, left plot) and the \code{puAuc} (x-axis, right plot) metric.  
 
 <<evaluation, eval=FALSE>>=
-ev.modsel <- evaluate(oc, y=te.y, u=te.x, allModels=TRUE, positive=1)
+ev.modsel <- evaluateOneClass(oc, y=te.y, u=te.x, allModels=TRUE, positive=1)
+evList <- print(ev.modsel, invisible=TRUE)
 @
 
-\begin{multicols}{2}
+<<evaluation_evList, echo=FALSE>>=
+evList <- print(ev.modsel, invisible=TRUE)
+@
+
+\begin{multicols}{3}
 <<evalModsel_puF, warning=FALSE, message=FALSE, echo=-1>>=
-par(cex=2)
-plot(ev.modsel, fromTrain='puF')
+par(cex=2, mgp=c(1.5, .5, 0))
+plot(evList$puF, evList$mxK.K, xlab="puF", ylab="max. kappa")
 @
 
 <<evalModsel_puAuc, warning=FALSE, message=FALSE, echo=-1>>=
-par(cex=2)
-plot(ev.modsel, fromTrain='puAuc')
+par(cex=1, mgp=c(1.5, .5, 0))
+plot(evList$puAuc, evList$mxK.K, xlab="puAuc", ylab="max. kappa")
+@
+
+<<evalModsel_tpr, warning=FALSE, message=FALSE, echo=-1>>=
+par(cex=1, mgp=c(1.5, .5, 0))
+plot(evList$puPpv, evList$Tpr, xlab="probability of positive prediction", ylab="true positive rate")
 @
 \end{multicols}
 
@@ -525,9 +537,19 @@ registerDoParallel(cl)
 \section {Prediction of large raster data}
 \label{sec:largedata}
 
-If you have large raster files you might want to work with a \Sexexpr('rasterTiled') object. The package can also be downloaded from GitHub \url{https://github.com/benmack/rasterTiled}.
-This is a straightforward way of predicting large raster files in parallel. 
+If you have large raster files you might want to predict in parallel.
 
+If the \pkg{spatial.tools} is installed \Sexpr{'rasterEngine()'} will be used for 
+prediction. 
+Thus, if a parallel backend is registered that can be used with \pgk{foreach} \cite{foreach}
+the raster will be predicted in parallel. 
+If some areas are masked out with the \Sexpr{'mask'} argument the computational cost is 
+reduced because the masked pixels will not be processed. 
+
+Note that with the \Sexpr{'rasterEngine()'} the masked pixels are still loaded from the file, they will just not be predicted. 
+If the masked pixels is a large fraction of the whole image the \pkg{rasterTiled}\footnote{The package can also be downloaded from GitHub \url{https://github.com/benmack/rasterTiled}} package can be used and it will probably be faster. 
+.
+This is a straightforward way of predicting large raster files in parallel. 
 The function \Sexpr{'rasterTiled()'} returns an S3 object, say \Sexpr{'rt'} which holds
 the raster, the valid cells and the start and end indices of the tiles. 
 
@@ -537,12 +559,8 @@ rt <- rasterTiled(bananas$x)
 names(rt)
 
 rt # also estimates the approximate size of the tiles in memory
-
 @
 
-See also the package \Sexexpr{'spatial.tools'} ...
-
-Show an example...
 
 \section {Future work ...}
 \label{sec:outlook}

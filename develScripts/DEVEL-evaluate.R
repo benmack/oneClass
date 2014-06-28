@@ -1,9 +1,7 @@
-context('Prediction method for oneClass objects.')
+context('Evaluation method for oneClass objects.')
 
-# require(devtools)
-# load_all(pkg='D:/github/rasterTiled/')
-require(spatial.tools)
 
+require(oneClass)
 ### ----------------------------------------------------------------------------
 ### parallel backend
 require(doParallel)
@@ -11,7 +9,7 @@ cl <- makeCluster(detectCores())
 registerDoParallel(cl)
 
 ### ----------------------------------------------------------------------------
-### get some data a mask and a training set
+### get some data a mask and a training and test set
 data(bananas)
 mask <- bananas$y*0+1
 mask[50:300, 100:300] <- NA
@@ -20,6 +18,11 @@ u <- bananas$x
 seed <- 123456
 tr.x <- bananas$tr[, -1]
 tr.y <- bananas$tr[, 1]
+
+set.seed (seed)
+te.i <- sample ( ncell (bananas$y), 1000)
+te.x <- extract (bananas$x, te.i)
+te.y <- extract (bananas$y, te.i)
 
 ### ----------------------------------------------------------------------------
 ### set up a small grid and train the model
@@ -38,8 +41,20 @@ plot(oc, plotType='level')
 
 
 ### ----------------------------------------------------------------------------
-### prediction of a data frame
-pred <- predict(oc, bananas$x[])
+### evaluation with dismo::evaluate
+### get continuous predictions
+te.pred <- predict(oc, te.x)
+### calculate confusion matrices and accuracy measures for several thresholds 
+accThs <- dismo::evaluate(p=te.pred[te.y==1], a=te.pred[te.y!=1], 
+                            tr=seq(min(te.pred), max(te.pred), length.out=101))
+class(accThs)
+plot(accThs)
+### calculate confusion matrices and accuracy measures for several thresholds 
+accAt0 <- dismo::evaluate(p=te.pred[te.y==1], a=te.pred[te.y!=1], tr=0)
+
+
+
+
 ### ----------------------------------------------------------------------------
 ### prediction of a raster object 
 ### if package spatial.tools is available, allowParallel=TRUE, 

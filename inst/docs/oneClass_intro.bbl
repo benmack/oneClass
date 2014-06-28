@@ -313,6 +313,29 @@
   \field{year}{2013}
 \endentry
 
+\entry{foreach}{manual}{}
+  \name{author}{2}{}{%
+    {{}%
+     {Analytics}{A.}%
+     {Revolution}{R.}%
+     {}{}%
+     {}{}}%
+    {{}%
+     {Weston}{W.}%
+     {Steve}{S.}%
+     {}{}%
+     {}{}}%
+  }
+  \strng{namehash}{ARWS1}
+  \strng{fullhash}{ARWS1}
+  \field{note}{R package version 1.4.2}
+  \field{title}{foreach: Foreach looping construct for R}
+  \verb{url}
+  \verb http://CRAN.R-project.org/package=foreach
+  \endverb
+  \field{year}{2014}
+\endentry
+
 \entry{knitr2013}{manual}{}
   \name{author}{1}{}{%
     {{}%

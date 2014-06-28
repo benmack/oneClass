@@ -20,7 +20,7 @@
 #' \itemize{ 
 #' \item{make sure that it makes sense. Particularly the 
 #' \code{summaryFunction} should be suitable for pu-data (see 
-#' \code{\link{performancePu}})}
+#' \code{\link{puSummary}})}
 #' \item{\code{classProbs} has to be \code{TRUE} if the continuous outputs of 
 #' the one-class classifier are required to calculate the performance metric(s)
 #' such that the continuous outcomes available for the calculations }
@@ -62,17 +62,20 @@ oneClass <- function ( x, y, u=NULL, method="biasedsvm", metric=NULL,
   
   ### -----------------------------------------------------------------------
   ### select the suitable default metric for method
-  if (is.null(metric))
+  if (is.null(metric) & !is.list(method))
+  {
     metric <- switch(method, 
                      "biasedsvm" = "puF", 
                      "bsvm" = "puF", 
                      "ocsvm" = "puF", 
                      "maxent" = "puAuc")
-  
-  
+  } else if (is.null(metric) & is.list(method))
+  {
+    metric <- 'puAuc' ### because it is threshold independent
+  }
   if ( !is.null(trControl) ) {
-    #  if ( !identical(dots$trControl$summaryFunction, performancePu ) )
-    #    warning("You use a performance metric different from oneClass::performancePu. Make it makes sense with PU-data.")
+    #  if ( !identical(dots$trControl$summaryFunction, puSummary ) )
+    #    warning("You use a performance metric different from oneClass::puSummary. Make it makes sense with PU-data.")
   } else {
     
     if (is.null(index)) {
@@ -103,11 +106,16 @@ oneClass <- function ( x, y, u=NULL, method="biasedsvm", metric=NULL,
   ###########################################################################
   ###########################################################################
   if (!is.list(method))
+  {
       oneClassClassifier <- switch(method, 
                                    "biasedsvm" = getModelInfoOneClass("biasedsvm", regex = FALSE)[[1]],
                                    "bsvm" = getModelInfoOneClass("biasedsvm", regex = FALSE)[[1]], 
                                    "ocsvm" = getModelInfoOneClass("ocsvm", regex = FALSE)[[1]],
                                    "maxent" = getModelInfoOneClass("maxent", regex = FALSE)[[1]])
+  } else 
+  {
+    oneClassClassifier <- method
+  }
   ### -----------------------------------------------------------------------
   ### run train ...
   dong <- proc.time()

@@ -29,16 +29,16 @@ predict.oneClass <- function(object, newdata, type = "prob", allowParallel=TRUE,
   } 
   else if (.is.raster(newdata)) 
   {
-    if ( any(search()%in%"package:foreach") & require('spatial.tools', quietly=TRUE) )
+    if ( require('spatial.tools', quietly=TRUE) ) #any(search()%in%"package:foreach") & 
     {
       if (is.null(mask)) 
       {
         predictions <- predict_rasterEngine(object, newdata=newdata, type = type, ...)
       } else
       {
-        predictions <- rasterEngine(inraster=bananas$x,mask=mask,fun=.oneClass_raster_predict,
+        predictions <- rasterEngine(inraster=newdata,mask=mask,fun=.oneClass_raster_predict,
                              processing_unit="chunk",
-                             args=list(ocModel=oc,type="prob",disable_masking=FALSE))
+                             args=list(ocModel=object,type="prob",disable_masking=FALSE))
       }
     } else 
     {

@@ -5,7 +5,7 @@
 #'
 #' @description ...
 #'
-#' @param x a list as returned from \code{\link{heldOutPredictions}}.
+#' @param x a list as returned from \code{\link{holdOutPredictions}}.
 #' @param ... currently unused.
 #' @examples
 #' ### to do
