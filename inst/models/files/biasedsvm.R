@@ -33,7 +33,7 @@ modelInfo <-
            predicted <- predict(modelFit, newdata) 
            probs <- predict(modelFit, newdata, type = "decision")
            probs <- cbind(probs, probs)
-           colnames(probs) <- modelFit@lev
+           colnames(probs) <- c("un", "pos")
          return(probs)
        },
        ### predictors
@@ -41,7 +41,7 @@ modelInfo <-
        ### tags
        tags=NULL,
        ### levels
-       levels=function(x) lev(x),
+       levels=function(x) c("un", "pos"),
        ### sort
        sort=function(x) x[order(-x$sigma, -x$cNeg, -x$cMultiplier), ],
        ### varImp

@@ -1,6 +1,6 @@
 modelInfo <- 
   list(label="one-class svm", 
-       library="kernlab",
+       library=c("oneClass", "kernlab"),
        loop=NULL,
        type="Classification",
        parameters=data.frame(parameter = c("sigma", "nu"), 
@@ -19,15 +19,16 @@ modelInfo <-
        }, 
        predict = function(modelFit, newdata, preProc = NULL, submodels = NULL) {
          predicted <- predict(modelFit, newdata)
-         predicted <- puFactor(predicted, positive=TRUE)
-         
+         predicted <- factor(predicted == TRUE, levels=c(TRUE, FALSE), 
+                             labels=c("un", "pos"), ordered=TRUE)
          return(predicted)
        },
        ### prob
        prob=function(modelFit, newdata, preProc = NULL, submodels = NULL) {
+         
          probs <- predict(modelFit, newdata, type = "decision")
          probs <- cbind(probs, probs)
-         colnames(probs) <- c('pos', 'un')
+         colnames(probs) <-  c("un", "pos") 
          return(probs)
        },
        ### predictors
@@ -35,9 +36,13 @@ modelInfo <-
        ### tags
        tags=NULL,
        ### levels
-       levels=function(x) c("un", "pos"),
+       levels=function(x)  c("un", "pos") ,
        ### sort
        sort=ocsvmSort <- function(x) x[order(-x$sigma, -x$nu), ],
        ### varImp
        varimp=NULL)  
 ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### 
+
+
+
+

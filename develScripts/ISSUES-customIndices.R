@@ -12,10 +12,10 @@
 ### Tpr/puPpv, puF, of puSummary does not work in model selection! 
 
 require(doParallel)
-require(caret)
-require(raster)
-require(pROC)
-require(oneClass)
+#require(caret)
+#require(raster)
+#require(pROC)
+#require(oneClass)
 
 
 # get training and test data
@@ -27,8 +27,9 @@ set.seed (seed)
 te.i <- sample ( ncell (bananas$y), 1000 )
 te.x <- extract (bananas$x, te.i)
 te.y <- extract (bananas$y, te.i)
-# default oneClass
+# default oneClass works fine
 oc <- oneClass(x=tr.x, y=puFactor(tr.y), method="ocsvm")
+plot_puPpvVsTpr(oc, metric="negD01", xlim=c(0,1), ylim=c(0,1))
 # customize via trainControl
 set.seed(seed)
 indexTr <- createFoldsPu( tr.y, k=5, index.indep = which(tr.y=='un') )
@@ -36,89 +37,65 @@ indexTe <- lapply(indexTr, function(i) which(!(1:length(tr.y))%in%i) )
 sapply(indexTr, length)
 sapply(indexTe, function(i) table(tr.y[i]))
 
-trControl <- trainControl(method='custom', 
-                          index=indexTr,
-                          indexOut=indexTe, 
-                          summaryFunction = puSummary,  # PU-performance metrics
-                          classProbs=TRUE,              # important 
-                          savePredictions = TRUE,       # important
-                          returnResamp = 'all',         # for resamples.train 
-                          allowParallel=TRUE)
+indexTr <- createFoldsPu( tr.y, k=5, index.indep = 400:500 )
+indexTe <- lapply(indexTr, function(i) which(!(1:length(tr.y))%in%i) )
 
-stopCluster(cl)
+cntrl <- trainControl(method="custom",
+                      index=indexTr,
+                            summaryFunction = puSummary,  # PU-performance metrics
+                            classProbs=TRUE,              # important 
+                            savePredictions = TRUE,       # important
+                            returnResamp = 'all',         # for resamples.train 
+                            allowParallel=TRUE)
+
+try(stopCluster(cl))
 cl <- makeCluster(3)
 registerDoParallel(cl)
 
 ### ONECLASS
+modelInfo <- getModelInfoOneClass()$ocsvm # bsvm ok, 
 ### in parallel tpr/puPpv puF and negD01 are not calculated when using costum metrics... 
-oc1 <- oneClass(x=tr.x, y=tr.y, method="ocsvm", 
-                tuneGrid=getModelInfoOneClass()$ocsvm$grid()[1:20,], 
-                trControl=trControl) #, preProcess=c("center", "scale"))
+oc1 <- oneClass(x=tr.x, y=tr.y, method=modelInfo, 
+                tuneGrid=modelInfo$grid()[1:20,], 
+                trControl=cntrl) #, preProcess=c("center", "scale"))
 oc1
-
-### ONECLASS
-### in parallel tpr/puPpv puF and negD01 are not calculated when using costum metrics... 
-puSummary <- function(data, lev = NULL, model = NULL) { # , metrics=c("puAuc", "puF", "Tpr", "puPpv")
-  
-  #if (nrow(data)>11)
-  #  browser()
-  
-  if (!all(levels(data[, "pred"]) == levels(data[, "obs"]))) 
-    stop("levels of observed and predicted data do not match")
-  browser()
-  require(pROC)
-  rocObject <- try(pROC::roc(response=data$obs, predictor=data[, 'pos'], 
-                             levels=c('pos', 'un')), silent = TRUE)
-  puAuc <- ifelse (class(rocObject)[1] == "try-error", 0, rocObject$auc)
-  
-  tpr <- sum(data$pred=="pos" & data$obs=="pos")/sum(data$obs=="pos")
-  puPpv <- (sum(data$pred=="pos")/length(data$pred))
-  puF <- (tpr^2)/puPpv
-  if (is.na(puF))
-    puF[1] <- 0
-  puF <- puF[[1]]
-  
-  negD01 <- .negD01(tpr=tpr, puPpv=puPpv)
-  
-  out <- c(puAuc=puAuc, puF=puF, negD01=negD01, Tpr=tpr, puPpv=puPpv) #, "SensPu", "SpecPu")
-  
-  return(out)
-}
-
-
-tr.ocsvm <- train(x=tr.x, y=tr.y,
-                  method=getModelInfoOneClass()$ocsvm, 
-                  trControl=trainControl(summaryFunction=puSummary))
-tr.ocsvm
+head(oc1$pred) 
 
 
 
 
-###
+modelInfo <- getModelInfoOneClass()$biasedsvm # ok
+modelInfo <- getModelInfoOneClass()$ocsvm
+
+tr.oc <- train(x=tr.x, y=tr.y,
+                  method=modelInfo, #getModelInfoOneClass()$ocsvm, 
+                  trControl=trainControl(method="cv", 
+                            summaryFunction = puSummary,  # PU-performance metrics
+                            classProbs=TRUE,              # important 
+                            savePredictions = TRUE,       # important
+                            returnResamp = 'all',         # for resamples.train 
+                            allowParallel=TRUE),
+               tuneGrid=modelInfo$grid()[1:20, ],
+               metric="puAuc")
+head(tr.oc$pred)
+
+
+
+### this works
 trControl$allowParallel=FALSE
 oc2 <- oneClass(x=tr.x, y=tr.y, method="ocsvm", 
                tuneGrid=getModelInfoOneClass()$ocsvm$grid(), 
                trControl=trControl) #, preProcess=c("center", "scale"))
 oc2
 
+### this works
+trControl$allowParallel=TRUE
+trControl$index=TRUE
+trControl$indexOut=TRUE
 
-###
-oc1up <- update(oc1, newMetric=puSummary, newMetricsOnly=TRUE)
-oc1up$results==oc2$results
+oc2 <- oneClass(x=tr.x, y=tr.y, method="ocsvm", 
+               tuneGrid=getModelInfoOneClass()$ocsvm$grid(), 
+               trControl=trControl) #, preProcess=c("center", "scale"))
+oc2
 
-
-
-
-# for (i in 1:nrow(oc$resample))
-#     hop <- holdOutPredictions(oc, modRow = m, partition = p)
-#     pu <- c(hop$pos, hop$un[[1]])
-#     data <- data.frame(obs=puFactor(rep(c(1, 0), c(length(hop$pos), length(hop$un[[1]]) ) ) ), 
-#                        pred=puFactor(pu>0, positive=TRUE),
-#                        pos=pu)
-#   
-#     resample <- rbind( resample, puSummary(data) )
-# }
-# oc$resample[,1:4]==resample
-# head(oc$resample[,1:4])
-# head(resample)
 

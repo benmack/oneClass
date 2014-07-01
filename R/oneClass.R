@@ -107,7 +107,7 @@ oneClass <- function ( x, y, u=NULL, method="biasedsvm", metric=NULL,
   ###########################################################################
   if (!is.list(method))
   {
-      oneClassClassifier <- switch(method, 
+      method <- switch(method, 
                                    "biasedsvm" = getModelInfoOneClass("biasedsvm", regex = FALSE)[[1]],
                                    "bsvm" = getModelInfoOneClass("biasedsvm", regex = FALSE)[[1]], 
                                    "ocsvm" = getModelInfoOneClass("ocsvm", regex = FALSE)[[1]],
@@ -120,11 +120,12 @@ oneClass <- function ( x, y, u=NULL, method="biasedsvm", metric=NULL,
   ### run train ...
   dong <- proc.time()
   tune <- train(x, y,
-                method = oneClassClassifier, #d2one(method),
-                metric = metric, # metric 
+                method = method, 
+                metric = metric, 
                 trControl = trControl, 
                 ...)
   time.train <- proc.time()-dong
+  
   
   ### -----------------------------------------------------------------------
   ### collect some data from the train object an include it in the one-class
