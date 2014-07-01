@@ -1,3 +1,6 @@
+#' @export
+resamples <- function(x, ...) UseMethod("resamples")
+
 #' @name resamples
 #' @aliases resamples
 #' @aliases resamples.oneClass
@@ -13,6 +16,7 @@
 #' @param metric if modRank is used, which metric should be used for the ranking?
 #' @param ... ...
 #' @examples
+#' \dontrun{
 #' data(bananas)
 #' oc <- oneClass(x=bananas$tr[, -1], y=bananas$tr[, 1], 
 #'                tuneGrid=expand.grid(sigma=c(0.1,1), ### not so large grid
@@ -21,6 +25,7 @@
 #' # visualize resamples of the ten models with highest (mean) puAuc values
 #' resamps <- resamples(oc, modRank=1:10, metric="puAuc")
 #' bwplot (resamps, metric='puF')
+#' }
 #' @method resamples oneClass
 #' @export
 resamples.oneClass <- function (x, modParam=NULL, modRow=NULL, modRank=NULL, metric=NULL, ...) { # , ... for e.g. modelNames
@@ -89,5 +94,5 @@ resamples.oneClass <- function (x, modParam=NULL, modRow=NULL, modRank=NULL, met
   
   names(modelList) <- paste('rank:', mp$rank, '|row:', mp$row, sep="")
   ### 
-  resamps <- resamples(modelList, ...)
+  resamps <- caret::resamples(modelList, ...)
 }

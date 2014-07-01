@@ -4,7 +4,8 @@
 \title{featurespace}
 \usage{
 featurespace(x, thresholds = NULL, positive = NULL, x.tr = NULL,
-  borders = NULL, nCells = c(100, 100), main = NULL, ...)
+  borders = NULL, nCells = c(100, 100), main = NULL, col = NULL,
+  expandColors = TRUE, ...)
 }
 \arguments{
 \item{x}{An object of class \code{\link{oneClass}}.}
@@ -21,6 +22,8 @@ borders of the feature space in horizontal/x- and vertical/y- directions.}
 \item{nCells}{number of cells in horizontal/x- and vertical/y- directions.}
 
 \item{main}{character string for the plot title}
+
+\item{col}{...}
 
 \item{...}{other arguments that can be passed to \code{\link{predict}}.}
 }

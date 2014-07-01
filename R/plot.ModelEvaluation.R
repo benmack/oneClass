@@ -1,5 +1,6 @@
 ################################################################################
 #' @name plot.ModelEvaluation
+#' @aliases plot
 #' 
 #' @title Plot PU-performance vs. evaluation accuracies to evaluate model selection.
 #'

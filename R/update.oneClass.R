@@ -30,7 +30,7 @@
 update.oneClass <- function ( object , u=NULL, 
                               modParam=NULL, modRow=NULL, modRank=NULL, by=NULL, 
                               newMetric=NULL, aggregatePredictions=FALSE, 
-                              mask=NULL, ... ) {
+                              mask=NULL, returnResamp="all", newMetricsOnly=FALSE, ... ) {
   
 ### ' @param returnResamp see \code{\link{trainControl}}
      
@@ -39,7 +39,7 @@ update.oneClass <- function ( object , u=NULL,
   
   
   if (!is.null(newMetric)) { 
-    if (!object$train$control$savePredictions)
+    if (!object$control$savePredictions)
       stop('Performance metrics can not be updated for objects with \'savePredictions\'=FALSE. Re-run \'oneClass\'.')
     
     ### add option aggregatePredictions=='both'
@@ -133,15 +133,14 @@ update.oneClass <- function ( object , u=NULL,
 
     
     if (returnResamp=='all') {
-      object$train$resample <- metrics
+      object$resample <- metrics
     }
     
-    
       ### aggregate (mean and SD)
-      newMetrics <- aggregate( metrics, by=resamples[,colsParam, drop=FALSE], FUN=function(x) mean(x, na.rm=TRUE) )
+      newMetrics <- aggregate( as.data.frame(metrics), by=resamples[,colsParam, drop=FALSE], FUN=function(x) mean(x, na.rm=TRUE) )
       newMetricsParam <- newMetrics[,(1:n.param), drop=FALSE]
       newMetrics <- newMetrics[,-(1:n.param)]
-      newMetricsSD <- aggregate( metrics, by=resamples[,colsParam, drop=FALSE], FUN=function(x) sd(x, na.rm=TRUE) )[,-(1:n.param)]
+      newMetricsSD <- aggregate( as.data.frame(metrics), by=resamples[,colsParam, drop=FALSE], FUN=function(x) sd(x, na.rm=TRUE) )[,-(1:n.param)]
       colnames(newMetricsSD) <- paste(colnames(newMetricsSD), 'SD', sep="")
       
       ### and combine
@@ -154,11 +153,24 @@ update.oneClass <- function ( object , u=NULL,
 #       identical(tst1, tst2)
 #       cbind(newMetricsParam[rw.idx,], object$results[,(1:n.param)])
       
-      object$results <- cbind(object$results[,(1:n.param), drop=FALSE], 
-                                    newMetrics[rw.idx,], oldMetrics, newMetricsSD[rw.idx,], oldMetricsSD)
+      if (newMetricsOnly) {
+        object$results <- cbind(object$results[,(1:n.param), drop=FALSE], 
+                                newMetrics[rw.idx,], newMetricsSD[rw.idx,])
+      } else {
+        object$results <- cbind(object$results[,(1:n.param), drop=FALSE], 
+                                newMetrics[rw.idx,], oldMetrics, newMetricsSD[rw.idx,], oldMetricsSD)
+      }
+
+
     }
 
-  message ( 'The new metrics have been added to \'object$results\' but nothing else has been updated so far.' ) 
+
+  if (newMetricsOnly) {
+    message ( 'Old metrics of \'object$results\' have been replaced by the new metrics but nothing else has been updated so far.' )
+    } else {
+      message ( 'The new metrics have been added to \'object$results\' but nothing else has been updated so far.' )
+    }
+   
   
   }
   ### TODO: when newMetric and u are given update the final model. 

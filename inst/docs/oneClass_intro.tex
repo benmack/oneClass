@@ -96,17 +96,6 @@
 
 \newpage
 
-\begin{knitrout}
-\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
-\begin{alltt}
-\hlkwd{setwd}\hlstd{(}\hlstr{"inst/docs/"}\hlstd{)}
-\end{alltt}
-
-
-{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error: kann Arbeitsverzeichnis nicht wechseln}}\end{kframe}
-\end{knitrout}
-
-
 \section{One-class classification}
 % A purpose of a one-class classifier is the same than the one of a binary classifier. 
 % It is used to classify unknown data samples (e.g. pixels of a remote sensing image)
@@ -116,17 +105,22 @@
 % A binary classification model is trained with labeled data of both classes, and eventually unlabeled data.
 % Insted, a one-class classifier is trained with labele data of one class only 
 
-The purpose of \textbf{one-class classifier} is identical to the to classify new data based on a classification model learned from labeled examples.
-For the training of the classifier labeled samples are only required for the 
-positive class, i.e. the class of interest.
-Here is the difference to a binary classifier which has to be trained with
-labeled data of both the positive and the negative class.
-Thus, a one-class classifier is employed when the acquisition of 
-representative labeled data for the negative class is expensive or not possible 
+The purpose of \textbf{one-class classifier} is identical to the to the purpose 
+of a supervised binary classifier: New data is classified to belong to one of two 
+classes based on a classification model trained from labeled examples, i.e. 
+samples/pixels for which the class membership is known.   
+In contrast to the supervised classifier, the training data of the one-class classifier 
+only contains labeled samples from the class of interest, i.e. the \textbf{positive class}.
+In the case of the binary classifier also the other class, or the \textbf{negative class},  
+has to be represented with the training set. 
+Collectiong a representative training set for the negative class can be very costly and time-consuming 
+due to the fact that the negative class is the aggregation of all classes without the positive class.  
+Thus, a one-class classifier is particularly useful when only one or a few classes have to be mapped and 
+when the acquisition of representative labeled data for the negative class is expensive or not possible 
 at all. 
 
-The convenience of not requiring negative training data comes at a price
-because OCC challenging due to the limited information contained in the training 
+The convenience of not requiring negative training data comes at a price.
+One-class classification is challenging due to the limited information contained in the training 
 set.
 Unlabeled training data can, and usually should, be used to build more accurate
 predictive models. 
@@ -139,7 +133,6 @@ treated with caution.
 The package \pkg{oneClass} shall serve the requirements of \textbf{two potential 
 users}, the \analyst and the \developer. These are extrem characters and in 
 reality one will usually be located somewhere in between.
-
 The \textbf{\analyst} is faced with a particular one-class classification 
 problem, i.e. a set of positive training samples and the unlabeled data to be 
 classified.
@@ -149,48 +142,45 @@ In such a situation a careful evaluation of the classification outcome based on
 the available (positive and unlabeled) data is required in order to select the 
 most promising final model. 
 In section\ref{sec:analyst} the analysis strategy presented in 
-\note{REF} is followed and the main functions are illustrated.
+\cite{Mack} is followed and the main functions are illustrated.
 Hopefully the package can be helpful to solve a given one-class classification 
 problem more effective and more convenient in practice. 
-
 The \textbf{\developer} is interested in the developement of new and/or optimization of 
 existing methods. Therefore the package provides convenient functionalities.
 The package \pkg{oneClass} builds upon the powerful package \pkg{caret} \cite{Kuhn.2014} and tries
 to adapt the philosophy. 
 
 The package \pkg{caret} allows one to embed own \textbf{custom functionalities} in the 
-rich infrastructure of the \pkg{caret} package, in fact the one-class classification
-methods of the \package{oneClass} are implemented as custom functions which are passed 
-to the function \hlkwd{train}\hlstd{()}. 
-This infrastructure comprises  methods for pre-processing data, calculating 
-variable importance, model visualizations, and parallel processing. 
-
+rich infrastructure of the \pkg{caret} package.
+%, in fact the one-class classification
+%methods in the package \package{oneClass} are implemented as custom functions which are passed 
+%to the function 'train()'. 
 The function \hlkwd{oneClass}\hlstd{()} calls the \hlstd{caret::}\hlkwd{train}\hlstd{()} 
 function with a one-class methods. It returns an object of class \code{oneClass}
 which inherits from the class \code{train}. Thus, many of the powerful analysis 
 tools from the train package can also be used seemlessly when using an object of 
-class \code{oneClass}.
+class \pkg{oneClass}.
+This infrastructure comprises  methods for pre-processing data, calculating 
+variable importance, model visualizations, and parallel processing. 
 
 \subsubsection*{One-class classifiers}
 
 The \pkg{oneClass} package is a user-oriented environment for analyzing 
 one-class classification problems.
-It implements two commonly used classifiers, the biased SVM \cite{BingLiu.2002, Liu.2003}, and Maxent \cite{Elith.2011, Phillips.2008b}. 
-
+It implements three commonly used classifiers, the one-class SVM \cite{Scholkopf.2001}, biased SVM \cite{BingLiu.2002, Liu.2003}, and Maxent \cite{Elith.2011, Phillips.2008b}. 
 These classifiers are implemented as costum functions for the 
-\hlkwd{train}\hlstd{()} function from the \pkg{caret} package \note{[REF]}.
+\hlkwd{train}\hlstd{()} function implemented in the package \pkg{caret} package \cite{Kuhn.2014}.
 Thus the extensive functionalitie of \hlkwd{train}\hlstd{()} can be used for model selection.
 
 \subsubsection*{PU-performance metrics}
 
 In the one-class classfication setting model selection has to be build upon positive and unlabeled (PU) data. 
-
 Some performance metrics have been defined which can be derived from predicted positive and unlabeled data. 
-Tow of them are implemented in the function \hlkwd{puSummary}\hlstd{()}. 
+Tow of them are implemented in the function \hlkwd{puSummary}\hlstd{()}.
 
-Some words about \hlstd{puAuc}, \hlstd{puF}, \hlstd{Tpr}, and \hlstd{puPpv} ...
-
-...
+However, do not trust them blindely on these performance metrics. 
+Be aware that the model ranking they suggest can be noisy. 
+They should rather be used as helpers for selecting a couple of candidate models, which are examined more thoroughly.
 
 \section{Installation}
 \label{sec:installation}
@@ -220,24 +210,39 @@ The \hlstd{bananas} data is stored as \hlstd{raster} data, where \hlstd{y} is a 
 \begin{knitrout}
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
 \begin{alltt}
-\hlkwd{require}\hlstd{(oneClass)}
-\hlkwd{require}\hlstd{(caret)}
-\hlkwd{require}\hlstd{(raster)}
+\hlkwd{require}\hlstd{(oneClass);} \hlkwd{require}\hlstd{(caret);} \hlkwd{require}\hlstd{(raster)}
 \hlkwd{data}\hlstd{(bananas)}
-\hlkwd{plot}\hlstd{(}\hlkwd{stack}\hlstd{(bananas}\hlopt{$}\hlstd{y, bananas}\hlopt{$}\hlstd{x),} \hlkwc{nc}\hlstd{=}\hlnum{3}\hlstd{)}
+\hlkwd{plot}\hlstd{(bananas}\hlopt{$}\hlstd{y)}
+\hlkwd{nicergb}\hlstd{(bananas}\hlopt{$}\hlstd{x,} \hlkwc{r}\hlstd{=}\hlnum{2}\hlstd{,} \hlkwc{g}\hlstd{=}\hlnum{2}\hlstd{,} \hlkwc{b}\hlstd{=}\hlnum{1}\hlstd{)}
 \end{alltt}
-\end{kframe}\begin{figure}[]
+\end{kframe}
+\end{knitrout}
 
 
-{\centering \includegraphics[width=\maxwidth]{figures/plots-loadpkg} 
+
+\begin{multicols}{2}
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}
+
+{\centering \includegraphics[width=\maxwidth]{figures/plots-img_y} 
 
 }
 
-\caption[The class membership (left), and the two features (middle and right) of the synthetic bananas data set]{The class membership (left), and the two features (middle and right) of the synthetic bananas data set.\label{fig:loadpkg}}
-\end{figure}
 
 
 \end{knitrout}
+
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}
+
+{\centering \includegraphics[width=\maxwidth]{figures/plots-img_x} 
+
+}
+
+
+
+\end{knitrout}
+\end{multicols}
 
 In one-class classification a set of positive labeled samples is available for 
 training the classifier.
@@ -267,8 +272,7 @@ of developing new methods.
 \end{knitrout}
 
 
-With the two-dimensional synthetic data set we can view the data in the feature 
-space:
+The two-dimensional synthetic data set we can visualized in the feature space:
 
 \begin{knitrout}
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
@@ -287,17 +291,15 @@ space:
 \end{knitrout}
 
 A one-class classifier is supposed to learn from the PU-data (left) to optimally 
-classify the PN data (right).
+finds similar structures than a well trained binary classifier based on PN data (right).
 
-\section{Model selection in the absence of PN-data.}
+\section{Model selection in the absence of PN-data}
 \label{sec:analyst}
 
 \hlkwd{oneClass}\hlstd{()} requires the training data as input.
 We also pass the whole unlabeled data because we want to analyze the predicted 
 outcome of the whole data to better examine the performance of the model.  
 Of course, if the data is very large, it is possible to use a subset here. 
-
-
 
 \begin{knitrout}
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
@@ -315,6 +317,8 @@ Of course, if the data is very large, it is possible to use a subset here.
 \end{alltt}
 \end{kframe}
 \end{knitrout}
+
+
 
 In a later section the internal processing steps of \hlkwd{oneClass}\hlstd{()} are 
 explained in more detail.
@@ -431,7 +435,7 @@ If this would be the case, a moor suitable parameter combination could possibly 
 Also in the case where the optimal models are located at intermedate parameter values it is possible to find better models by repeating the model tuning over a finer grid of parameters in the space of optimal models. 
 This is particularly recommendable if the estimated performance does not change smoothly with the parameters.  
 
-We can also examine the table which is printed when printing an object of class \code{train} or its inheriting child \code{oneClass}.
+We can also examine the table which is printed when printing an object of class \code{train} or its inheriting child \pkg{oneClass}.
 Here we do not print the full table, as it is too large but an ordered and subsetted version 
 of the complete table.
 
@@ -636,9 +640,6 @@ Instead, in model #26 we should expect a higher overlap and it is less trivial t
 \label{sec:evaluation}
 
 
-
-
-
 In the last section we assumed that no complete and representative test data is avaialble when the model has to be constructed. 
 In other situations PN-data might be available and 
 
@@ -732,19 +733,20 @@ Here for example, the best achievable $\kappa$ (y-axis) of each model is plotted
 \begin{alltt}
 \hlstd{ev.modsel} \hlkwb{<-} \hlkwd{evaluateOneClass}\hlstd{(oc,} \hlkwc{y}\hlstd{=te.y,} \hlkwc{u}\hlstd{=te.x,} \hlkwc{allModels}\hlstd{=}\hlnum{TRUE}\hlstd{,} \hlkwc{positive}\hlstd{=}\hlnum{1}\hlstd{)}
 \hlstd{evList} \hlkwb{<-} \hlkwd{print}\hlstd{(ev.modsel,} \hlkwc{invisible}\hlstd{=}\hlnum{TRUE}\hlstd{)}
+\hlkwd{plot}\hlstd{(evList}\hlopt{$}\hlstd{puF, evList}\hlopt{$}\hlstd{mxK.K,} \hlkwc{xlab}\hlstd{=}\hlstr{"puF"}\hlstd{,} \hlkwc{ylab}\hlstd{=}\hlstr{"max. kappa"}\hlstd{)}
+\hlkwd{plot}\hlstd{(evList}\hlopt{$}\hlstd{puAuc, evList}\hlopt{$}\hlstd{mxK.K,} \hlkwc{xlab}\hlstd{=}\hlstr{"puAuc"}\hlstd{,} \hlkwc{ylab}\hlstd{=}\hlstr{"max. kappa"}\hlstd{)}
+\hlkwd{plot}\hlstd{(evList}\hlopt{$}\hlstd{puPpv, evList}\hlopt{$}\hlstd{Tpr,} \hlkwc{xlab}\hlstd{=}\hlstr{"probability of positive prediction"}\hlstd{,} \hlkwc{ylab}\hlstd{=}\hlstr{"true positive rate"}\hlstd{)}
 \end{alltt}
 \end{kframe}
 \end{knitrout}
 
 
 
+
+
 \begin{multicols}{3}
 \begin{knitrout}
-\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
-\begin{alltt}
-\hlkwd{plot}\hlstd{(evList}\hlopt{$}\hlstd{puF, evList}\hlopt{$}\hlstd{mxK.K,} \hlkwc{xlab}\hlstd{=}\hlstr{"puF"}\hlstd{,} \hlkwc{ylab}\hlstd{=}\hlstr{"max. kappa"}\hlstd{)}
-\end{alltt}
-\end{kframe}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}
 
 {\centering \includegraphics[width=\maxwidth]{figures/plots-evalModsel_puF} 
 
@@ -755,11 +757,7 @@ Here for example, the best achievable $\kappa$ (y-axis) of each model is plotted
 \end{knitrout}
 
 \begin{knitrout}
-\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
-\begin{alltt}
-\hlkwd{plot}\hlstd{(evList}\hlopt{$}\hlstd{puAuc, evList}\hlopt{$}\hlstd{mxK.K,} \hlkwc{xlab}\hlstd{=}\hlstr{"puAuc"}\hlstd{,} \hlkwc{ylab}\hlstd{=}\hlstr{"max. kappa"}\hlstd{)}
-\end{alltt}
-\end{kframe}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}
 
 {\centering \includegraphics[width=\maxwidth]{figures/plots-evalModsel_puAuc} 
 
@@ -770,11 +768,7 @@ Here for example, the best achievable $\kappa$ (y-axis) of each model is plotted
 \end{knitrout}
 
 \begin{knitrout}
-\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
-\begin{alltt}
-\hlkwd{plot}\hlstd{(evList}\hlopt{$}\hlstd{puPpv, evList}\hlopt{$}\hlstd{Tpr,} \hlkwc{xlab}\hlstd{=}\hlstr{"probability of positive prediction"}\hlstd{,} \hlkwc{ylab}\hlstd{=}\hlstr{"true positive rate"}\hlstd{)}
-\end{alltt}
-\end{kframe}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}
 
 {\centering \includegraphics[width=\maxwidth]{figures/plots-evalModsel_tpr} 
 
@@ -785,7 +779,7 @@ Here for example, the best achievable $\kappa$ (y-axis) of each model is plotted
 \end{knitrout}
 \end{multicols}
 
-\section {More one-class classifiers...}
+\section {More one-class classifiers}
 \label{sec:occ}
 
 Currently three classifiers are implemented: the biaseed SVM \cite{Liu.2003} 
@@ -835,14 +829,10 @@ This is a straightforward way of predicting large raster files in parallel.
 The function \hlkwd{rasterTiled}\hlstd{()} returns an S3 object, say \hlstd{rt} which holds
 the raster, the valid cells and the start and end indices of the tiles. 
 
-\begin{knitrout}
+\begin{knitrout}\footnotesize
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
 \begin{alltt}
 \hlkwd{require}\hlstd{(rasterTiled)}
-\end{alltt}
-
-
-{\ttfamily\noindent\itshape\color{messagecolor}{\#\# Loading required package: rasterTiled}}\begin{alltt}
 \hlstd{rt} \hlkwb{<-} \hlkwd{rasterTiled}\hlstd{(bananas}\hlopt{$}\hlstd{x)}
 \hlkwd{names}\hlstd{(rt)}
 \end{alltt}
@@ -877,7 +867,7 @@ the raster, the valid cells and the start and end indices of the tiles.
 \end{knitrout}
 
 
-\section {Future work ...}
+\section {Future work}
 \label{sec:outlook}
 
 \begin{itemize}

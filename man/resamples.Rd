@@ -4,8 +4,8 @@
 \alias{resamples.oneClass}
 \title{... .}
 \usage{
-resamples.oneClass(x, modParam = NULL, modRow = NULL, modRank = NULL,
-  metric = NULL, ...)
+\method{resamples}{oneClass}(x, modParam = NULL, modRow = NULL,
+  modRank = NULL, metric = NULL, ...)
 }
 \arguments{
 \item{x}{an object of class \code{\link{oneClass}}.}
@@ -24,6 +24,7 @@ resamples.oneClass(x, modParam = NULL, modRow = NULL, modRank = NULL,
 ... .
 }
 \examples{
+\dontrun{
 data(bananas)
 oc <- oneClass(x=bananas$tr[, -1], y=bananas$tr[, 1],
                tuneGrid=expand.grid(sigma=c(0.1,1), ### not so large grid
@@ -32,5 +33,6 @@ oc <- oneClass(x=bananas$tr[, -1], y=bananas$tr[, 1],
 # visualize resamples of the ten models with highest (mean) puAuc values
 resamps <- resamples(oc, modRank=1:10, metric="puAuc")
 bwplot (resamps, metric='puF')
+}
 }
 

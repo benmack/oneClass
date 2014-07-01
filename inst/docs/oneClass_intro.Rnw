@@ -10,7 +10,7 @@ knit_hooks$set(inline = function(x) {
 
 opts_chunk$set(fig.path='figures/plots-', fig.align='center', fig.show='hold', eval=TRUE, echo=TRUE)
 options(replace.assign=TRUE,width=80)
-setwd('D:/Dropbox/docsInConstruction/oneClass_intro/')
+setwd('D:/github/oneClass/inst/docs/')
 Sys.setenv(TEXINPUTS=getwd(),
            BIBINPUTS=getwd(),
            BSTINPUTS=getwd())
@@ -60,11 +60,6 @@ Sys.setenv(TEXINPUTS=getwd(),
 
 \newpage
 
-<<setwd>>=
-setwd("inst/docs/")
-@
-
-
 \section{One-class classification}
 % A purpose of a one-class classifier is the same than the one of a binary classifier. 
 % It is used to classify unknown data samples (e.g. pixels of a remote sensing image)
@@ -74,17 +69,22 @@ setwd("inst/docs/")
 % A binary classification model is trained with labeled data of both classes, and eventually unlabeled data.
 % Insted, a one-class classifier is trained with labele data of one class only 
 
-The purpose of \textbf{one-class classifier} is identical to the to classify new data based on a classification model learned from labeled examples.
-For the training of the classifier labeled samples are only required for the 
-positive class, i.e. the class of interest.
-Here is the difference to a binary classifier which has to be trained with
-labeled data of both the positive and the negative class.
-Thus, a one-class classifier is employed when the acquisition of 
-representative labeled data for the negative class is expensive or not possible 
+The purpose of \textbf{one-class classifier} is identical to the to the purpose 
+of a supervised binary classifier: New data is classified to belong to one of two 
+classes based on a classification model trained from labeled examples, i.e. 
+samples/pixels for which the class membership is known.   
+In contrast to the supervised classifier, the training data of the one-class classifier 
+only contains labeled samples from the class of interest, i.e. the \textbf{positive class}.
+In the case of the binary classifier also the other class, or the \textbf{negative class},  
+has to be represented with the training set. 
+Collectiong a representative training set for the negative class can be very costly and time-consuming 
+due to the fact that the negative class is the aggregation of all classes without the positive class.  
+Thus, a one-class classifier is particularly useful when only one or a few classes have to be mapped and 
+when the acquisition of representative labeled data for the negative class is expensive or not possible 
 at all. 
 
-The convenience of not requiring negative training data comes at a price
-because OCC challenging due to the limited information contained in the training 
+The convenience of not requiring negative training data comes at a price.
+One-class classification is challenging due to the limited information contained in the training 
 set.
 Unlabeled training data can, and usually should, be used to build more accurate
 predictive models. 
@@ -97,7 +97,6 @@ treated with caution.
 The package \pkg{oneClass} shall serve the requirements of \textbf{two potential 
 users}, the \analyst and the \developer. These are extrem characters and in 
 reality one will usually be located somewhere in between.
-
 The \textbf{\analyst} is faced with a particular one-class classification 
 problem, i.e. a set of positive training samples and the unlabeled data to be 
 classified.
@@ -107,48 +106,45 @@ In such a situation a careful evaluation of the classification outcome based on
 the available (positive and unlabeled) data is required in order to select the 
 most promising final model. 
 In section\ref{sec:analyst} the analysis strategy presented in 
-\note{REF} is followed and the main functions are illustrated.
+\cite{Mack} is followed and the main functions are illustrated.
 Hopefully the package can be helpful to solve a given one-class classification 
 problem more effective and more convenient in practice. 
-
 The \textbf{\developer} is interested in the developement of new and/or optimization of 
 existing methods. Therefore the package provides convenient functionalities.
 The package \pkg{oneClass} builds upon the powerful package \pkg{caret} \cite{Kuhn.2014} and tries
 to adapt the philosophy. 
 
 The package \pkg{caret} allows one to embed own \textbf{custom functionalities} in the 
-rich infrastructure of the \pkg{caret} package, in fact the one-class classification
-methods of the \package{oneClass} are implemented as custom functions which are passed 
-to the function \Sexpr{'train()'}. 
-This infrastructure comprises  methods for pre-processing data, calculating 
-variable importance, model visualizations, and parallel processing. 
-
+rich infrastructure of the \pkg{caret} package.
+%, in fact the one-class classification
+%methods in the package \package{oneClass} are implemented as custom functions which are passed 
+%to the function \Sexpr{'train()'}. 
 The function \Sexpr{'oneClass()'} calls the \Sexpr{'caret::train()'} 
 function with a one-class methods. It returns an object of class \code{oneClass}
 which inherits from the class \code{train}. Thus, many of the powerful analysis 
 tools from the train package can also be used seemlessly when using an object of 
-class \code{oneClass}.
+class \pkg{oneClass}.
+This infrastructure comprises  methods for pre-processing data, calculating 
+variable importance, model visualizations, and parallel processing. 
 
 \subsubsection*{One-class classifiers}
 
 The \pkg{oneClass} package is a user-oriented environment for analyzing 
 one-class classification problems.
-It implements two commonly used classifiers, the biased SVM \cite{BingLiu.2002, Liu.2003}, and Maxent \cite{Elith.2011, Phillips.2008b}. 
-
+It implements three commonly used classifiers, the one-class SVM \cite{Scholkopf.2001}, biased SVM \cite{BingLiu.2002, Liu.2003}, and Maxent \cite{Elith.2011, Phillips.2008b}. 
 These classifiers are implemented as costum functions for the 
-\Sexpr{'train()'} function from the \pkg{caret} package \note{[REF]}.
+\Sexpr{'train()'} function implemented in the package \pkg{caret} package \cite{Kuhn.2014}.
 Thus the extensive functionalitie of \Sexpr{'train()'} can be used for model selection.
 
 \subsubsection*{PU-performance metrics}
 
 In the one-class classfication setting model selection has to be build upon positive and unlabeled (PU) data. 
-
 Some performance metrics have been defined which can be derived from predicted positive and unlabeled data. 
-Tow of them are implemented in the function \Sexpr{'puSummary()'}. 
+Tow of them are implemented in the function \Sexpr{'puSummary()'}.
 
-Some words about \Sexpr{'puAuc'}, \Sexpr{'puF'}, \Sexpr{'Tpr'}, and \Sexpr{'puPpv'} ...
-
-...
+However, do not trust them blindely on these performance metrics. 
+Be aware that the model ranking they suggest can be noisy. 
+They should rather be used as helpers for selecting a couple of candidate models, which are examined more thoroughly.
 
 \section{Installation}
 \label{sec:installation}
@@ -171,14 +167,30 @@ which is included in the package.
 The \Sexpr{'bananas'} data is stored as \Sexpr{'raster'} data, where \Sexpr{'y'} is a one-band raster with the class patches, i.e. what we want to find out when performing one-class classification with remotely sensed data. 
 \Sexpr{'x'} are the features or predictors based on which the classification has to be build. 
 
-<<loadpkg, echo=-6, message=FALSE, warning=FALSE, fig.width=16, fig.height=4, fig.cap='The class membership (left), and the two features (middle and right) of the synthetic bananas data set.'>>=
+<<loadpkg, eval=FALSE>>=
+require(oneClass); require(caret); require(raster)
+data(bananas)
+plot(bananas$y)
+nicergb(bananas$x, r=2, g=2, b=1)
+@
+
+<<loadpkg_eval, echo=FALSE, message=FALSE, warning=FALSE, fig.width=16, fig.height=4, fig.cap='The class membership (left), and the two features (middle and right) of the synthetic bananas data set.'>>=
 require(oneClass)
 require(caret)
 require(raster)
-data(bananas)
-plot(stack(bananas$y, bananas$x), nc=3)
 require(gridExtra) # also loads grid
+data(bananas)
 @
+
+\begin{multicols}{2}
+<<img_y, echo=FALSE>>=
+plot(bananas$y, col=c('#f4a582', '#2166ac'))
+@
+
+<<img_x, echo=FALSE>>=
+nicergb(bananas$x, r=2, g=2, b=1)
+@
+\end{multicols}
 
 In one-class classification a set of positive labeled samples is available for 
 training the classifier.
@@ -204,8 +216,7 @@ te.y <- extract(bananas$y, te.i)
 @
 
 
-With the two-dimensional synthetic data set we can view the data in the feature 
-space:
+The two-dimensional synthetic data set we can visualized in the feature space:
 
 <<featurespace_trainTest, echo=-1, fig.width=8, fig.height=4, out.width='0.8\\textwidth'>>=
 par(mfrow=c(1,2), mgp=c(1.75, .75, 0), mar=c(3, 3, .1, .1))
@@ -214,20 +225,15 @@ plot(te.x, pch=ifelse(te.y==1, 16, 4) )
 @
 
 A one-class classifier is supposed to learn from the PU-data (left) to optimally 
-classify the PN data (right).
+finds similar structures than a well trained binary classifier based on PN data (right).
 
-\section{Model selection in the absence of PN-data.}
+\section{Model selection in the absence of PN-data}
 \label{sec:analyst}
 
 \Sexpr{'oneClass()'} requires the training data as input.
 We also pass the whole unlabeled data because we want to analyze the predicted 
 outcome of the whole data to better examine the performance of the model.  
 Of course, if the data is very large, it is possible to use a subset here. 
-
-<<default_oneClass_load, echo=FALSE, warning=FALSE>>=
-# save(oc, pred, file='oneClass_intro/oc_default.RData')
-load('oneClass_intro/oc_default.RData')
-@
 
 <<default_oneClass, eval=FALSE, echo=-c(1, 12)>>=
 # index <- createResamplePu( tr.y, times = 25, index.indep = 276:500)
@@ -242,6 +248,10 @@ trControl <- trainControl(method='cv',
 oc <- oneClass( x = tr.x, y = tr.y, trControl = trControl ) 
 pred <- predict(oc, bananas$x)
 pred <- readAll(pred)
+@
+
+<<default_oneClass_load, echo=FALSE, warning=FALSE>>=
+load('oneClass_intro/oc_default.RData')
 @
 
 In a later section the internal processing steps of \Sexpr{'oneClass()'} are 
@@ -267,14 +277,17 @@ featurespace(oc, th=0)
 
 \begin{multicols}{3}
 <<img_plot, echo=FALSE, out.width='.95\\linewidth'>>=
+par(cex=1.5)
 plot(pred)
 @
 
 <<hist_plot, echo=FALSE, out.width='.95\\linewidth', warning=FALSE>>=
+par(cex=1.5)
 hist(oc, pred)
 @
 
 <<featurespace_plot, echo=FALSE, out.width='.95\\linewidth', message=FALSE>>=
+par(cex=1.5)
 featurespace(oc, th=0)
 @
 \end{multicols}
@@ -322,7 +335,7 @@ If this would be the case, a moor suitable parameter combination could possibly 
 Also in the case where the optimal models are located at intermedate parameter values it is possible to find better models by repeating the model tuning over a finer grid of parameters in the space of optimal models. 
 This is particularly recommendable if the estimated performance does not change smoothly with the parameters.  
 
-We can also examine the table which is printed when printing an object of class \code{train} or its inheriting child \code{oneClass}.
+We can also examine the table which is printed when printing an object of class \code{train} or its inheriting child \pkg{oneClass}.
 Here we do not print the full table, as it is too large but an ordered and subsetted version 
 of the complete table.
 
@@ -375,7 +388,6 @@ bwplot(resamps, metric='puF')
 @
 
 <<resamps_eval, echo=FALSE, out.width='0.75\\textwidth'>>=
-# save(resamps, file='oneClass_intro/resamps.RData')
 load('oneClass_intro/resamps.RData')
 bwplot(resamps, metric='puF')
 @
@@ -391,7 +403,6 @@ oc.candidate3 <- update(oc, u=bananas$x, modRow=candidates[3])
 @
 
 <<update_candidates_load, echo=FALSE>>=
-# save(oc.candidate1, oc.candidate2, oc.candidate3, file='oneClass_intro/ocUpdated.RData')
 load('oneClass_intro/ocUpdated.RData')
 @
 \newpage
@@ -432,12 +443,6 @@ Instead, in model #26 we should expect a higher overlap and it is less trivial t
 
 \section{Evaluation with PN-data}
 \label{sec:evaluation}
-
-
-<<evaluation_load, echo=FALSE>>=
-# save(ev, ev.modsel, file='oneClass_intro/eval.RData')
-load('oneClass_intro/eval.RData')
-@
 
 
 In the last section we assumed that no complete and representative test data is avaialble when the model has to be constructed. 
@@ -481,9 +486,16 @@ calculating the maximum achievable accuracy for all models.
 This can be useful, e.g. to compare differnet model selection approaches, in particular, the performance metrics and/or the resampling approaches to estimate these metrics \note{[REF]}.
 Here for example, the best achievable $\kappa$ (y-axis) of each model is plotted against the \code{puF} (x-axis, left plot) and the \code{puAuc} (x-axis, right plot) metric.  
 
-<<evaluation, eval=FALSE>>=
+<<ev_modsel, eval=FALSE>>=
 ev.modsel <- evaluateOneClass(oc, y=te.y, u=te.x, allModels=TRUE, positive=1)
 evList <- print(ev.modsel, invisible=TRUE)
+plot(evList$puF, evList$mxK.K, xlab="puF", ylab="max. kappa")
+plot(evList$puAuc, evList$mxK.K, xlab="puAuc", ylab="max. kappa")
+plot(evList$puPpv, evList$Tpr, xlab="probability of positive prediction", ylab="true positive rate")
+@
+
+<<ev_modsel_load, echo=FALSE>>=
+load('oneClass_intro/ev_modsel.RData')
 @
 
 <<evaluation_evList, echo=FALSE>>=
@@ -491,23 +503,23 @@ evList <- print(ev.modsel, invisible=TRUE)
 @
 
 \begin{multicols}{3}
-<<evalModsel_puF, warning=FALSE, message=FALSE, echo=-1>>=
-par(cex=2, mgp=c(1.5, .5, 0))
+<<evalModsel_puF, warning=FALSE, message=FALSE, echo=FALSE>>=
+par(cex=1.75, mgp=c(1.5, .5, 0), mar=c(3, 3, .1, .1))
 plot(evList$puF, evList$mxK.K, xlab="puF", ylab="max. kappa")
 @
 
-<<evalModsel_puAuc, warning=FALSE, message=FALSE, echo=-1>>=
-par(cex=1, mgp=c(1.5, .5, 0))
+<<evalModsel_puAuc, warning=FALSE, message=FALSE, echo=FALSE>>=
+par(cex=1.75, mgp=c(1.5, .5, 0), mar=c(3, 3, .1, .1))
 plot(evList$puAuc, evList$mxK.K, xlab="puAuc", ylab="max. kappa")
 @
 
-<<evalModsel_tpr, warning=FALSE, message=FALSE, echo=-1>>=
-par(cex=1, mgp=c(1.5, .5, 0))
+<<evalModsel_tpr, warning=FALSE, message=FALSE, echo=FALSE>>=
+par(cex=1.75, mgp=c(1.5, .5, 0), mar=c(3, 3, .1, .1))
 plot(evList$puPpv, evList$Tpr, xlab="probability of positive prediction", ylab="true positive rate")
 @
 \end{multicols}
 
-\section {More one-class classifiers...}
+\section {More one-class classifiers}
 \label{sec:occ}
 
 Currently three classifiers are implemented: the biaseed SVM \cite{Liu.2003} 
@@ -553,7 +565,7 @@ This is a straightforward way of predicting large raster files in parallel.
 The function \Sexpr{'rasterTiled()'} returns an S3 object, say \Sexpr{'rt'} which holds
 the raster, the valid cells and the start and end indices of the tiles. 
 
-<<>>=
+<<rasterTiled, size='footnotesize', message=FALSE>>=
 require(rasterTiled)
 rt <- rasterTiled(bananas$x)
 names(rt)
@@ -562,7 +574,7 @@ rt # also estimates the approximate size of the tiles in memory
 @
 
 
-\section {Future work ...}
+\section {Future work}
 \label{sec:outlook}
 
 \begin{itemize}

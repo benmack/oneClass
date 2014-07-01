@@ -9,6 +9,8 @@
 #' ...
 #' 
 #' @import caret
+#' @import raster
+#' @import spatial.tools
 #' @importFrom dismo evaluate
 #' @importFrom pROC roc
 #' @docType package

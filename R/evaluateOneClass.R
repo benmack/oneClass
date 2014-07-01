@@ -127,7 +127,7 @@ evaluateOneClass <- function (x, y, th=NULL, u=NULL, idx=NULL, positive=NULL,
         #cat(paste("Predict test data.\n", sep=""))
         pred.i <- predict( u, xU$train, type="prob", index=idx )$p
         #cat(paste("Evaluate model.\n", sep=""))
-        rtrn[[i]] <- evaluate(p=pred.i[y=='pos'], a=pred.i[!y!='pos'], tr=th)
+        rtrn[[i]] <- dismo::evaluate(p=pred.i[y=='pos'], a=pred.i[!y!='pos'], tr=th)
       } 
     } else if (is.data.frame(u) | is.matrix(u)) {
       

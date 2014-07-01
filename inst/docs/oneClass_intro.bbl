@@ -16,6 +16,30 @@
   {}
 \endgroup
 
+\entry{Mack}{article}{}
+  \name{author}{3}{}{%
+    {{}%
+     {Mack}{M.}%
+     {Benjamin}{B.}%
+     {}{}%
+     {}{}}%
+    {{}%
+     {Roscher}{R.}%
+     {Ribana}{R.}%
+     {}{}%
+     {}{}}%
+    {{}%
+     {Waske}{W.}%
+     {B{\"o}rn}{B.}%
+     {}{}%
+     {}{}}%
+  }
+  \strng{namehash}{MBRRWB1}
+  \strng{fullhash}{MBRRWB1}
+  \field{title}{Can I trust my One-Class Classifcation?}
+  \field{journaltitle}{Submitted to Remote Sensing}
+\endentry
+
 \entry{Kuhn.2014}{manual}{}
   \name{author}{8}{}{%
     {{}%

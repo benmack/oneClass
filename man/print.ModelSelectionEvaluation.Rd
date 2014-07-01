@@ -3,7 +3,8 @@
 \alias{print.ModelSelectionEvaluation}
 \title{Print an object of class \code{ModelSelectionEvaluation}}
 \usage{
-\method{print}{ModelSelectionEvaluation}(x, by = "mxK.K", digits = 2, ...)
+\method{print}{ModelSelectionEvaluation}(x, by = "mxK.K", digits = 2,
+  invisible = FALSE, ...)
 }
 \arguments{
 \item{x}{an object of class \code{ModelSelectionEvaluation}}
@@ -11,6 +12,8 @@
 \item{by}{by which column should the table be sorted, default: \code{max.kappa}}
 
 \item{digits}{number of digits to be printed}
+
+\item{invisible}{do not print}
 
 \item{...}{options passed to the generic print method.}
 }

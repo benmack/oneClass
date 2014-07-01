@@ -6,7 +6,8 @@
 \usage{
 \method{update}{oneClass}(object, u = NULL, modParam = NULL,
   modRow = NULL, modRank = NULL, by = NULL, newMetric = NULL,
-  aggregatePredictions = FALSE, mask = NULL, ...)
+  aggregatePredictions = FALSE, mask = NULL, returnResamp = "all",
+  newMetricsOnly = FALSE, ...)
 }
 \arguments{
 \item{object}{a object of class oneClass}

@@ -27,22 +27,21 @@ puSummary <- function(data, lev = NULL, model = NULL) { # , metrics=c("puAuc", "
   if (!all(levels(data[, "pred"]) == levels(data[, "obs"]))) 
     stop("levels of observed and predicted data do not match")
   
+  require(pROC)
   rocObject <- try(pROC::roc(response=data$obs, predictor=data[, 'pos'], 
                              levels=c('pos', 'un')), silent = TRUE)
-  rocAUC <- ifelse (class(rocObject)[1] == "try-error", 0, rocObject$auc)
-  out1 <- c(rocAUC #, sensitivity(data[, "pred"], data[, "obs"], 'pos'), 
-            #specificity(data[, "pred"], data[, "obs"], 'un') 
-  )
-  recall <- sum(data$pred=="pos" & data$obs=="pos")/sum(data$obs=="pos")
-  precision.pu <- (sum(data$pred=="pos")/length(data$pred))
-  out <- data.frame(fPu=(recall^2)/precision.pu)
-  if (is.na(out))
-    out[1] <- 0
-  out2 <- c(fPu=out[[1]], tpr=recall, ppvPu=precision.pu)
+  puAuc <- ifelse (class(rocObject)[1] == "try-error", 0, rocObject$auc)
   
-  out <- c(out1, out2)
+  tpr <- sum(data$pred=="pos" & data$obs=="pos")/sum(data$obs=="pos")
+  puPpv <- (sum(data$pred=="pos")/length(data$pred))
+  puF <- (tpr^2)/puPpv
+  if (is.na(puF))
+    puF[1] <- 0
+  puF <- puF[[1]]
   
-  names(out) <- c("puAuc", "puF", "Tpr", "puPpv") #, "SensPu", "SpecPu")
+  negD01 <- .negD01(tpr=tpr, puPpv=puPpv)
+  
+  out <- c(puAuc=puAuc, puF=puF, negD01=negD01, Tpr=tpr, puPpv=puPpv) #, "SensPu", "SpecPu")
   
   return(out)
   

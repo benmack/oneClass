@@ -4,7 +4,7 @@
 ################################################################################
 .dataForSummaryFunction <- function(hop) {
   
-  obs <- factorPu( rep( c(1, 0), c(length(hop$pos), length(hop$un)) ), positive=1 )
+  obs <- puFactor( rep( c(1, 0), c(length(hop$pos), length(hop$un)) ), positive=1 )
   pos <- c(hop$pos, hop$un)
   pred <- obs
   

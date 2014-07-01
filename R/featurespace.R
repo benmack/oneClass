@@ -13,16 +13,18 @@
 #' borders of the feature space in horizontal/x- and vertical/y- directions.
 #' @param nCells number of cells in horizontal/x- and vertical/y- directions.
 #' @param main character string for the plot title
+#' @param col ...
 #' @param ... other arguments that can be passed to \code{\link{predict}}.
 #' @return ...
 #' @export
 featurespace <- function (x, thresholds=NULL, positive=NULL, x.tr=NULL, 
-                          borders=NULL, nCells=c(100, 100), main=NULL, ...) {
+                          borders=NULL, nCells=c(100, 100), main=NULL, col=NULL, 
+                          expandColors=TRUE, ...) {
   if (is.null(thresholds))
     thresholds=NULL
   
   grid <- nCells
-
+  
   if ((class(x)[1]=='oneClass' | class(x)[1]=='ensemble') & is.null(x.tr)) {
     sub <- as.matrix(x$trainingData[, -3])
     y <- as.matrix(x$trainingData[, 3])
@@ -35,8 +37,6 @@ featurespace <- function (x, thresholds=NULL, positive=NULL, x.tr=NULL,
       y <- rep('pos', nrow(x.tr))
     }
   }
-  
-  #Lbrowser()
   if (is.null(borders)) {
     yr <- seq(min(sub[, 2]), max(sub[, 2]), length = grid[2]) # plots on y-axis
     xr <- seq(min(sub[, 1]), max(sub[, 1]), length = grid[1]) # plots on x-axis
@@ -65,15 +65,42 @@ featurespace <- function (x, thresholds=NULL, positive=NULL, x.tr=NULL,
     preds <- predict(x, new, ...)
   }
   
+  if (length(dim(preds))>1)
+    if (ncol(preds)>1)
+      if (is.null(col)) {
+        preds <- preds[,1]
+      } else {
+        preds <- preds[,col]
+      }
+  #browser()
+  
+  
   lvl <- 37
   mymax <- max(abs(preds))
   
-  mylevels <- pretty(c(0, mymax), 15)
-  nl <- length(mylevels) - 2
-  mycols <- c(hcl(0, 100 * (nl:0/nl)^1.3, 90 - 40 * 
-                    (nl:0/nl)^1.3), rev(hcl(260, 100 * (nl:0/nl)^1.3, 
-                                            90 - 40 * (nl:0/nl)^1.3)))
-  mylevels <- c(-rev(mylevels[-1]), mylevels)
+
+  #browser()
+  if (!expandColors) {
+    mymin <- min(abs(preds))
+    mylevels <- pretty(c(mymin, mymax), 30)
+    nl <- (length(mylevels)/2+1) - 2
+    mycols <- c(hcl(0, 100 * (nl:0/nl)^1.3, 90 - 40 * 
+                      (nl:0/nl)^1.3), rev(hcl(260, 100 * (nl:0/nl)^1.3, 
+                                              90 - 40 * (nl:0/nl)^1.3)))
+    #length(mylevels)
+    #length(mycols)
+    
+  } else {
+    mylevels <- pretty(c(0, mymax), 15)
+    nl <- length(mylevels) - 2
+    mycols <- c(hcl(0, 100 * (nl:0/nl)^1.3, 90 - 40 * 
+                      (nl:0/nl)^1.3), rev(hcl(260, 100 * (nl:0/nl)^1.3, 
+                                              90 - 40 * (nl:0/nl)^1.3)))
+    mylevels <- c(-rev(mylevels[-1]), mylevels)
+  }
+  
+  
+  
   index <- max(which(mylevels <= min(preds))):min(which(mylevels >= 
                                                           max(preds) ) )
   if (length(index==1))
@@ -84,33 +111,63 @@ featurespace <- function (x, thresholds=NULL, positive=NULL, x.tr=NULL,
   mylevels <- mylevels[index]
   # ymat <- ymatrix(x)
   # ymean <- mean(unique(ymat))
-
-  filled.contour(xr, yr, matrix(as.numeric(unlist(preds)), 
-                                nrow = length(xr), byrow = FALSE), col = mycols, 
-                 levels = mylevels, nlevels = lvl, 
-                 plot.title = title(main = main, 
-                                    xlab = xylb[1], ylab = xylb[2]), 
-                 plot.axes = {
-                   axis(1)
-                   axis(2)
-                   points(sub[y=='un' , 1], sub[y=='un' , 2], 
-                          pch = 4,
-                          cex = 0.5) 
-                   points(sub[y=='pos' , 1], sub[y=='pos' , 2], 
-                          pch = 16, xpd=TRUE) 
-                   if (!is.null(thresholds))
-                     contour(xr, yr, matrix(as.numeric(unlist(preds)), 
-                                            nrow = length(xr), byrow = FALSE), 
-                             levels = thresholds, lwd=2, add=TRUE)
-                   
-                   if (class(x)[1]=='ensemble') {
-                     for (m in 1:length(x$ensembleModels)) {
-                       preds <- predict(x$ensembleModels[[m]], new)
+  
+  if (class(x)[1]=='oneClass' | class(x)[1]=='ensemble')
+  {
+    
+    filled.contour(xr, yr, matrix(as.numeric(unlist(preds)), 
+                                  nrow = length(xr), byrow = FALSE), col = mycols, 
+                   levels = mylevels, nlevels = lvl, 
+                   plot.title = title(main = main, 
+                                      xlab = xylb[1], ylab = xylb[2]), 
+                   plot.axes = {
+                     axis(1)
+                     axis(2)
+                     points(sub[y=='un' , 1], sub[y=='un' , 2], 
+                            pch = 4,
+                            cex = 0.5) 
+                     points(sub[y=='pos' , 1], sub[y=='pos' , 2], 
+                            pch = 16, xpd=TRUE) 
+                     if (!is.null(thresholds))
                        contour(xr, yr, matrix(as.numeric(unlist(preds)), 
-                                              nrow = length(xr), byrow = FALSE), add=TRUE, 
-                               lty=5, 
-                               levels=x$threshold) 
+                                              nrow = length(xr), byrow = FALSE), 
+                               levels = thresholds, lwd=2, add=TRUE)
+                     
+                     if (class(x)[1]=='ensemble') {
+                       for (m in 1:length(x$ensembleModels)) {
+                         preds <- predict(x$ensembleModels[[m]], new)
+                         contour(xr, yr, matrix(as.numeric(unlist(preds)), 
+                                                nrow = length(xr), byrow = FALSE), add=TRUE, 
+                                 lty=5, 
+                                 levels=x$threshold) 
+                       }
                      }
-                    }
-                 })
+                   })
+    
+  } else {
+    
+    uy <- unique(y)
+    
+    filled.contour(xr, yr, matrix(as.numeric(unlist(preds)), 
+                                  nrow = length(xr), byrow = FALSE), col = mycols, 
+                   levels = mylevels, nlevels = lvl, 
+                   plot.title = title(main = main, 
+                                      xlab = xylb[1], ylab = xylb[2]), 
+                   plot.axes = {
+                     axis(1)
+                     axis(2)
+                     points(sub[y==uy[2] , 1], sub[y==uy[2] , 2], 
+                            pch = 4,
+                            cex = 0.5) 
+                     points(sub[y==uy[1] , 1], sub[y==uy[1] , 2], 
+                            pch = 16, xpd=TRUE) 
+                     if (!is.null(thresholds))
+                       contour(xr, yr, matrix(as.numeric(unlist(preds)), 
+                                              nrow = length(xr), byrow = FALSE), 
+                               levels = thresholds, lwd=2, add=TRUE)
+                   }
+    )
+  }
+  invisible(list(colors=mycols, levels=mylevels))
+  
 }
