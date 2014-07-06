@@ -1,8 +1,8 @@
 ################################################################################
 #' puFactor
-#'
-#' Convert a vector in a ordert factor with levels un<pos as required when using 
-#' the one-class classiifiers from \code{oneClass}.
+#' 
+#' Convert a vector in a ordert factor with levels \code{un<pos} as required when using 
+#' the one-class classiifiers from \code{\link{trainOcc}}.
 #'
 #' @param  y a vector of labels
 #' @param  positive the label of the positive class in y. if not given the id with the smallest

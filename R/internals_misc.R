@@ -43,7 +43,7 @@
 }
 
 ################################################################################
-# @param x an object of class train or oneClass
+# @param x an object of class train or trainOcc
 # @return a data.frame containing the model parameters/parameter combinations evaluated during the model selection  
 # @export
 .paramList <- function(x) {
@@ -52,7 +52,7 @@
     paramNames <- colnames(x$bestTune)
     paramList <- x$results[,colnames(x$results)%in%paramNames, drop=FALSE] 
   } else {
-    stop("x must be an object of class 'train' or 'oneClass'.")    
+    stop("x must be an object of class 'train' or 'trainOcc'.")    
   }
   return(paramList)
 }

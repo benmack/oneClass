@@ -5,7 +5,7 @@
 ### and from a 
 ### note: even though the mask is applied all samples will be read from the file, 
 ### but - if masked - not processed 
-.oneClass_raster_predict <- function(inraster,ocModel,type="prob",mask,...)
+.trainOcc_raster_predict <- function(inraster,ocModel,type="prob",mask,...)
 {
   # We need to load randomForest (note this is only
   # loaded once per worker on most cluster setups):

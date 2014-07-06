@@ -1,11 +1,10 @@
 #' @name nicergb
 #' @aliases nicergb
-#' @title nicergb
+#' @title Pretty Red-Green-Blue plot based on three raster* layers.
 #'
-#' @description Pretty Red-Green-Blue plot based on three layers
-#'
-#' @details The \code{nicergb} function is a wrapper for \code{\link{plotRGB}} 
-#' in package package \code{raster}. 
+#' @description The \code{nicergb} function is a wrapper for \code{\link{plotRGB}} 
+#' in package package \code{raster}.
+#' 
 #' @param img RasterBrick or RasterStack
 #' @param r integer. Index of the Red channel, between 1 and nlayers(x)
 #' @param g integer. Index of the Green channel, between 1 and nlayers(x)

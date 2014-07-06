@@ -1,5 +1,5 @@
 ################################################################################
-.constructOneClass <- function(x, u=u, mask=mask, time.train=time.train, 
+.constructtrainOcc <- function(x, u=u, mask=mask, time.train=time.train, 
                                funcCall=funcCall, funcCallUpdate=NULL, ...) {
   
   ### predict u
@@ -19,7 +19,7 @@
   } 
   time.pred <- proc.time()-dong
   
-  ### create the oneClass objct 
+  ### create the trainOcc objct 
   newX <- structure( c ( x,
                        list(callOc = funcCall,
                             callUpdateOc = funcCallUpdate,
@@ -27,7 +27,7 @@
                             predUn = pred.un.new,
                             # raster = dummy$raster,
                             timeOc = list(train=time.train, pred=time.pred))),
-                   class = c("oneClass", "train") )
+                   class = c("trainOcc", "train") )
 
 # hist(pred.un)
 # hist(newX$predUn)

@@ -3,74 +3,26 @@
 \name{oneClass}
 \alias{oneClass}
 \alias{oneClass-package}
-\title{The package oneClass ...}
-\usage{
-oneClass(x, y, u = NULL, method = "biasedsvm", metric = NULL,
-  trControl = NULL, index = NULL, positive = NULL, mask = NULL,
-  allowParallel = TRUE, ...)
-}
-\arguments{
-\item{x}{a data frame with the training data. The samples are in the rows and the features in the columns.}
-
-\item{y}{a vector containing the labels/ids for the positve and unlabeled samples.}
-
-\item{u}{the unlabeled samples which should be predicted with the best model. Can be a matrix, data.frame, raster, ffraster.}
-
-\item{method}{a suitable method for g. Implemented "bsvm" (biased SVM), "maxentropy" (a link to \code{maxent} [REF]called via the package \code{dismo} \), or a costum method that can be passed to \code{\link{train}}.}
-
-\item{metric}{A performance metric for PU data used for model selection. Default for "bsvm" is "fPu " and for "maxentropy" "aucPu".}
-
-\item{trControl}{see \code{\link{train}} and \code{\link{trainControl}}. If this argument is given, make sure that it makes sense. Particularly, the summaryFunction should account for positive and unlabeled data.}
-
-\item{index}{the training indices for the resampling iterations. This will be passed
-to the identically names argument of the \code{\link{trainControl}} function unless the argument \code{trControl} is not \code{NULL}.}
-
-\item{positive}{The positive class in \code{y}.}
-
-\item{mask}{if \code{u} is a raster no-data pixels can be masked (see\code{mask} in the \code{raster} package).}
-
-\item{allowParallel}{enable or disable parallel processing. Even if \code{TRUE}, parallel processing is only possible if a parallel backend is loaded and available.}
-
-\item{...}{other arguments that can be passed to train. Be careful with trainControl... !}
-}
-\value{
-A oneClass object with the following (partially empty) elements: ... .
-}
+\title{One-class classification}
 \description{
-Write something ...
-
-This function performs one-class classification with one of the
-implemented classifiers (biased SVM, maxent). The returned object is of class
-\code{oneClass} for which several methods are defined to understand, and
-improve the one-class classification result.
+The purpose of the package is to provide i) (an interface to) one-class classifiers,
+ii) easy access to critical information and diagnostic plots, and iii) an environment
+for developers to define new methods.
 }
 \details{
-Write some more ...
-
-Short overview over the most important functions here ...
-
-...
-
-Learn a mapping g(x) which transforms the one-class classification
-problem from the D-dimensional feature space of x to a hopefully
-discriminative one-dimensional feature space z=g(x). Usually, a one-class
-classifier is used for this step. Due to the difficulty of learning with only
-positive (and unlabeled) data it is suggested to validate the outcome of this
-step. \cr
-NOTE: If you pass the argument \code{trControl} (see \code{\link{trainControl}})
-to the one-class classifier consider the following points:
-\itemize{
-\item{make sure that it makes sense. Particularly the
-\code{summaryFunction} should be suitable for pu-data (see
-\code{\link{puSummary}})}
-\item{\code{classProbs} has to be \code{TRUE} if the continuous outputs of
-the one-class classifier are required to calculate the performance metric(s)
-such that the continuous outcomes available for the calculations }
-\item{\code{savePredictions} and \code{returnData} should also be set to
-\code{TRUE} }
+One-class classifiers need to solve a binary classification problem
+but for the training of the classifier labeled training samples are only available for the class of interest.
+Model and threshold selection are two critical issues in one-class classification and it is strongly recommended
+that critical decision of the modelling process are examined carefully by the user. \cr
+The package builds upon the powerful \code{caret} package (see \url{http://caret.r-forge.r-project.org/}).
+The most important function \code{\link{trainOcc}} calls \code{\link[caret]{train}} and returns an object
+of class \code{trainOcc} which is a child of the class \code{train}.
+Therefore, many options, e.g. different resampling and pre-processing methods,
+and tools, e.g. investigation of resampling distributions, from the \code{caret} package are
+also available in the package \code{oneClass}.
 }
-}
-\examples{
-### to do
+\seealso{
+The package vignette gives a illustrative introduction to one-class
+classification and the package \code{oneClass} (\url{../doc/AlgDesign.pdf})
 }
 

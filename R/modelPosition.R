@@ -1,24 +1,30 @@
 ################################################################################
 #' @name modelPosition
 #'
-#' @title Get parameter(s), row and rank of a model.  
+#' @title Get parameter(s), result table row and rank of a model.  
 #' 
-#' @description Given the model parameter(s), row, OR rank the corresponding o
-#' ther two informations are extracted.  
+#' @description Given the parameter(s), results table row, or rank of a particular metric of the results table,  the corresponding 
+#'  two informations are extracted.  
 #' 
 #' @param x an object as returned from train.
 #' @param modParam data frame with the parameters of the model.
 #' @param modRow the row or index of the model in the 
 #' model-selection table. 
 #' @param modRank the rank of the model after sorting by \code{by}.
-#' this table is located in \code{x$train$results}/\code{x$results}).
-#' @param by a character or character vector specifying by which columns to sort.
+#' @param by a character or character vector specifying by which column of the \code{x$results} table to sort.
 #' If \code{NULL} the performance metric is taken from the \code{train} object. 
 #' @param decreasing only when \code{modRank} is used. \code{TRUE} (default) to sort in decreasing order. 
 #' can be a vector if \code{by} is a vector.
 #' @return a list with the parameter, row index and rank of the model.
 #' @examples
-#' ### to do
+#' data(bananas)
+#' oc <- trainOcc(x = bananas$tr[, -1], y = bananas$tr[, 1], 
+#'                tuneGrid=expand.grid(sigma=c(.1, 1), 
+#'                                     cNeg=c(0.1, 1), 
+#'                                     cMultiplier=c(10, 100)))
+#' ## get the position (in the results table) and parameters of model which is 
+#' ## on rank 3 according to the performance metric \'negD01\' 
+#' mp3 <- modelPosition(oc, modRank=3, by="negD01")
 #' @export
 modelPosition <- function(x, modParam=NULL, modRow=NULL, modRank=NULL, by=NULL, decreasing=TRUE) {
     info <- list()

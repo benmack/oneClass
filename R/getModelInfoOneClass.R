@@ -1,7 +1,7 @@
-#' Tools for Models Available in \code{oneClass}
+#' Models available in \code{\link{trainOcc}}
 #' 
-#' getModelInfoOneClass is adopted from \code{\link{getModelInfo}} of the 
-#' \code{caret} package but returns models available in the package \code{oneClass}.
+#' getModelInfoOneClass is adopted from \code{\link{getModelInfo}} but returns 
+#' models available in the package \code{\link{trainOcc}}.
 #' 
 #' @param model a character string of a defined one-class classification method.
 #' So far: ocsvm, biasedsvm, maxent.

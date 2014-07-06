@@ -1,6 +1,6 @@
 modelInfo <- 
   list(label="one-class svm", 
-       library=c("oneClass", "kernlab"),
+       library=c("trainOcc", "kernlab"),
        loop=NULL,
        type="Classification",
        parameters=data.frame(parameter = c("sigma", "nu"), 
@@ -20,7 +20,7 @@ modelInfo <-
        predict = function(modelFit, newdata, preProc = NULL, submodels = NULL) {
          predicted <- predict(modelFit, newdata)
          predicted <- factor(predicted == TRUE, levels=c(TRUE, FALSE), 
-                             labels=c("un", "pos"), ordered=TRUE)
+                             labels=c("pos", "un"), ordered=TRUE)
          return(predicted)
        },
        ### prob

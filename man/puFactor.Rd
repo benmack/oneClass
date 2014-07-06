@@ -15,8 +15,8 @@ frequency is used.}
 an ordererd factor with the levels un<pos
 }
 \description{
-Convert a vector in a ordert factor with levels un<pos as required when using
-the one-class classiifiers from \code{oneClass}.
+Convert a vector in a ordert factor with levels \code{un<pos} as required when using
+the one-class classiifiers from \code{\link{trainOcc}}.
 }
 \examples{
 puFactor(rep( c( -1, -2, 1 ), c( 5, 10, 3 ) ), positive=1)

@@ -1,31 +1,52 @@
 ################################################################################
 #' featurespace
 #'
-#' @description Plot the decision values of a \code{\link{oneClass}} object in its two dimensional feature space.
+#' @title Plot method for \code{trainOcc} object
+#'
+#' @description Plot the decision values of a \code{\link{trainOcc}} object in its two dimensional feature space.
 #'
 #' @details This function is an adaptation of \code{plot.ksvm} from the \code{kernlab} package.
 #'
-#' @param x An object of class \code{\link{oneClass}}.
+#' @param x An object of class \code{\link{trainOcc}}.
 #' @param thresholds a scalar or numeric vector used to plot additional contour lines.   
-#' @param positive class of interest
-#' @param x.tr the training data
+#' @param x.tr data to be plotted. must have a column y with labels.
+#' @param positive the class of interest in \code{x.tr$y}
 #' @param borders names list (x, y) with two vectors of length two specifiying the 
 #' borders of the feature space in horizontal/x- and vertical/y- directions.
 #' @param nCells number of cells in horizontal/x- and vertical/y- directions.
 #' @param main character string for the plot title
-#' @param col ...
+#' @param column select a column in case the model \code{x} is not a \code{\link{trainOcc}} object and 
+#' returns more then one column, default is \code{1}. 
+#' @param expandColors if the predictive values are not positive and negative numbers (as in case of the ocsvm and biasedsvm) set this argument to \code{FALSE}  
 #' @param ... other arguments that can be passed to \code{\link{predict}}.
-#' @return ...
+#' @return a plot of the feature space
+#' @examples
+#' \dontrun{
+#' tr <- bananas$tr
+#' ### underfitted model
+#' oc <- trainOcc ( x = tr[, -1], y = tr[, 1], 
+#'                  tuneGrid=expand.grid(sigma=0.1, 
+#'                                       cNeg=.1, 
+#'                                       cMultiplier=100))
+#' featurespace(oc, th=0) 
+#' 
+#' ### overfitted model
+#' oc <- trainOcc ( x = tr[, -1], y = tr[, 1], 
+#'                  tuneGrid=expand.grid(sigma=10, 
+#'                                       cNeg=.1, 
+#'                                       cMultiplier=100))
+#' featurespace(oc, th=0) 
+#' }
 #' @export
-featurespace <- function (x, thresholds=NULL, positive=NULL, x.tr=NULL, 
-                          borders=NULL, nCells=c(100, 100), main=NULL, col=NULL, 
+featurespace <- function (x, thresholds=NULL, x.tr=NULL, positive=NULL, 
+                          borders=NULL, nCells=c(100, 100), main=NULL, column=NULL, 
                           expandColors=TRUE, ...) {
   if (is.null(thresholds))
     thresholds=NULL
   
   grid <- nCells
   
-  if ((class(x)[1]=='oneClass' | class(x)[1]=='ensemble') & is.null(x.tr)) {
+  if ((class(x)[1]=='trainOcc' | class(x)[1]=='ensemble') & is.null(x.tr)) {
     sub <- as.matrix(x$trainingData[, -3])
     y <- as.matrix(x$trainingData[, 3])
   } else if (!is.null(x.tr)) {
@@ -50,7 +71,7 @@ featurespace <- function (x, thresholds=NULL, positive=NULL, x.tr=NULL,
   new <- expand.grid(xr, yr)
   colnames(new) <- xylb <- colnames(sub)
   
-  if (class(x)[1]=='oneClass') {
+  if (class(x)[1]=='trainOcc') {
     preds <- predict(x, new, type = "prob", ...)
     if (is.null(main))
       if (is.null(main))
@@ -67,10 +88,10 @@ featurespace <- function (x, thresholds=NULL, positive=NULL, x.tr=NULL,
   
   if (length(dim(preds))>1)
     if (ncol(preds)>1)
-      if (is.null(col)) {
+      if (is.null(column)) {
         preds <- preds[,1]
       } else {
-        preds <- preds[,col]
+        preds <- preds[,column]
       }
   #browser()
   
@@ -112,7 +133,7 @@ featurespace <- function (x, thresholds=NULL, positive=NULL, x.tr=NULL,
   # ymat <- ymatrix(x)
   # ymean <- mean(unique(ymat))
   
-  if (class(x)[1]=='oneClass' | class(x)[1]=='ensemble')
+  if (class(x)[1]=='trainOcc' | class(x)[1]=='ensemble')
   {
     
     filled.contour(xr, yr, matrix(as.numeric(unlist(preds)), 

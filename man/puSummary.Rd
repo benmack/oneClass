@@ -6,14 +6,16 @@
 puSummary(data, lev = NULL, model = NULL)
 }
 \arguments{
-\item{data}{...}
+\item{data}{a data frame or matrix with columns \code{obs}, \code{pred}, and \code{pos}.
+The first two are the binary observed, predicted outcomes and the latter one the
+continous outcome for the positive class.}
 
-\item{lev}{...}
+\item{lev}{a character vector of factors levels for the response (default is \code{NULL}).}
 
-\item{model}{...}
+\item{model}{a character string for the model name (as taken form the method argument of train (default is \code{NULL}).}
 }
 \value{
-...
+A vector of performance estimates.
 }
 \description{
 ... .
@@ -27,8 +29,12 @@ puSummary(data, lev = NULL, model = NULL)
 P <- rnorm( 30, 2 )
 U <- c( rnorm( 80 ), rnorm( 20, 2 ) )
 d <- data.frame( obs = puFactor( rep( c( 1, 0 ), c( 30, 100 ) ), positive = 1 ),
+                 pred = puFactor( c(P, U)>0, positive = TRUE ),
                  pos = c( P, U ) )
 puSummary(d)
 }
+}
+\seealso{
+\code{\link{postResample}}
 }
 

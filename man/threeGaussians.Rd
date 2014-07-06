@@ -7,13 +7,13 @@ distributions.}
 threeGaussians(n = 200, d = 2:4, n.tr = c(20, 100), seed = NULL)
 }
 \arguments{
-\item{n}{...}
+\item{n}{integer. the number of test samples}
 
-\item{d}{...}
+\item{d}{vector of three integers. the distance between the three negative gaussians and the positive gaussian}
 
-\item{n.tr}{...}
+\item{n.tr}{vector of two integer, i.e. the number of positive and unlabeled training samples}
 
-\item{seed}{...}
+\item{seed}{a seed point controlling the randomness.}
 }
 \value{
 a list of the toy data set with two data frames (\code{tr} and
@@ -39,13 +39,6 @@ legend('topright', legend=c('pos', 'neg'), pch=c(16, 4))
 ### plot the training set
 plot( toy$tr[ , -1 ], pch = c( 4, 16 )[ toy$tr$y + 1 ] )
 legend('topright', legend=c('pos', 'un'), pch=c(16, 4))
-
-### train a biased svm model and plot the trained model in the feature space
-oc <- oneClass(toy$tr[,-1], toy$tr[,1])
-featurespace(oc)
-
-### train a maxent model and plot the trained model in the feature space
-oc <- oneClass(toy$tr[,-1], toy$tr[,1], method='maxent')
 }
 }
 

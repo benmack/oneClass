@@ -1,2 +1,2 @@
-.negD01 <- function (tpr, puPpv)
-   -sqrt( (1-tpr)^2 + puPpv^2 )
+.negD01 <- function (tpr, ppp)
+   -sqrt( (1-tpr)^2 + ppp^2 )

@@ -3,10 +3,10 @@
 #' @title Two-dimensional toy data consisting of four Gaussian 
 #' distributions.    
 #' 
-#' @param n ...
-#' @param d ...
-#' @param n.tr ...
-#' @param seed ...
+#' @param n integer. the number of test samples
+#' @param d vector of three integers. the distance between the three negative gaussians and the positive gaussian
+#' @param n.tr vector of two integer, i.e. the number of positive and unlabeled training samples
+#' @param seed a seed point controlling the randomness.
 #' 
 #' @return a list of the toy data set with two data frames (\code{tr} and 
 #' \code{te}) both containing the columns \code{y}, \code{x1}, and \code{x2}.
@@ -27,14 +27,8 @@
 #'### plot the training set
 #'plot( toy$tr[ , -1 ], pch = c( 4, 16 )[ toy$tr$y + 1 ] )
 #'legend('topright', legend=c('pos', 'un'), pch=c(16, 4))
-#'
-#'### train a biased svm model and plot the trained model in the feature space
-#'oc <- oneClass(toy$tr[,-1], toy$tr[,1])
-#'featurespace(oc)
-#'
-#'### train a maxent model and plot the trained model in the feature space
-#'oc <- oneClass(toy$tr[,-1], toy$tr[,1], method='maxent')
 #'}
+#' @export
 threeGaussians <- function(n=200, d=2:4, n.tr=c(20, 100), seed=NULL) {
   #cls <- c('#1b9e77', '#d95f02', '#7570b3', '#e7298a')
   if (length(n)==1)

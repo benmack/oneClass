@@ -1,16 +1,19 @@
 ################################################################################
 #' @name plot.ModelEvaluation
-#' @aliases plot
 #' 
-#' @title Plot PU-performance vs. evaluation accuracies to evaluate model selection.
+#' @title Plot accuracy statistics dependent on threshold.
 #'
-#' @description ...
+#' @description Kappa/Sensitivity (Producer's Accuracy) and Positive Predictive Value (Users's Accuracy) are plotted.
 #'
-#' @param x  an object of class ModelSelectionEvaluation 
+#' @param x  an object of class \code{\link[dismo]{ModelEvaluation}}. 
 #' (see \code{\link{evaluate}}).
-#' @param ... other arguments passed tot \code{\link{plot}}.
+#' @param ... other arguments passed to \code{\link{plot}}.
 #' @examples
-#' ### to do
+#' \dontrun{
+#' # get a ModelEvaluation object
+#' ev <- dismo::evaluate( p=rnorm(25, mean = 1), a=rnorm(100, mean = -1) )
+#' plot(ev)
+#' }
 #' @method plot ModelEvaluation
 #' @export
 plot.ModelEvaluation <- function(x, ...) {

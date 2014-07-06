@@ -2,7 +2,7 @@
 \docType{data}
 \name{bananas}
 \alias{bananas}
-\title{Two-dimensional synthetic data set of two banana shaped distributions.}
+\title{Two-dimensional synthetic data set of two banana shaped distributions}
 \format{\code{bananas$x} is a two-dimensional raster stack with the features
 and \code{bananas.y} a one-dimensional raster with the class labels.
 A data frame with a training set is also available (\code{bananas$tr}).}
@@ -10,21 +10,23 @@ A data frame with a training set is also available (\code{bananas$tr}).}
 data(bananas)
 }
 \description{
-The data is stored as raster files. The two features are stored
+The data is stored as \code{raster}* objects. The two features are stored
 in \code{bananas.x} and the class information in \code{bananas$y}. This data set
 allows visualization of predictive models in the two-dimensional feature
 space.
 }
 \examples{
 \dontrun{
+
+require(raster)
 data(bananas)
 
 ### plot the features and labels (raster)
-plot(stack(bananas$x, bananans$y))
+plot(stack(bananas$x, bananas$y))
 
 ### plot the training data
-plot( bananas$tr[, -1], pch=16,
-col = ifelse(bananas$tr$y==1, '#2166ac', '#d6604d' ))
+plot( bananas$tr[, -1],
+      pch = ifelse(bananas$tr$y==1, 16, 4 ))
 
 ### the training data bananas$tr has been created as follows:
 

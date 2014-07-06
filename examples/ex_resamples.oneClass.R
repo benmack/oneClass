@@ -1,7 +1,7 @@
-### Example for evaluateOneClass
+### Example for resamples
 
 data(bananas)
-oc <- oneClass(x=bananas$tr[, -1], y=bananas$tr[, 1], 
+oc <- trainOcc(x=bananas$tr[, -1], y=bananas$tr[, 1], 
                tuneGrid=expand.grid(sigma=c(0.1,1), ### not so large grid
                                     cNeg=2^seq(-5, 10, 3), 
                                     cMultiplier=2^seq(4, 15, 2)))
