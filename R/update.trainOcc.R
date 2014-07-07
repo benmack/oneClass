@@ -1,39 +1,50 @@
 ################################################################################
-#' @aliases update
-#' @aliases update.trainOcc
+#' update.train
+#'  
+#' @title Update or Re-fit a Model 
 #' 
-#' @title Update or Re-fit the 
-#' 
-#' @description Over-write the tuning modParameter selection process of the
-#' d2oneMethod (\code{\link{trainOcc}}, \code{\link{update}}) and 
-#' re-classify u with the new model.
+#' @description Over-write the tuning parameter selection process. 
+#' You can also calculate new performance metrics given the hold-out predictions
+#' are stored in \code{object}.
 #'
-#' @param object a object of class trainOcc
-#' @param u the unlabeled samples which should be predicted with the updated model. Can be a matrix, data.frame, \code{raster}*, or \code{rasterTiled} object.
-#' @param modParam a data frame with the desired modParameters. 
-#' @param modRow the index of the model, i.e. the row in the  \code{object$results} table.
-#' @param modRank the model at the modelRank-th position after sorting after the performance metric. The performance metric can be specified by \code{by}. 
-#' @param by when the modRank is given, the models are ranked by the metric given here. if \code{NULL} the metric in \code{object$metric} is used.
-#' @param newMetric a function that meet the requirements of a \code{summaryFunction} (see ...). 
-#' This updates the \code{trainOcc$train$results} data frame with the new metric(s) returned from function.
-#' This can only be done when \code{savePredictions} has been set to \code{TRUE}.
+#' @param object a object of class \code{trainOcc}.
+#' @param modParam a data frame with the desired model parameters, or 
+#' @param modRow the index of the model, i.e. the row in the  \code{object$results} table, or
+#' @param modRank the model at the modRank-th position after sorting by a performance metric (can be specified via argumetn \code{by}). 
+#' @param by when the modRank is given, the models are ranked by the metric given here. 
+#' if \code{NULL} the metric in \code{object$metric} is used.
+#' @param newMetric a function that can be passed to the \code{summaryFunction} argument of \code{\link{trainControl}}. 
+#' This updates the \code{trainOcc$results} data frame with the new metric(s) returned from the function.
+#' (Only be done when hold-out predictions are stored in \code{object}.)
 #' @param aggregatePredictions The efault is \code{FALSE}, which means that the performance metric is calculated for
 #' each set of hold-out predictions and the metrics are then aggregated. The mean and the standard deviation is returned in the 
-#' \code{object$results} table. If \code{TRUE} the held out predictions are first aggregated and the \code{newMetric} is calculated once. 
+#' \code{object$results} table. If \code{TRUE} the hold-out predictions are first aggregated and the \code{newMetric} is calculated once. 
 #' Of course, no standard deviation of the performance metric can be calculated. 
 #' Metrics calculated this way get the suffix \code{AP} in the \code{object$results} table.   
-#' @param mask a mask can be given if \code{u} is a \code{raster*} object.
 #' @param newMetricsOnly logical with default set to \code{FALSE}. Set to \code{TRUE} if the metrics already contained in the results table should be removed.
 #' @param ... other arguments that can be passed to update.train
 #' @return an updated trainOcc object.
 #' @method update trainOcc
+#' @examples
+#' \dontrun{
+#' data(bananas)
+#' 
+#' tocc <- trainOcc(x=bananas$tr[, -1], y=bananas$tr[, 1], method="ocsvm")
+#' 
+#' ## update to the highest ranked model according to metric puAuc
+#' tocc <- update(tocc, modRank=1, by="puAuc")
+#' }
 #' @export
-update.trainOcc <- function ( object , u=NULL, 
+update.trainOcc <- function ( object, 
                               modParam=NULL, modRow=NULL, modRank=NULL, by=NULL, 
                               newMetric=NULL, aggregatePredictions=FALSE, 
-                              mask=NULL, newMetricsOnly=FALSE, ... ) {
+                              newMetricsOnly=FALSE, ... ) {
   
 ### ' @param returnResamp see \code{\link{trainControl}}
+### ' @param u the unlabeled samples which should be predicted with the updated model. Can be a matrix, data.frame, \code{raster}*, or \code{rasterTiled} object.
+# ' @param mask a mask can be given if \code{u} is a \code{raster*} object.
+  u=NULL
+  mask=NULL
   returnResamp="all" 
 
   

@@ -20,6 +20,9 @@ close to the points in the plot if you want to find out the model rows}
 
 \item{...}{other parameters passed to plot (if \code{add} is \code{FALSE}) or points (if \code{add} is \code{TRUE})}
 }
+\value{
+a scatterplot. the point corresponding to the final model in \code{x} is highlighted.
+}
 \description{
 Assumption that the true positive rate can be estimated well from the
 positive data, it is reasonable to assume that for a given true positive rate a model

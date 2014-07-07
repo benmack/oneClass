@@ -5,7 +5,7 @@
 #' @description Assumption that the true positive rate can be estimated well from the 
 #' positive data, it is reasonable to assume that for a given true positive rate a model 
 #' which leads to a lower probability of positive predictions is more accurate. This is because 
-#' it will lead to lower fals positive predictions.  
+#' it will lead to lower fals positive predictions.
 #' 
 #' @param x a \code{trainOcc} object
 #' @param identifyPoints logical with default \code{FALSE}. set to \code{TRUE} and click 
@@ -14,6 +14,7 @@
 #' @param ylim  y axis limits
 #' @param add logical, add the plot to another plot
 #' @param ... other parameters passed to plot (if \code{add} is \code{FALSE}) or points (if \code{add} is \code{TRUE})
+#' @return a scatterplot. the point corresponding to the final model in \code{x} is highlighted. 
 #' @examples
 #' \dontrun{
 #' data(bananas)
@@ -52,6 +53,12 @@ plot_PPPvsTPR <- function(x, identifyPoints=FALSE, add=FALSE,
 
   points(rep(0, 10), rep(1, 10), cex=seq(1,220, 20), col="grey")
   
-  if (identifyPoints)
-    identify(x$results$ppp, x$results$tpr)
+  # highlight final model 
+  rw <- modelPosition(x)$row
+  points(x$results$ppp[rw], x$results$tpr[rw], pch=16, col="red")
+  
+  if (identifyPoints) {
+    ip <- identify(x$results$ppp, x$results$tpr)
+    return(modelPosition(x, modRow=ip))
+  }
 }

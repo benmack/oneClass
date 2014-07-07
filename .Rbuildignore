@@ -2,3 +2,4 @@
 ^\.Rproj\.user$
 devel
 examples
+data/banana.rda
