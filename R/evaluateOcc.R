@@ -20,6 +20,7 @@
 #' @param by character. must be a metric available in the \code{x$results} table by which to sort. 
 #' If \code{NULL} the performance metric is taken from the \code{train} object. see also \code{\link{sort.train}}
 #' @param decreasing only when \code{modRank} is used. \code{TRUE} (default) to sort in decreasing order. Can be a vector if \code{by} is a vector.
+#' @param verbose \code{FALSE}, set to \code{TRUE} if you want to see the progress
 #' @param ... arguments passed to \code{\link[dismo]{evaluate}} from the \code{dismo} package.
 #' @return an object of class ModelEvaluation 
 #' (see \code{\link{ModelEvaluation-class}})) 
@@ -60,8 +61,11 @@
 #' @export
 evaluateOcc <- function (x, te.u, te.y, positive=NULL, th=NULL, allModels=FALSE, 
                                modParam=NULL, modRow=NULL, modRank=NULL, 
-                               by=NULL, decreasing=TRUE,
+                               by=NULL, decreasing=TRUE, verbose=FALSE, 
                                ...) {
+  
+  idx <- NULL
+  
   if (!is.null(te.u))
     x$predUn <- predict(x, te.u)
   
@@ -108,13 +112,14 @@ evaluateOcc <- function (x, te.u, te.y, positive=NULL, th=NULL, allModels=FALSE,
     rtrn <- vector("list", nModels)
     names(rtrn) <- paste("model.", models, sep="")
     
-    
-    cat(paste('Number of models to be evaluated: ', nModels, '\n', sep=""))
+    if(verbose)
+      cat(paste('Number of models to be evaluated: ', nModels, '\n', sep=""))
     if (class(te.u)=="ffraster") {                         # if te.u is a ffraster
       ############################################################################
       ### ffraster loop 
       for (i in seq(along.with=models)) {
-        cat(paste(i, ".", sep=""))
+        if (verbose)
+          cat(paste(i, ".", sep=""))
         xU <- update(x, modParam=evalParamList[i, , drop=FALSE])
         #cat(paste("Predict test data.\n", sep=""))
         pred.i <- predict( te.u, xU$train, type="prob", index=idx )$p
@@ -138,8 +143,10 @@ evaluateOcc <- function (x, te.u, te.y, positive=NULL, th=NULL, allModels=FALSE,
       for (i in seq(along.with=models)) {
         ############################################################################
         ### data.frame or matrix loop 
+        if (verbose)
         cat(paste(i, ".", sep=""))
-        xU <- update(x, modParam=evalParamList[i, , drop=FALSE], te.u=te.u)
+        xU <- update(x, modParam=evalParamList[i, , drop=FALSE])
+        xU$predUn <- predict(xU, te.u)
         #cat(paste("Evaluate model.\n", sep=""))
         rtrn[[i]] <- dismo::evaluate(p=xU$predUn[te.y=='pos'], a=xU$predUn[te.y!='pos'], tr=th)
         #}

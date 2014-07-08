@@ -10,14 +10,14 @@
 #' ...
 #' 
 #' @param x an object of class \code{ModelSelectionEvaluation}
-#' @param by by which column should the table be sorted, default: \code{max.kappa}
+#' @param by character giving a name of the table used to sort the table, default \code{NULL} is no sorting
 #' @param digits number of digits to be printed
 #' @param invisible do not print
 #' @param ... options passed to the generic print method.
 #' 
 #' @method print ModelSelectionEvaluation
 #' @export
-print.ModelSelectionEvaluation <- function (x, by='mxK.K', digits=2, invisible=FALSE, ...) {
+print.ModelSelectionEvaluation <- function (x, by=NULL, digits=2, invisible=FALSE, sortBy=NULL, ...) {
   evAtMaxK <- lapply(x$test, evaluateAtTh, th='max.kappa')
   mxK.K <- sapply(evAtMaxK, function(x) x$thDependent$kappa)
   mxK.OA <- sapply(evAtMaxK, function(x) x$thDependent$CCR)
@@ -27,9 +27,11 @@ print.ModelSelectionEvaluation <- function (x, by='mxK.K', digits=2, invisible=F
   
   df <- cbind(auc=auc, mxK.K=mxK.K, mxK.OA=mxK.OA, mxK.PA=mxK.PA, mxK.UA=mxK.UA, x$train)
   
+  if (!is.null(by))
+    df <- df[order(df[, by]), ]
+  
   if (!invisible)
-    print(round(df[order(df[, by]), ], 2), ...)
+    print(round(df, 2), ...)
   
-  invisible(round(df[order(-df[, by]), ], digits=digits))
-  
+  invisible(df)
 }

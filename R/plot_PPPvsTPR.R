@@ -51,7 +51,7 @@ plot_PPPvsTPR <- function(x, identifyPoints=FALSE, add=FALSE,
     plot(PPP, TPR, xlim=c(0,1), ylim=c(0,1), ...)
   }
 
-  points(rep(0, 10), rep(1, 10), cex=seq(1,220, 20), col="grey")
+  # points(rep(0, 10), rep(1, 10), cex=seq(1,220, 20), col="grey")
   
   # highlight final model 
   rw <- modelPosition(x)$row

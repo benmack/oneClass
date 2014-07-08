@@ -5,7 +5,7 @@
 \usage{
 evaluateOcc(x, te.u, te.y, positive = NULL, th = NULL, allModels = FALSE,
   modParam = NULL, modRow = NULL, modRank = NULL, by = NULL,
-  decreasing = TRUE, ...)
+  decreasing = TRUE, verbose = FALSE, ...)
 }
 \arguments{
 \item{x}{an object of class \code{\link{trainOcc}}}
@@ -30,6 +30,8 @@ evaluateOcc(x, te.u, te.y, positive = NULL, th = NULL, allModels = FALSE,
 If \code{NULL} the performance metric is taken from the \code{train} object. see also \code{\link{sort.train}}}
 
 \item{decreasing}{only when \code{modRank} is used. \code{TRUE} (default) to sort in decreasing order. Can be a vector if \code{by} is a vector.}
+
+\item{verbose}{\code{FALSE}, set to \code{TRUE} if you want to see the progress}
 
 \item{...}{arguments passed to \code{\link[dismo]{evaluate}} from the \code{dismo} package.}
 }
