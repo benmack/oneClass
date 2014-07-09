@@ -18,10 +18,27 @@ continous outcome for the positive class.}
 A vector of performance estimates.
 }
 \description{
-... .
+This function computes PU-performance metrics useful for model selection.
+NOTE: The metrics are prone of uncertainty due to the nature PU-data and the user should check the plausibility of any automatic selection.
 }
 \details{
-... .
+Calculates performance metrics based on positive and unlabeled data.
+
+The following metrics are calculated and stored:
+  \itemize{
+  \item{tpr}{ true positive rate (from P-data) }
+  \item{ppp}{ probability of positive prediction (from U-data) }
+  \item{puAuc}{ The area under the ROC curve (form PU-data), see Phillips et al. (2008) }
+  \item{puF}{  \code{(tpr^2)/ppp}, see Liu et al (2003) }
+  \item{negD01}{ \code{-sqrt( (1-tpr)^2 + ppp^2 )}, i.e. the distance between the point c(0,1) and the c(ppp, tpr)  }
+  }
+From the labeled positive data the true positive rate (TPR), and thus the false negative rate (FNR), can be estimated directly.
+Unfortunately it is not possible to estimate the true negative rate (TNR), and thus neither the false positive rate (FPR).
+But we can also estimate the probability of positive prediction (PPP), i.e. the fraction of unlabeled samples predicted as positives from our model.
+The TPR and the PPP are useful and intuitive quantities.
+Assume that the i) TPR can be estimated accurately and ii) we need to select one of several candidate models which all exhibit the same TPR.
+We can select the model with the lowest PPP because for a given TPR (and FNR), it leads to a higher TNR (and lower FPR). See \code{\link{plot_PPPvsTPR}} \cr
+Furthermore, the \code{puAuc}
 }
 \examples{
 \dontrun{
@@ -33,6 +50,14 @@ d <- data.frame( obs = puFactor( rep( c( 1, 0 ), c( 30, 100 ) ), positive = 1 ),
                  pos = c( P, U ) )
 puSummary(d)
 }
+}
+\references{
+Phillips, Steven J. and Dud{\'i}k, Miroslav (2008):
+Modeling of species distributions with Maxent: new extensions and a comprehensive evaluation.
+Ecography, 31, 2.\cr
+Liu, Bing and Dai, Yang and Li, Xiaoli and Lee, Wee Sun and Yu, Philip S. (2003):
+Building text classifiers using positive and unlabeled examples.
+In: Intl. Conf. on Data Mining, 2003.
 }
 \seealso{
 \code{\link{postResample}}

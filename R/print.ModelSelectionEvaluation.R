@@ -17,7 +17,7 @@
 #' 
 #' @method print ModelSelectionEvaluation
 #' @export
-print.ModelSelectionEvaluation <- function (x, by=NULL, digits=2, invisible=FALSE, sortBy=NULL, ...) {
+print.ModelSelectionEvaluation <- function (x, by=NULL, digits=2, invisible=FALSE, ...) {
   evAtMaxK <- lapply(x$test, evaluateAtTh, th='max.kappa')
   mxK.K <- sapply(evAtMaxK, function(x) x$thDependent$kappa)
   mxK.OA <- sapply(evAtMaxK, function(x) x$thDependent$CCR)

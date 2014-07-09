@@ -3,13 +3,13 @@
 \alias{print.ModelSelectionEvaluation}
 \title{Print an object of class \code{ModelSelectionEvaluation}}
 \usage{
-\method{print}{ModelSelectionEvaluation}(x, by = "mxK.K", digits = 2,
+\method{print}{ModelSelectionEvaluation}(x, by = NULL, digits = 2,
   invisible = FALSE, ...)
 }
 \arguments{
 \item{x}{an object of class \code{ModelSelectionEvaluation}}
 
-\item{by}{by which column should the table be sorted, default: \code{max.kappa}}
+\item{by}{character giving a name of the table used to sort the table, default \code{NULL} is no sorting}
 
 \item{digits}{number of digits to be printed}
 
