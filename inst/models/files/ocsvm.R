@@ -1,6 +1,6 @@
 modelInfo <- 
   list(label="one-class svm", 
-       library=c("trainOcc", "kernlab"),
+       library=c("oneClass", "kernlab"),
        loop=NULL,
        type="Classification",
        parameters=data.frame(parameter = c("sigma", "nu"), 
@@ -38,7 +38,7 @@ modelInfo <-
        ### levels
        levels=function(x)  c("un", "pos") ,
        ### sort
-       sort=ocsvmSort <- function(x) x[order(-x$sigma, -x$nu), ],
+       sort=ocsvmSort <- function(x) x[order(x$sigma, x$nu), ],
        ### varImp
        varimp=NULL)  
 ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### 

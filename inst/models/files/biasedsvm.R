@@ -43,7 +43,7 @@ modelInfo <-
        ### levels
        levels=function(x) c("un", "pos"),
        ### sort
-       sort=function(x) x[order(-x$sigma, -x$cNeg, -x$cMultiplier), ],
+       sort=function(x) x[order(x$sigma, x$cNeg, -x$cMultiplier), ],
        ### varImp
        varimp=NULL)  
 ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### 

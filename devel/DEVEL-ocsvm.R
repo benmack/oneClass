@@ -23,8 +23,23 @@ oc <- trainOcc(x=tr.x, y=puFactor(tr.y), method="ocsvm",
 featurespace(update(oc, modParam=data.frame(nu=.1, sigma=.1)), th=0)
 
 
+### the sort component:
+oc <- trainOcc ( x = tr.x, y = tr.y, method=method)
 
-### 
+grd.srt <- mi$sort(grd)
+x <- mi$grid()
+grd.srt <- x[order(x$sigma, x$nu),]
+
+i=0
+
+i=i+1; grd.srt[i, ]
+featurespace(update(oc, modParam=grd.srt[i, ]), th=0 )
+
+mi <- getModelInfoOneClass()$ocsvm
+
+
+
+### -----------------------------------------------------------------------
 modelInfo <- 
 list(label="one-class svm", 
      library="kernlab",
@@ -64,7 +79,7 @@ list(label="one-class svm",
      ### levels
      levels=function(x) c("un", "pos"),
      ### sort
-     sort=ocsvmSort <- function(x) x[order(-x$sigma, -x$nu), ],
+     sort=ocsvmSort <- function(x) x[order(x$sigma, x$nu), ],
      ### varImp
      varimp=NULL)  
 ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### 
