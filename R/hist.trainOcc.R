@@ -10,6 +10,8 @@
 #' @param x an object of class \code{\link{trainOcc}}.
 #' @param predUn a vector of unlabeled predictions (if \code{NULL} \code{x$predUn} is used, if existing).
 #' @param th draw vertical lines in the histogram, indication for a threshold.
+#' @param colsAndBreaks for a color-coded histogram a list with 
+#' elements \code{colors} (vector of \code{R} colors, length n) and \code{breaks} (vector of numeric values, length n+1). 
 #' @param main a title for the plot. if not given the parameters of the model are added.
 #' @param ylim the y limits of the plot.
 #' @param ... other arguments that can be passed to \code{\link{plot}}. 
@@ -94,11 +96,19 @@
 #' # and the model in the 2D feature space 
 #' set.seed(123)
 #' idx.pred <- sample(400*400, 16000)
-#' hist(oc, predict(oc, bananas$x[][idx.pred,]), th=0)
+#' pred <- predict(oc, bananas$x[][idx.pred,])
+#' hist(oc, pred, th=0)
 #' featurespace(oc, th=0)
+#' 
+#' ### color coded 
+#' cab=list(colors=c("#B2182B", "#D6604D", "#F4A582", "#FDDBC7", 
+#'                   "#D1E5F0", "#92C5DE", "#4393C3", "#2166AC"),
+#'          breaks=c(-max(pred), seq(-1.5, 1.5, .5), max(pred)) )
+#' hist(oc, pred, th=0, colsUbreaks=cab, border=NA)
+#' plot(predict(oc, bananas$x), col=cab$colors, breaks=cab$breaks)
 #' }
 #' @export
-hist.trainOcc <- function(x, predUn=NULL, th=NULL, main=NULL, ylim=NULL, ...) {
+hist.trainOcc <- function(x, predUn=NULL, th=NULL, colsAndBreaks=NULL, main=NULL, ylim=NULL, ...) {
   
   if (!is.null(x$holdOut$pos) & !is.null(x$holdOut$un)) {
     hop <- list(pos = x$holdOut$pos, un = x$holdOut$un)
@@ -131,8 +141,18 @@ hist.trainOcc <- function(x, predUn=NULL, th=NULL, main=NULL, ylim=NULL, ...) {
     main <- paste(names(x$bestTune), x$bestTune, collapse=" / ")
   
   ylim[1] <- 0-diff(c(0,ylim[2]))*.15
-  plot(h, freq=FALSE, ylim=ylim, main=main, ...)
   
+  if (!is.null(colsAndBreaks)) {
+    clrs <- rep(NA, length(h$mids))
+    for(i in 1:(length(colsAndBreaks$breaks)-1)) {
+      idx <- h$mids>=colsAndBreaks$breaks[i] & h$mids<colsAndBreaks$breaks[i+1]
+      clrs[idx] <- colsAndBreaks$colors[i]
+    }
+    plot(h, freq=FALSE, ylim=ylim, main=main, col=clrs, ...)
+  } else {
+    plot(h, freq=FALSE, ylim=ylim, main=main, ...)
+  }
+    
   clrs <- .clrs('PU')
   
   bxwx <- abs(ylim[1])*.75

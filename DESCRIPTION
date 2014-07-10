@@ -1,7 +1,7 @@
 Package: oneClass
 Type: Package
 Title: One-class classification
-Version: 0.0-12
+Version: 0.0-13
 Date: 2014-07-07
 Author: Benjamin Mack
 Maintainer: Benjamin Mack <benjamin.mack@kit.edu>

@@ -3,8 +3,8 @@
 \alias{hist.trainOcc}
 \title{Diagnostic distributions plot for a \code{\link{trainOcc}} object.}
 \usage{
-\method{hist}{trainOcc}(x, predUn = NULL, th = NULL, main = NULL,
-  ylim = NULL, ...)
+\method{hist}{trainOcc}(x, predUn = NULL, th = NULL, colsAndBreaks = NULL,
+  main = NULL, ylim = NULL, ...)
 }
 \arguments{
 \item{x}{an object of class \code{\link{trainOcc}}.}
@@ -12,6 +12,9 @@
 \item{predUn}{a vector of unlabeled predictions (if \code{NULL} \code{x$predUn} is used, if existing).}
 
 \item{th}{draw vertical lines in the histogram, indication for a threshold.}
+
+\item{colsAndBreaks}{for a color-coded histogram a list with
+elements \code{colors} (vector of \code{R} colors, length n) and \code{breaks} (vector of numeric values, length n+1).}
 
 \item{main}{a title for the plot. if not given the parameters of the model are added.}
 
