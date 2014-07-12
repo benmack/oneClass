@@ -10,9 +10,10 @@
 #' @param x a \code{trainOcc} object
 #' @param identifyPoints logical with default \code{FALSE}. set to \code{TRUE} and click 
 #' close to the points in the plot if you want to find out the model rows  
+#' @param add logical, add the plot to another plot
+#' @param highlightBest logical with default set to \code{TRUE} which highlights the model ranked highest by the selection criteria, i.e. the one in \code{x$metric}
 #' @param xlim  x axis limits
 #' @param ylim  y axis limits
-#' @param add logical, add the plot to another plot
 #' @param ... other parameters passed to plot (if \code{add} is \code{FALSE}) or points (if \code{add} is \code{TRUE})
 #' @return a scatterplot. the point corresponding to the final model in \code{x} is highlighted. 
 #' @examples
@@ -33,7 +34,7 @@
 #' plot_PPPvsTPR(biasedsvm, add=TRUE, col="red")
 #' }
 #' @export
-plot_PPPvsTPR <- function(x, identifyPoints=FALSE, add=FALSE, 
+plot_PPPvsTPR <- function(x, identifyPoints=FALSE, add=FALSE, highlightBest=TRUE, 
                           xlim=c(0,1), ylim=c(0,1), ...) {
   
 #   absLogScaled <- function(x) {
@@ -54,11 +55,15 @@ plot_PPPvsTPR <- function(x, identifyPoints=FALSE, add=FALSE,
   # points(rep(0, 10), rep(1, 10), cex=seq(1,220, 20), col="grey")
   
   # highlight final model 
-  rw <- modelPosition(x)$row
-  points(x$results$ppp[rw], x$results$tpr[rw], pch=16, col="red")
+  if (highlightBest) {
+    rw <- modelPosition(x)$row
+    points(x$results$ppp[rw], x$results$tpr[rw], pch=16, col="red")
+  }
   
   if (identifyPoints) {
-    ip <- identify(x$results$ppp, x$results$tpr)
-    return(modelPosition(x, modRow=ip))
+    ip <- identify(x$results$ppp, x$results$tpr, pos=FALSE)
+    mp <- modelPosition(x, modRow=ip)
+    mp$orderOfIdentification <- 
+    return(mp)
   }
 }

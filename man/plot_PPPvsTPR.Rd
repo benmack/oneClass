@@ -3,8 +3,8 @@
 \alias{plot_PPPvsTPR}
 \title{Plot of the probability of positive prediction versus the true positive rate.}
 \usage{
-plot_PPPvsTPR(x, identifyPoints = FALSE, add = FALSE, xlim = c(0, 1),
-  ylim = c(0, 1), ...)
+plot_PPPvsTPR(x, identifyPoints = FALSE, add = FALSE,
+  highlightBest = TRUE, xlim = c(0, 1), ylim = c(0, 1), ...)
 }
 \arguments{
 \item{x}{a \code{trainOcc} object}
@@ -12,11 +12,13 @@ plot_PPPvsTPR(x, identifyPoints = FALSE, add = FALSE, xlim = c(0, 1),
 \item{identifyPoints}{logical with default \code{FALSE}. set to \code{TRUE} and click
 close to the points in the plot if you want to find out the model rows}
 
+\item{add}{logical, add the plot to another plot}
+
+\item{highlightBest}{logical with default set to \code{TRUE} which highlights the model ranked highest by the selection criteria, i.e. the one in \code{x$metric}}
+
 \item{xlim}{x axis limits}
 
 \item{ylim}{y axis limits}
-
-\item{add}{logical, add the plot to another plot}
 
 \item{...}{other parameters passed to plot (if \code{add} is \code{FALSE}) or points (if \code{add} is \code{TRUE})}
 }
