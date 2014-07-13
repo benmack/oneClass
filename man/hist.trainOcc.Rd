@@ -4,7 +4,7 @@
 \title{Diagnostic distributions plot for a \code{\link{trainOcc}} object.}
 \usage{
 \method{hist}{trainOcc}(x, predUn = NULL, th = NULL, colsAndBreaks = NULL,
-  main = NULL, ylim = NULL, ...)
+  main = NULL, ylim = ylim, ...)
 }
 \arguments{
 \item{x}{an object of class \code{\link{trainOcc}}.}

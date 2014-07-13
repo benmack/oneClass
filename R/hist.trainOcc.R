@@ -108,7 +108,7 @@
 #' plot(predict(oc, bananas$x), col=cab$colors, breaks=cab$breaks)
 #' }
 #' @export
-hist.trainOcc <- function(x, predUn=NULL, th=NULL, colsAndBreaks=NULL, main=NULL, ylim=NULL, ...) {
+hist.trainOcc <- function(x, predUn=NULL, th=NULL, colsAndBreaks=NULL, main=NULL, ylim=ylim, ...) { # 
   
   if (!is.null(x$holdOut$pos) & !is.null(x$holdOut$un)) {
     hop <- list(pos = x$holdOut$pos, un = x$holdOut$un)
@@ -132,7 +132,8 @@ hist.trainOcc <- function(x, predUn=NULL, th=NULL, colsAndBreaks=NULL, main=NULL
   ### set defaults if necessary 
   ### ylim
   if (is.null(ylim)) {
-    ylim <- .ylimForHist( h, positives=unlist(hop$pos) )
+    # ylim <- .ylimForHist( h, positives=unlist(hop$pos) )
+    ylim <- range(h$density)
     if (any(!is.finite(ylim)))
       ylim <- c(0, max( h$density ))
   }
@@ -142,13 +143,13 @@ hist.trainOcc <- function(x, predUn=NULL, th=NULL, colsAndBreaks=NULL, main=NULL
   
   ylim[1] <- 0-diff(c(0,ylim[2]))*.15
   
-  if (!is.null(colsAndBreaks)) {
-    clrs <- rep(NA, length(h$mids))
+  if (!is.null(colsAndBreaks) & is.list(colsAndBreaks)) {
+    col <- rep(NA, length(h$mids))
     for(i in 1:(length(colsAndBreaks$breaks)-1)) {
       idx <- h$mids>=colsAndBreaks$breaks[i] & h$mids<colsAndBreaks$breaks[i+1]
-      clrs[idx] <- colsAndBreaks$colors[i]
+      col[idx] <- colsAndBreaks$colors[i]
     }
-    plot(h, freq=FALSE, ylim=ylim, main=main, col=clrs, ...)
+    plot(h, freq=FALSE, ylim=ylim, main=main, col=col, ...)
   } else {
     plot(h, freq=FALSE, ylim=ylim, main=main, ...)
   }
