@@ -1,5 +1,5 @@
 ################################################################################
-#' @aliases hist.trainOcc
+#' hist.trainOcc
 #' @aliases hist
 #' 
 #' @title Diagnostic distributions plot for a \code{\link{trainOcc}} object.
@@ -10,12 +10,14 @@
 #' @param x an object of class \code{\link{trainOcc}}.
 #' @param predUn a vector of unlabeled predictions (if \code{NULL} \code{x$predUn} is used, if existing).
 #' @param th draw vertical lines in the histogram, indication for a threshold.
-#' @param colsAndBreaks for a color-coded histogram a list with 
+#' @param cab for a color-coded histogram a list with 
 #' elements \code{colors} (vector of \code{R} colors, length n) and \code{breaks} (vector of numeric values, length n+1). 
 #' @param main a title for the plot. if not given the parameters of the model are added.
 #' @param ylim the y limits of the plot.
+#' @param breaks see identically named argument in \code{\link{hist}}
 #' @param ... other arguments that can be passed to \code{\link{plot}}. 
 #' @return Diagnostic distributions plot.
+#' @method hist trainOcc
 #' @examples
 #' data(bananas)
 #' ### an underfitted model 
@@ -108,8 +110,8 @@
 #' plot(predict(oc, bananas$x), col=cab$colors, breaks=cab$breaks)
 #' }
 #' @export
-hist.trainOcc <- function(x, predUn=NULL, th=NULL, colsAndBreaks=NULL, main=NULL, ylim=ylim, ...) { # 
-  
+hist.trainOcc <- function(x, predUn=NULL, th=NULL, cab=NULL, main=NULL, 
+                          ylim=NULL, breaks='Scott', ...) { # 
   if (!is.null(x$holdOut$pos) & !is.null(x$holdOut$un)) {
     hop <- list(pos = x$holdOut$pos, un = x$holdOut$un)
   } else {
@@ -125,37 +127,56 @@ hist.trainOcc <- function(x, predUn=NULL, th=NULL, colsAndBreaks=NULL, main=NULL
     predictive.value <- c(hop$pos, hop$un)
   }
   
-  h <- hist(predictive.value, plot=FALSE, breaks='Scott')
+  h <- hist(predictive.value, plot=FALSE, breaks=breaks, ...)
   h$xname <- "predictive value"
+  
   
   ###############################################################################
   ### set defaults if necessary 
   ### ylim
   if (is.null(ylim)) {
+    ans <- boxplot(hop$pos, plot=FALSE)$stat[1]
+    maxInRelevantRange <- max(h$density[h$mids>=ans & is.finite(h$density)])
     # ylim <- .ylimForHist( h, positives=unlist(hop$pos) )
-    ylim <- range(h$density)
+    ylim <- c(0, maxInRelevantRange*2) # range(h$density)
     if (any(!is.finite(ylim)))
       ylim <- c(0, max( h$density ))
   }
-  
+
   if (is.null(main))
     main <- paste(names(x$bestTune), x$bestTune, collapse=" / ")
   
-  ylim[1] <- 0-diff(c(0,ylim[2]))*.15
+  clrs <- .clrs('PU')
   
-  if (!is.null(colsAndBreaks) & is.list(colsAndBreaks)) {
+  
+  ###############################################################################
+  ### ### TPR and PPP
+  # browser()
+#   prb <- seq(0, 1, .01)
+#   prb.scld <- approx(c(0,1), ylim, prb)$y
+#   percentiles.pnp <- quantile(predUn, prb)
+#   percentiles.pnp.tr.un <- quantile(hop$un, prb)
+#   percentiles.tpr <- quantile(hop$pos, prb)
+
+  ylim[1] <- 0-diff(c(0,ylim[2]))*.15
+  if (!is.null(cab) & is.list(cab)) {
     col <- rep(NA, length(h$mids))
-    for(i in 1:(length(colsAndBreaks$breaks)-1)) {
-      idx <- h$mids>=colsAndBreaks$breaks[i] & h$mids<colsAndBreaks$breaks[i+1]
-      col[idx] <- colsAndBreaks$colors[i]
+    for(i in 1:(length(cab$breaks)-1)) {
+      idx <- h$mids>=cab$breaks[i] & h$mids<cab$breaks[i+1]
+      col[idx] <- cab$colors[i]
     }
     plot(h, freq=FALSE, ylim=ylim, main=main, col=col, ...)
   } else {
     plot(h, freq=FALSE, ylim=ylim, main=main, ...)
   }
-    
-  clrs <- .clrs('PU')
-  
+#   legend("topright", c("TPR", "1-PPP (train, U)", "1-PPP (all U)"), 
+#          lwd=c(2,2,2), lty=c(1,1,5), col=c("black", "black", clrs$pos))
+#   
+#   axis(4, at=approx(c(0,1), c(0, ylim[2]), c(0, .25, .5, .75, 1))$y, labels=c(0, .25, .5, .75, 1) )
+#   lines(percentiles.tpr, ylim[2]-prb.scld, lwd=2, col=clrs$pos)
+#   lines(percentiles.pnp.tr.un, ylim[2]-prb.scld, lwd=2)
+#   lines(percentiles.pnp, ylim[2]-prb.scld, lwd=2, lty=5)
+#   
   bxwx <- abs(ylim[1])*.75
   boxplot(unlist(hop$pos), frame=FALSE, axes=FALSE, y=0, horizontal=TRUE, 
           at=ylim[1]*.5, add=TRUE, boxwex=bxwx, col=clrs$pos )
@@ -170,5 +191,6 @@ hist.trainOcc <- function(x, predUn=NULL, th=NULL, colsAndBreaks=NULL, main=NULL
       lines(rep(th[i], 2), y=c(0, ylim[2]), lwd=3)
   }
   
+invisible(list(h=h, ylim=ylim))
   
 }
