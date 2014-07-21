@@ -115,7 +115,7 @@ hist.trainOcc <- function(x, predUn=NULL, th=NULL, cab=NULL, main=NULL,
   if (!is.null(x$holdOut$pos) & !is.null(x$holdOut$un)) {
     hop <- list(pos = x$holdOut$pos, un = x$holdOut$un)
   } else {
-    hop <- holdOutPredictions(x)
+    hop <- holdOutPredictions(x, aggregate=TRUE)
   }
   
   if (!is.null(predUn)) {
@@ -134,15 +134,16 @@ hist.trainOcc <- function(x, predUn=NULL, th=NULL, cab=NULL, main=NULL,
   ###############################################################################
   ### set defaults if necessary 
   ### ylim
+  # browser()
   if (is.null(ylim)) {
-    ans <- boxplot(hop$pos, plot=FALSE)$stat[1]
+    ans <- boxplot(unlist(hop$pos), plot=FALSE)$stat[1]
     maxInRelevantRange <- max(h$density[h$mids>=ans & is.finite(h$density)])
     # ylim <- .ylimForHist( h, positives=unlist(hop$pos) )
     ylim <- c(0, maxInRelevantRange*2) # range(h$density)
     if (any(!is.finite(ylim)))
       ylim <- c(0, max( h$density ))
   }
-
+  
   if (is.null(main))
     main <- paste(names(x$bestTune), x$bestTune, collapse=" / ")
   
@@ -152,12 +153,12 @@ hist.trainOcc <- function(x, predUn=NULL, th=NULL, cab=NULL, main=NULL,
   ###############################################################################
   ### ### TPR and PPP
   # browser()
-#   prb <- seq(0, 1, .01)
-#   prb.scld <- approx(c(0,1), ylim, prb)$y
-#   percentiles.pnp <- quantile(predUn, prb)
-#   percentiles.pnp.tr.un <- quantile(hop$un, prb)
-#   percentiles.tpr <- quantile(hop$pos, prb)
-
+  #   prb <- seq(0, 1, .01)
+  #   prb.scld <- approx(c(0,1), ylim, prb)$y
+  #   percentiles.pnp <- quantile(predUn, prb)
+  #   percentiles.pnp.tr.un <- quantile(hop$un, prb)
+  #   percentiles.tpr <- quantile(hop$pos, prb)
+  
   ylim[1] <- 0-diff(c(0,ylim[2]))*.15
   if (!is.null(cab) & is.list(cab)) {
     col <- rep(NA, length(h$mids))
@@ -169,14 +170,14 @@ hist.trainOcc <- function(x, predUn=NULL, th=NULL, cab=NULL, main=NULL,
   } else {
     plot(h, freq=FALSE, ylim=ylim, main=main, ...)
   }
-#   legend("topright", c("TPR", "1-PPP (train, U)", "1-PPP (all U)"), 
-#          lwd=c(2,2,2), lty=c(1,1,5), col=c("black", "black", clrs$pos))
-#   
-#   axis(4, at=approx(c(0,1), c(0, ylim[2]), c(0, .25, .5, .75, 1))$y, labels=c(0, .25, .5, .75, 1) )
-#   lines(percentiles.tpr, ylim[2]-prb.scld, lwd=2, col=clrs$pos)
-#   lines(percentiles.pnp.tr.un, ylim[2]-prb.scld, lwd=2)
-#   lines(percentiles.pnp, ylim[2]-prb.scld, lwd=2, lty=5)
-#   
+  #   legend("topright", c("TPR", "1-PPP (train, U)", "1-PPP (all U)"), 
+  #          lwd=c(2,2,2), lty=c(1,1,5), col=c("black", "black", clrs$pos))
+  #   
+  #   axis(4, at=approx(c(0,1), c(0, ylim[2]), c(0, .25, .5, .75, 1))$y, labels=c(0, .25, .5, .75, 1) )
+  #   lines(percentiles.tpr, ylim[2]-prb.scld, lwd=2, col=clrs$pos)
+  #   lines(percentiles.pnp.tr.un, ylim[2]-prb.scld, lwd=2)
+  #   lines(percentiles.pnp, ylim[2]-prb.scld, lwd=2, lty=5)
+  #   
   bxwx <- abs(ylim[1])*.75
   boxplot(unlist(hop$pos), frame=FALSE, axes=FALSE, y=0, horizontal=TRUE, 
           at=ylim[1]*.5, add=TRUE, boxwex=bxwx, col=clrs$pos )
@@ -191,6 +192,6 @@ hist.trainOcc <- function(x, predUn=NULL, th=NULL, cab=NULL, main=NULL,
       lines(rep(th[i], 2), y=c(0, ylim[2]), lwd=3)
   }
   
-invisible(list(h=h, ylim=ylim))
+  invisible(list(h=h, ylim=ylim))
   
 }

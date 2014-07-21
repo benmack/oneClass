@@ -1,8 +1,8 @@
 Package: oneClass
 Type: Package
 Title: One-class classification
-Version: 0.0-14
-Date: 2014-07-07
+Version: 0.0-15
+Date: 2014-07-21
 Author: Benjamin Mack
 Maintainer: Benjamin Mack <benjamin.mack@kit.edu>
 Description: Misc functions for training one-class classifiers and understanding
