@@ -5,7 +5,7 @@
 \title{Diagnostic distributions plot for a \code{\link{trainOcc}} object.}
 \usage{
 \method{hist}{trainOcc}(x, predUn = NULL, th = NULL, cab = NULL,
-  main = NULL, ylim = NULL, ...)
+  main = NULL, ylim = NULL, breaks = "Scott", ...)
 }
 \arguments{
 \item{x}{an object of class \code{\link{trainOcc}}.}
@@ -20,6 +20,8 @@ elements \code{colors} (vector of \code{R} colors, length n) and \code{breaks} (
 \item{main}{a title for the plot. if not given the parameters of the model are added.}
 
 \item{ylim}{the y limits of the plot.}
+
+\item{breaks}{see identically named argument in \code{\link{hist}}}
 
 \item{...}{other arguments that can be passed to \code{\link{plot}}.}
 }
