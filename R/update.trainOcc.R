@@ -46,7 +46,7 @@ update.trainOcc <- function ( object,
   u=NULL
   mask=NULL
   returnResamp="all" 
-
+  allowParallel=TRUE
   
   funcCallUpdate <- match.call(expand.dots = TRUE)
   
@@ -72,20 +72,46 @@ update.trainOcc <- function ( object,
     if (aggregatePredictions==TRUE) {
       
       ### first aggregate the hold-out predictions and calculate the performance 
-      fun.ap <- function(mm) { 
+      fun.ap <- function(mm, object, colsParam) { 
         dt <- holdOutPredictions( object, 
                                   modParam=object$results[mm,colsParam, drop=FALSE], 
                                   aggregate=TRUE)
         newMetric(.dataForSummaryFunction(dt), lev=c('pos', 'un'))
       }
       #resamples[,colsMetrics] <- t(sapply(1:nrow(resamples), fun))
-      metrics <- t(sapply(1:nrow(object$results), fun.ap))
+      
+      if (any(search()%in%"package:foreach") & allowParallel) {
+        metrics <- foreach(mm=1:nrow(object$results)) %dopar% fun.ap(mm=mm, object=object, colsParam=colsParam)
+        ans <- names(metrics[[1]])
+        metrics <- matrix(unlist(metrics), length(metrics), length(metrics[[1]]), byrow=TRUE)
+        colnames(metrics) <- ans
+        ### sum(metrics.check==ans); prod(dim(ans)) ### test
+      } else {
+        metrics <- t(sapply(1:nrow(object$results), fun.ap, object=object, colsParam=colsParam))
+      }
+      
       ### aggregate (mean and SD)
       newMetrics <- metrics
       colnames(newMetrics) <- paste(colnames(newMetrics), 'AP', sep="")
-      #and combine
-      object$results <- cbind(object$results[,(1:n.param), drop=FALSE], 
-                                    newMetrics, oldMetrics, oldMetricsSD)
+      
+      #and combine if desired
+      if (newMetricsOnly) {
+        ### add a new metric
+        cl <- grep(object$metric, colnames(newMetrics))
+        object$results <- cbind(object$results[,(1:n.param), drop=FALSE], 
+                                newMetrics)
+        if (!(length(cl)==0)) {
+          object$metric <- colnames(newMetrics)[cl]
+          message(paste("The new metric (\"object$metric\") has been set to", 
+                        colnames(newMetrics)[cl]) )
+        } else {
+          message("No new metric (\"object$metric\") has been set already but the old one seems to be unavailable.\nPlease set a new one.")
+        }
+      } else {
+        object$results <- cbind(object$results[,(1:n.param), drop=FALSE], 
+                                newMetrics, oldMetrics, oldMetricsSD)
+      }
+      
     } else { # the default, calculate 
       
       ### ### ### ### ### ### 
