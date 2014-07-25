@@ -43,8 +43,16 @@ plot_PPPvsTPR <- function(x, identifyPoints=FALSE, add=FALSE, highlightBest=TRUE
 #     abs( log( 1-approx(x=range(x), y=c(0,1), x)$y ) )
 #   }
   
-  PPP <- x$results$ppp
-  TPR <- x$results$tpr
+  cn <- colnames(x$results)
+  
+  if ( !all(any(cn=="tpr") & any(cn=="ppp")) & all(any(cn=="tprAP") & any(cn=="pppAP")) ) {
+    PPP <- x$results$pppAP
+    TPR <- x$results$tprAP
+  } else {
+    PPP <- x$results$ppp
+    TPR <- x$results$tpr
+  }
+  
   
   if (add) {
     points(PPP, TPR, xlim=c(0,1), ylim=c(0,1), ...)
@@ -57,11 +65,11 @@ plot_PPPvsTPR <- function(x, identifyPoints=FALSE, add=FALSE, highlightBest=TRUE
   # highlight final model 
   if (highlightBest) {
     rw <- modelPosition(x)$row
-    points(x$results$ppp[rw], x$results$tpr[rw], pch=16, col="red")
+    points(PPP[rw], TPR[rw], pch=16, col="red")
   }
   
   if (identifyPoints) {
-    ip <- identify(x$results$ppp, x$results$tpr, pos=FALSE)
+    ip <- identify(PPP, TPR, pos=FALSE)
     mp <- modelPosition(x, modRow=ip)
     mp$orderOfIdentification <- 
     return(mp)

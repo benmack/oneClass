@@ -145,7 +145,7 @@ hist.trainOcc <- function(x, predUn=NULL, th=NULL, cab=NULL, main=NULL,
   }
   
   if (is.null(main))
-    main <- paste(names(x$bestTune), x$bestTune, collapse=" / ")
+    main <- paste(names(x$bestTune), signif(x$bestTune,3), collapse=" / ")
   
   clrs <- .clrs('PU')
   

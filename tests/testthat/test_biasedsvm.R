@@ -20,7 +20,7 @@ te.y <- dt$te[,1]
 ## ----------------------------------------------------------------------------
 ### set up a small grid which leads to a over and underfitted 
 # sigest(as.matrix(tr.x[tr.y=='pos', ]))
-tuneGrid = ocsvm=expand.grid(sigma=c(.01, 100), 
+tuneGrid = expand.grid(sigma=c(.01, 100), 
                              cNeg=c(1, 10), 
                              cMultiplier=c(1, 10) )
 

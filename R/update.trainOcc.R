@@ -22,6 +22,7 @@
 #' Of course, no standard deviation of the performance metric can be calculated. 
 #' Metrics calculated this way get the suffix \code{AP} in the \code{object$results} table.   
 #' @param newMetricsOnly logical with default set to \code{FALSE}. Set to \code{TRUE} if the metrics already contained in the results table should be removed.
+#' @param allowParallel ...
 #' @param ... other arguments that can be passed to update.train
 #' @return an updated trainOcc object.
 #' @method update trainOcc
@@ -38,7 +39,7 @@
 update.trainOcc <- function ( object, 
                               modParam=NULL, modRow=NULL, modRank=NULL, by=NULL, 
                               newMetric=NULL, aggregatePredictions=FALSE, 
-                              newMetricsOnly=FALSE, ... ) {
+                              newMetricsOnly=FALSE, allowParallel=TRUE, ... ) {
   
 ### ' @param returnResamp see \code{\link{trainControl}}
 ### ' @param u the unlabeled samples which should be predicted with the updated model. Can be a matrix, data.frame, \code{raster}*, or \code{rasterTiled} object.
@@ -46,7 +47,6 @@ update.trainOcc <- function ( object,
   u=NULL
   mask=NULL
   returnResamp="all" 
-  allowParallel=TRUE
   
   funcCallUpdate <- match.call(expand.dots = TRUE)
   

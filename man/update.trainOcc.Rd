@@ -5,7 +5,8 @@
 \usage{
 \method{update}{trainOcc}(object, modParam = NULL, modRow = NULL,
   modRank = NULL, by = NULL, newMetric = NULL,
-  aggregatePredictions = FALSE, newMetricsOnly = FALSE, ...)
+  aggregatePredictions = FALSE, newMetricsOnly = FALSE,
+  allowParallel = TRUE, ...)
 }
 \arguments{
 \item{object}{a object of class \code{trainOcc}.}
@@ -30,6 +31,8 @@ Of course, no standard deviation of the performance metric can be calculated.
 Metrics calculated this way get the suffix \code{AP} in the \code{object$results} table.}
 
 \item{newMetricsOnly}{logical with default set to \code{FALSE}. Set to \code{TRUE} if the metrics already contained in the results table should be removed.}
+
+\item{allowParallel}{...}
 
 \item{...}{other arguments that can be passed to update.train}
 }
