@@ -30,7 +30,6 @@
 #' plot_thDepNPPvsTPR(oc, pred, add=TRUE, scaleToRange=c(0, h$ylim[2]) )
 #' @export
 plot_thDepNPPvsTPR <- function (x, predUn=NULL, add=FALSE, scaleToRange=NULL) {
-  #browser()
   clrs <- .clrs('PU')
   hop <- holdOutPredictions(x, aggregate=TRUE)
   prb <- seq(0, 1, .01)
