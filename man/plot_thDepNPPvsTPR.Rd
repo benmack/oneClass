@@ -30,7 +30,7 @@ Plots the true positive rate (TPR) and the probability of negative prediction
 (1-PPP, probability of positive prediction) over the complete range of possible thresholds.
 }
 \details{
-plot_thDepPNPvsTPR
+plot_thDepNPPvsTPR
 }
 \examples{
 data(bananas)

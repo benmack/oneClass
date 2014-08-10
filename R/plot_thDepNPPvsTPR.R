@@ -1,5 +1,5 @@
 ################################################################################
-#' plot_thDepPNPvsTPR
+#' plot_thDepNPPvsTPR
 #' 
 #' @title Diagnostic distributions plot for a \code{\link{trainOcc}} object.
 #'
