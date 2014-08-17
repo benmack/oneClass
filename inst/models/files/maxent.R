@@ -74,7 +74,7 @@ modelInfo <-
        predict = function(modelFit, newdata, preProc = NULL, submodels = NULL) {
          pred <- predict(modelFit, newdata)
          defaultTh <- modelFit@results[rownames(modelFit@results)==
-                                         "Equal.training.sensitivity.and.specificity.logistic.threshold"]
+                                         "Maximum.training.sensitivity.plus.specificity.logistic.threshold"]
          predBin <- factor(pred >= defaultTh, 
                            levels=c(TRUE, FALSE), labels=c("pos", "un"), 
                            ordered=TRUE)

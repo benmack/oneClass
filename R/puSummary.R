@@ -73,9 +73,9 @@ puSummary <- function(data, lev = NULL, model = NULL) { # , metrics=c("puAuc", "
   
   puF <- puF[[1]]
   
-  negD01 <- .negD01(tpr=tpr, ppp=ppp) #.negD01:::
+  # negD01 <- .negD01(tpr=tpr, ppp=ppp) #.negD01:::
   
-  out <- c(tpr=tpr, ppp=ppp, puAuc=puAuc, puF=puF, negD01=negD01) #, "SensPu", "SpecPu")
+  out <- c(tpr=tpr, ppp=ppp, puAuc=puAuc, puF=puF) #, "SensPu", "SpecPu")
   
   return(out)
   
