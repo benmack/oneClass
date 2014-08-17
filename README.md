@@ -11,4 +11,4 @@ Note that the package is in developement and needs further testing. Also some do
 If you encounter a bug or have any problem with the pacakge please do not hesistate to contact me (knecmab@gmail.com). 
 
 A tutorial can be found in 
-https://github.com/benmack/oneClass/tree/master/inst/oneClassIntro.pdf.
+https://github.com/benmack/oneClass/tree/master/inst/doc/oneClassIntro.pdf.
