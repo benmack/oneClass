@@ -3,11 +3,15 @@
 \alias{plot.ModelEvaluation}
 \title{Plot accuracy statistics dependent on threshold.}
 \usage{
-\method{plot}{ModelEvaluation}(x, ...)
+\method{plot}{ModelEvaluation}(x, add = FALSE, yLimits = c(0, 1), ...)
 }
 \arguments{
 \item{x}{an object of class \code{\link[dismo]{ModelEvaluation}}.
 (see \code{\link{evaluate}}).}
+
+\item{add}{add the plot to the active device, e.g. a histogram plot (\code{\link{hist.trainOcc}}) (default is \code{FALSE})}
+
+\item{yLimits}{specify the minimum and maximum points in the density scale of to which the accuracy scale should be projected. This is useful if you add the plot to another one, e.g. a histogram plot (\code{\link{hist.trainOcc}}), whose  y-axis scale is not suitable for the accuracy plot (i.e. if it is not between 0 and 1).}
 
 \item{...}{other arguments passed to \code{\link{plot}}.}
 }

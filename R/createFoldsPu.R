@@ -16,7 +16,7 @@
 #' in the test group. If not given and the indices are passed to trainOcc they are 
 #' randomly sampled from the argument \code{u}. 
 #' @param seed an integer in order to set a seed point
-#' @seealso \code{\link{createResamplesPu}}, \code{\link{createMultiFoldsPu}}, \code{\link{createFolds}}
+#' @seealso \code{\link{createMultiFoldsPu}}, \code{\link{createFolds}}
 #' @export
 createFoldsPu <- function (y, k, positive=NULL, index.indep=NULL, seed=NULL) {
   # until now only index.independent unlabeled samples are supported  

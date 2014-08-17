@@ -1,10 +1,10 @@
 Package: oneClass
 Type: Package
-Title: One-class classification in the absence of test data.
-Version: 0.0-19
+Title: One-class classification in the absence of test data
+Version: 0.1-0
 Date: 2014-08-17
 Author: Benjamin Mack
-Maintainer: Benjamin Mack <benjamin.mack@kit.edu>
+Maintainer: Benjamin Mack <knecmab@gmail.com>
 Description: oneClass implements the one-class classifiers one-class SVM,
     biased SVM, and Maxent, as custom functions for the train function
     of the package caret.
@@ -30,3 +30,4 @@ Suggests:
     rJava,
     testthat
 Roxygen: list(wrap = FALSE)
+URL: https://github.com/benmack/oneClass

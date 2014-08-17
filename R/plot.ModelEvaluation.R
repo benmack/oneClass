@@ -24,12 +24,12 @@ plot.ModelEvaluation <- function(x, add=FALSE, yLimits=c(0, 1), ...) {
 # @param atY character specifying what to plot on the y-axis. can be one of the
 # slots of an evaluation object (see \code{\link{ModelEvaluation-class}}). 
 
-  scaleToYLimits <- function(y) {
+  scaleToYLimits <- function(y, yLimits) {
     approx(c(0,1), yLimits, y)$y
   }
   
   ### write to names data frame to get the desired default x/y axis titles
-  plt <- data.frame(threshold=x@t, accuracy=scaleToYLimits(x@kappa))
+  plt <- data.frame(threshold=x@t, accuracy=scaleToYLimits(x@kappa, yLimits))
   
   if (add) {
     lines(plt, lwd=2, ylim=c(0,1), type='l', ...)
@@ -37,15 +37,14 @@ plot.ModelEvaluation <- function(x, add=FALSE, yLimits=c(0, 1), ...) {
     plot(plt, lwd=2, ylim=c(0,1), type='l', ...)
   }
   #points(plt, lwd=2, ...)
-  lines(x@t, scaleToYLimits(x@TPR), lwd=2, lty=4) # PA
-  lines(x@t, scaleToYLimits(x@PPP), lwd=2, lty=5) # UA
+  lines(x@t, scaleToYLimits(x@TPR, yLimits), lwd=2, lty=4) # PA
+  lines(x@t, scaleToYLimits(x@PPP, yLimits), lwd=2, lty=5) # UA
   legend('topright', legend=c('kappa', 'PA', 'UA'), 
          lty=c(1, 4, 5), 
-         pch=c(1, NA, NA),
          col=c('black'), 
          #col.pch=c('black', NA, NA), 
          lwd=2)
   # lines(x@t, x@TNR, lwd=2, col=.clrs('PN')[2], type='l')
-  axis(4, at=scaleToYLimits(seq(0,1,.25)), label=seq(0,1,.25))
+  axis(4, at=scaleToYLimits(seq(0,1,.25), yLimits), labels=seq(0,1,.25))
   # mtext("accuracy", 4)
 }  
