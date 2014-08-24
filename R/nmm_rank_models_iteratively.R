@@ -3,7 +3,6 @@
 #' @description Iteratively ranks the models (rows) according to different criteria (columns)  with \code{\link{nmm_rank_models}}, removes the model with the lowest rank-sum. These two steps are repeated until the last model is ranked (at the first place). It is assumed that the input \code{x} has been derived from the function \code{\link{nmm_selection_criteria}}. 
 #' @param x the table returned from \code{\link{nmm_selection_criteria}}
 #' @export
-
 nmm_rank_models_iteratively <- function(x) {
   nModels <- nrow(x)
   modRows <- 1:nModels

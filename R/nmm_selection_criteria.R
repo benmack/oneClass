@@ -9,7 +9,6 @@
 #' @param fnamePlot if given the diagnostic is saved to the specified filename (defualt is \code{NULL})
 #' @export
 nmm_selection_criteria <- function(x, un=NULL, nmm=NULL, modRow=NULL, predU=NULL, predFromNumm=FALSE, fnamePlot=NULL) {
- 
   # allow 
   #  #' @param aggregateHop should the hold-out predictions be aggregated (defualt is \code{TRUE})
   aggregateHop=TRUE
@@ -81,7 +80,6 @@ nmm_selection_criteria <- function(x, un=NULL, nmm=NULL, modRow=NULL, predU=NULL
     rtrn <- pmin(rowSums(scaled.d[, -idx, drop=FALSE]), scaled.d[, idx])
     return(rtrn)
   }
-  
   getOverlap <- function(nmm, theo, th=NULL) {
     if (is.null(th)) {
       rng <- range(qnorm(c(.01, .99), theo$mean, theo$sd))
@@ -93,7 +91,6 @@ nmm_selection_criteria <- function(x, un=NULL, nmm=NULL, modRow=NULL, predU=NULL
       rng <- range(qnorm(c(.01, .99), theo$mean, theo$sd))
       threshold_nmm(nmm, seq(rng[1], rng[2], length.out=101))
     }
-    
   }
   
   ### --------------------------------------------------------------------------
@@ -191,7 +188,6 @@ nmm_selection_criteria <- function(x, un=NULL, nmm=NULL, modRow=NULL, predU=NULL
   if (!is.null(predU)) {
     un <- predU
   }
-  
   empi <- list(mean=mean(pos), 
                var=var(pos), 
                sd=sd(pos))
