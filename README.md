@@ -8,7 +8,16 @@ The package is developed for one-class land cover classification. A part of clas
 
 Note that the package is in developement and needs further testing. Also some documentation might still be incomplete.
 
-If you encounter a bug or have any problem with the pacakge please do not hesistate to contact me (knecmab@gmail.com). 
+However the most important functionalities should work well and are described in a tutorial which you can found here: 
+https://github.com/benmack/oneClass/tree/master/inst/doc/oneClassIntro.pdf
 
-A tutorial can be found in 
-https://github.com/benmack/oneClass/tree/master/inst/doc/oneClassIntro.pdf.
+If you encounter a bug or have any problem with the package please do not hesistate to contact me (knecmab@gmail.com). 
+
+
+Installation
+========
+The package can be downloaded here:
+https://github.com/benmack/oneClass/releases
+
+Or you can install it from within R with the package devtools and the following command:
+install_github('benmack/oneClass')
