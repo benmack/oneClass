@@ -47,6 +47,7 @@
 #' Liu, Bing and Dai, Yang and Li, Xiaoli and Lee, Wee Sun and Yu, Philip S. (2003):
 #' Building text classifiers using positive and unlabeled examples.
 #' In: Intl. Conf. on Data Mining, 2003.
+#' @importFrom pROC roc
 #' @rdname puSummary
 #' @export 
 puSummary <- function(data, lev = NULL, model = NULL) { # , metrics=c("puAuc", "puF", "tpr", "ppp")
@@ -60,7 +61,7 @@ puSummary <- function(data, lev = NULL, model = NULL) { # , metrics=c("puAuc", "
   if (!all(levels(data[, "pred"]) == levels(data[, "obs"]))) 
     stop("levels of observed and predicted data do not match")
   
-  require(pROC, quietly = TRUE)
+#   require(pROC, quietly = TRUE)
   rocObject <- try(pROC::roc(response=data$obs, predictor=data[, 'pos'], 
                              levels=c('pos', 'un')), silent = TRUE)
   puAuc <- ifelse (class(rocObject)[1] == "try-error", 0, rocObject$auc)
