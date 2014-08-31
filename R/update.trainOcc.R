@@ -35,6 +35,8 @@
 #' ## update to the highest ranked model according to metric puAuc
 #' tocc <- update(tocc, modRank=1, by="puAuc")
 #' }
+#' @importFrom foreach %dopar%
+#' @importFrom foreach foreach
 #' @export
 update.trainOcc <- function ( object, 
                               modParam=NULL, modRow=NULL, modRank=NULL, by=NULL, 

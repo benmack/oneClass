@@ -1,5 +1,24 @@
 ################################################################################
-
+.isPuPartition <- function(x) {
+  
+  y <- x$trainingData[, ".outcome"]
+  
+  # x is a list of indices and y a label vector
+  ans <- lapply(x$control$index, function(x, y) {
+    x[y[x]=="un"]
+  }, y=y)
+  dummy <- c()
+  for (i in 1:length(ans))
+    dummy[i] <- length(setdiff(ans[[1]], ans[[i]]))==0
+  rtrn <- all(dummy)
+  
+  if (rtrn) {
+    idxVal <- sort( unique( unlist( x$control$indexOut ) ) )
+    attr(rtrn, "indexUnTrain") <- ans[[1]]
+    attr(rtrn, "indexUnVal") <- idxVal[y[idxVal]=="un"]
+  }
+  return(rtrn)
+}
 
 ################################################################################
 .dataForSummaryFunction <- function(hop) {

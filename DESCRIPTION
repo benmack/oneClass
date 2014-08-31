@@ -1,8 +1,8 @@
 Package: oneClass
 Type: Package
 Title: One-class classification in the absence of test data
-Version: 0.1-0
-Date: 2014-08-17
+Version: 0.1-1
+Date: 2014-08-31
 Author: Benjamin Mack
 Maintainer: Benjamin Mack <knecmab@gmail.com>
 Description: oneClass implements the one-class classifiers one-class SVM,
@@ -24,7 +24,8 @@ Imports:
     raster,
     spatial.tools,
     pROC,
-    dismo
+    dismo,
+    foreach
 Suggests:
     kernlab,
     rJava,

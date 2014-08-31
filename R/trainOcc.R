@@ -121,6 +121,7 @@ trainOcc <- function ( x, y, positive=NULL, method="biasedsvm", metric=NULL,
   # #' @param u (optional) the unlabeled samples which should be predicted with the best model. Can be a \code{matrix}, \code{data.frame}, \code{raster}, or \code{tiledRaster}.
 
   
+  # #' @param u (optional) the unlabeled samples which should be predicted with the best model. Can be a \code{matrix}, \code{data.frame}, \code{raster}, or \code{tiledRaster}. 
   ###########################################################################
   ###########################################################################
   ### check ...
@@ -151,13 +152,13 @@ trainOcc <- function ( x, y, positive=NULL, method="biasedsvm", metric=NULL,
     
     if (is.null(index)) {
       trControl <- trainControl(method="cv", 
-                              number=10,
-                              summaryFunction = puSummary, 
-                              classProbs=TRUE, 
-                              savePredictions = TRUE,
-                              returnResamp = "all",
-                              verboseIter = FALSE, 
-                              allowParallel = allowParallel)
+                                number=10,
+                                summaryFunction = puSummary, 
+                                classProbs=TRUE, 
+                                savePredictions = TRUE,
+                                returnResamp = "all",
+                                verboseIter = FALSE, 
+                                allowParallel = allowParallel)
     } else {
       trControl <- trainControl(index=index, 
                                 summaryFunction = puSummary, 
@@ -178,11 +179,11 @@ trainOcc <- function ( x, y, positive=NULL, method="biasedsvm", metric=NULL,
   ###########################################################################
   if (!is.list(method))
   {
-      method <- switch(method, 
-                                   "biasedsvm" = getModelInfoOneClass("biasedsvm", regex = FALSE)[[1]],
-                                   "bsvm" = getModelInfoOneClass("biasedsvm", regex = FALSE)[[1]], 
-                                   "ocsvm" = getModelInfoOneClass("ocsvm", regex = FALSE)[[1]],
-                                   "maxent" = getModelInfoOneClass("maxent", regex = FALSE)[[1]])
+    method <- switch(method, 
+                     "biasedsvm" = getModelInfoOneClass("biasedsvm", regex = FALSE)[[1]],
+                     "bsvm" = getModelInfoOneClass("biasedsvm", regex = FALSE)[[1]], 
+                     "ocsvm" = getModelInfoOneClass("ocsvm", regex = FALSE)[[1]],
+                     "maxent" = getModelInfoOneClass("maxent", regex = FALSE)[[1]])
   } else 
   {
     trainOccClassifier <- method
@@ -206,7 +207,15 @@ trainOcc <- function ( x, y, positive=NULL, method="biasedsvm", metric=NULL,
   oc <- .constructtrainOcc(x=tune, u=u, mask=mask, time.train=time.train, 
                            funcCall=funcCall, ...)
   
-  
-  
+  ### check if resampling has been performed with puPartition and delete 
+  ### the unlabeled validation data from oc$trainingData and update the 
+  ### final model
+  isPuPart <- .isPuPartition(oc)
+  oc$isPuPartition <- isPuPart
+  if (isPuPart) {
+    oc$trainingDataValUn <- oc$trainingData[attr(isPuPart, "indexUnVal"), ]
+    oc$trainingData <- oc$trainingData[-attr(isPuPart, "indexUnVal"), ]
+    oc <- update(oc, modRank=1)
+  }
   return(oc)
 } ### end trainOcc.default ################################################
