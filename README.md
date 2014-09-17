@@ -22,5 +22,3 @@ https://github.com/benmack/oneClass/releases
 
 Or you can install it from within R with the package devtools and the following command:
 install_github('benmack/oneClass')
-
-In order to get started have a look at the vignette which is in the doc folder and linked on the package help page (command: ?oneClass)
