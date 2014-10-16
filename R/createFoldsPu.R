@@ -17,6 +17,44 @@
 #' randomly sampled from the argument \code{u}. 
 #' @param seed an integer in order to set a seed point
 #' @seealso \code{\link{createMultiFoldsPu}}, \code{\link{createFolds}}
+#' @examples
+#' \dontrun{
+#' 
+#' ## a synthetic data set
+#' data(bananas)
+#' 
+#' ## create a pu-adapted partiton:
+#' ## leave-one-out with the positive training samples
+#' ## independent training/validation sets with unlabeled samples
+#' ## note that the validation samples will not be included in the final model. 
+#' 
+#' idx <- createFoldsPu(bananas$tr$y, 20, positive=1, 
+#'            index.indep=which(bananas$tr$y==0)[1:250]) 
+#' fit <- trainOcc(x=bananas$tr[, -1], y=bananas$tr[, 1], 
+#'                 index=idx)
+#' pred <- predict(fit, bananas$x)
+#' 
+#' ### compare the TPR estimated from training/test data
+#' hist(fit, pred, ylim=c(0, .25))
+#' hop.pos <- holdOutPredictions(fit)$pos 
+#' ### compare the TPR derived from train and test data.
+#' lines( quantile(hop.pos, seq(0, 1, 0.1)), 
+#'        seq(0, 1, 0.1)*.25 )
+#' lines( quantile(pred[bananas$y[]==1], seq(0, 1, 0.1)), 
+#'        seq(0, 1, 0.1)*.25, col="red")
+#' featurespace(fit)
+#' ### note: final model fitted without the unlabeled validation data
+#' ### specified above by index.indep=which(bananas$tr$y==0)[1:250]
+#' rownames(fit$trainingData)
+#' ### note: you might want to aggregate the predictions first and then
+#' ### calcualte the performance metric based on aggregated hold-out predictions
+#' fit.up <- update(fit, aggregatePredictions=TRUE)
+#' plot(fit.up$results$puF, fit.up$results$puFAP)
+#' fit.up$results[which.max(fit.up$results$puF), ]
+#' fit.up$results[which.max(fit.up$results$puFAP), ]
+#' featurespace(fit)
+#' colnames(fit.up$results)  
+#' }
 #' @export
 createFoldsPu <- function (y, k, positive=NULL, index.indep=NULL, seed=NULL) {
   # until now only index.independent unlabeled samples are supported  

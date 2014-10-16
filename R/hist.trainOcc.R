@@ -15,6 +15,8 @@
 #' @param main a title for the plot. if not given the parameters of the model are added.
 #' @param ylim the y limits of the plot.
 #' @param breaks see identically named argument in \code{\link{hist}}
+#' @param col a colour to be used to fill the bars.
+#' @param border the color of the border around the bars.
 #' @param ... other arguments that can be passed to \code{\link{plot}}. 
 #' @return Diagnostic distributions plot.
 #' @method hist trainOcc
@@ -111,7 +113,7 @@
 #' }
 #' @export
 hist.trainOcc <- function(x, predUn=NULL, th=NULL, cab=NULL, main=NULL, 
-                          ylim=NULL, breaks='Scott', ...) { # 
+                          ylim=NULL, breaks='Scott', col="grey", border=NA, ...) { # 
   if (!is.null(x$holdOut$pos) & !is.null(x$holdOut$un)) {
     hop <- list(pos = x$holdOut$pos, un = x$holdOut$un)
   } else {
@@ -122,9 +124,9 @@ hist.trainOcc <- function(x, predUn=NULL, th=NULL, cab=NULL, main=NULL,
     predictive.value <- predUn
   } else if (!is.null(x$predUn)) {
     predictive.value <- x$predUn
-  } else if ( is.null(predUn) & !is.null(x$predUn) ) {
-    warning('No predicted unlabeled data found. Hold-out predictions used to build the histogram.')
-    predictive.value <- c(hop$pos, hop$un)
+  } else if ( is.null(predUn) & is.null(x$predUn) ) {
+    warning('No predicted unlabeled data found.\nUnlabeled hold-out predictions used to build the histogram.')
+    predictive.value <- hop$un
   }
   
   h <- hist(predictive.value, plot=FALSE, breaks=breaks, ...)
@@ -166,10 +168,8 @@ hist.trainOcc <- function(x, predUn=NULL, th=NULL, cab=NULL, main=NULL,
       idx <- h$mids>=cab$breaks[i] & h$mids<cab$breaks[i+1]
       col[idx] <- cab$colors[i]
     }
-    plot(h, freq=FALSE, ylim=ylim, main=main, col=col, ...)
-  } else {
-    plot(h, freq=FALSE, ylim=ylim, main=main, ...)
   }
+  plot(h, freq=FALSE, ylim=ylim, main=main, col=col, border=border, ...)
   #   legend("topright", c("TPR", "1-PPP (train, U)", "1-PPP (all U)"), 
   #          lwd=c(2,2,2), lty=c(1,1,5), col=c("black", "black", clrs$pos))
   #   

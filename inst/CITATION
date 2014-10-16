@@ -1,0 +1,14 @@
+citHeader('If you use oneClass in published research, please cite the following paper:')
+
+citEntry(entry='Article',
+         title = 'Can I Trust My One-Class Classification',
+         author = personList(as.person('Benjamin Mack'), as.person('Ribana Roscher') , as.person('Bjoern Waske')),
+         year = 2014,
+         journal = 'Remote Sensing',
+         volume = 12,
+         number = 9,
+         pages = 8779--8802,
+         doi = '10.3390/rs6098779', 
+         url = 'http://www.mdpi.com/2072-4292/6/9/8779',
+         textVersion = 'Mack, B.; Roscher, R.; Waske, B. Can I Trust My One-Class Classification? Remote Sens. 2014, 6, 8779-8802.' 
+)

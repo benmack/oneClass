@@ -23,7 +23,7 @@
 #' \code{TRUE} in order to make all diagnostic methods available for later analaysis. }
 #'}
 #'
-#' @param  x a data frame with the training data. The samples are in the rows and the features in the columns.  
+#' @param  x a data frame with the training data. The samples are in the rows and the features in the columns.
 #' @param y a vector containing the labels encoding if a sample is positive or unlabeled.
 #' @param positive The positive class in \code{y}.
 #' @param method a one-class classification method. Implemented are \code{ocsvm} (one-class SVM, via \code{\link[kernlab]{ksvm}}), \code{biasedsvm} (biased SVM, via \code{\link[kernlab]{ksvm}}), \code{maxent} (via \code{\link[dismo]{maxent}}), or a costum method that can be passed to \code{\link{train}}.

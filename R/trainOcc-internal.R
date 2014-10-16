@@ -24,7 +24,7 @@
                          list(callOc = funcCall,
                               callUpdateOc = funcCallUpdate,
                               dotsOc = list(...), 
-                              predUn = pred.un.new,
+                              predUn = NULL,
                               # raster = dummy$raster,
                               timeOc = list(train=time.train, pred=time.pred))),
                      class = c("trainOcc", "train") )

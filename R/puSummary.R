@@ -61,7 +61,10 @@ puSummary <- function(data, lev = NULL, model = NULL) { # , metrics=c("puAuc", "
   if (!all(levels(data[, "pred"]) == levels(data[, "obs"]))) 
     stop("levels of observed and predicted data do not match")
   
-#   require(pROC, quietly = TRUE)
+  ans <- require(pROC, quietly = TRUE, warn.conflicts = FALSE)
+  if (!ans)
+    warning("The pu-performance metric 'aucPu' will not be available.")
+  
   rocObject <- try(pROC::roc(response=data$obs, predictor=data[, 'pos'], 
                              levels=c('pos', 'un')), silent = TRUE)
   puAuc <- ifelse (class(rocObject)[1] == "try-error", 0, rocObject$auc)

@@ -35,11 +35,14 @@ modelPosition <- function(x, modParam=NULL, modRow=NULL, modRank=NULL, by=NULL, 
                   rank=1, 
                   metric=x$metric))
     
-    if ( (!is.null(modParam) & !is.null(modRow) & !is.null(modRow) ) > 1 )
-      cat(paste('More than one model selection arguments given.\nThe first of the sequence modParam, modRow, modRow is used to select the model.'))
+    if ( sum(!is.null(modParam) & !is.null(modRow) & !is.null(modRow) ) > 1 )
+      warning(paste('More than one model selection arguments given.\nThe first of the sequence modParam, modRow, modRow is used to select the model.'))
     
-    if ( (is.null(modParam) & is.null(modRow) & is.null(modRank) ) )
-      modParam <- x$bestTune
+    if ( is.null(modParam) & is.null(modRow) & is.null(modRank) & is.null(by) ) {
+      modParam <- x$bestTune 
+    } else if ( is.null(modParam) & is.null(modRow) & is.null(modRank) & !is.null(by) ) {
+      modRank <- 1
+    } 
     
     if ( !is.null(modParam) ) {
       info$param <- modParam
