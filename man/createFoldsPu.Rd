@@ -3,7 +3,7 @@
 \alias{createFoldsPu}
 \title{createFoldsPu}
 \usage{
-createFoldsPu(y, k, positive = NULL, index.indep = NULL, seed = NULL)
+createFoldsPu(y, k, positive = NULL, indepUn = NULL, seed = NULL)
 }
 \arguments{
 \item{y}{a vector of outcomes for the positive and the negative class}
@@ -13,9 +13,7 @@ createFoldsPu(y, k, positive = NULL, index.indep = NULL, seed = NULL)
 \item{positive}{the positive class in y. if empty the label with the smaller
 frequency is assumed to be the positive class.}
 
-\item{index.indep}{optional, the elements in y which should always been used
-in the test group. If not given and the indices are passed to trainOcc they are
-randomly sampled from the argument \code{u}.}
+\item{indepUn}{optional, a fraction (0<indepUn<1) specifying the fraction of or a vector of indices specifying the unlabeled samples to be used for validation.}
 
 \item{seed}{an integer in order to set a seed point}
 }
@@ -37,7 +35,7 @@ data(bananas)
 ## note that the validation samples will not be included in the final model.
 
 idx <- createFoldsPu(bananas$tr$y, 20, positive=1,
-           index.indep=which(bananas$tr$y==0)[1:250])
+           indepUn=which(bananas$tr$y==0)[1:250])
 fit <- trainOcc(x=bananas$tr[, -1], y=bananas$tr[, 1],
                 index=idx)
 pred <- predict(fit, bananas$x)
@@ -52,7 +50,7 @@ lines( quantile(pred[bananas$y[]==1], seq(0, 1, 0.1)),
        seq(0, 1, 0.1)*.25, col="red")
 featurespace(fit)
 ### note: final model fitted without the unlabeled validation data
-### specified above by index.indep=which(bananas$tr$y==0)[1:250]
+### specified above by indepUn=which(bananas$tr$y==0)[1:250]
 rownames(fit$trainingData)
 ### note: you might want to aggregate the predictions first and then
 ### calcualte the performance metric based on aggregated hold-out predictions

@@ -3,7 +3,7 @@
 \alias{createMultiFoldsPu}
 \title{createMultiFoldsPu}
 \usage{
-createMultiFoldsPu(y, k, times = 5, positive = NULL, index.indep = NULL,
+createMultiFoldsPu(y, k, times = 5, positive = NULL, indepUn = NULL,
   seed = NULL)
 }
 \arguments{
@@ -16,7 +16,7 @@ createMultiFoldsPu(y, k, times = 5, positive = NULL, index.indep = NULL,
 \item{positive}{the positive class in y. if empty the label with the smaller
 frequency is assumed to be the positive class.}
 
-\item{index.indep}{optional, the elements in y which should always been used
+\item{indepUn}{optional, the elements in y which should always been used
 in the test group. If not given and the indices are passed to trainOcc they are
 randomly sampled frm the argument \code{u}.}
 
