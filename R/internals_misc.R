@@ -1,4 +1,7 @@
 ################################################################################
+.foreach.exists <- function() any(search()%in%"package:foreach")
+
+################################################################################
 .isPuPartition <- function(x) {
   
   y <- x$trainingData[, ".outcome"]
@@ -18,19 +21,6 @@
     attr(rtrn, "indexUnVal") <- idxVal[y[idxVal]=="un"]
   }
   return(rtrn)
-}
-
-################################################################################
-.dataForSummaryFunction <- function(hop) {
-  
-  obs <- puFactor( rep( c(1, 0), c(length(hop$pos), length(hop$un)) ), positive=1 )
-  pos <- c(hop$pos, hop$un)
-  pred <- obs
-  
-  pred[pos>=0] <- 'pos'
-  pred[pos<0] <- 'un'
-  data <- data.frame(obs=obs, pred=pred, pos=pos)
-  return(data)
 }
 
 ################################################################################
@@ -90,6 +80,8 @@
 }
 ################################################################################
 .rankFromParam <- function(x, modParam = NULL, by = NULL, decreasing=TRUE) {
+  if (is.null(by))
+    by <- x$metric
   rw <- .rowFromParam(x, modParam)
   srtd <- rownames(sort(x, printTable=FALSE, by=by, decreasing=decreasing))
   rnk <- which(as.numeric(srtd)==rw)

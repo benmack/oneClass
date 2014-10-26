@@ -84,40 +84,45 @@ update.trainOcc <- function ( object,
     ### required later to write new train$results table
     
     oldMetrics <- object$results[,-(1:n.param)]
-    colsSD <- sapply(colnames(oldMetrics), function(x) substr(x, nchar(x)-1, nchar(x)))=='SD'
+    colsSD <- sapply(colnames(oldMetrics), function(x) 
+      substr(x, nchar(x)-1, nchar(x)))=='SD'
     oldMetricsSD <- oldMetrics[,colsSD]
     oldMetrics <- oldMetrics[,!colsSD]
     
-    if (aggregatePredictions==TRUE) {
+    if (aggregatePredictions) {
       
-      ### first aggregate the hold-out predictions and calculate the performance 
-      fun.ap <- function(mm, object, colsParam) { 
-        dt <- holdOutPredictions( object, 
-                                  modParam=object$results[mm,colsParam, drop=FALSE], 
-                                  aggregate=TRUE)
-        puSummaryFunction(.dataForSummaryFunction(dt), lev=c('pos', 'un'))
-      }
-      #resamples[,colsMetrics] <- t(sapply(1:nrow(resamples), fun))
-      
-      if (any(search()%in%"package:foreach") & allowParallel) {
-        metrics <- foreach(mm=1:nrow(object$results), .packages="oneClass") %dopar% fun.ap(mm=mm, object=object, colsParam=colsParam)
+      if (.foreach.exists() & allowParallel) {
+        metrics <- foreach(mm=1:nrow(object$results), 
+                           .packages="oneClass") %dopar% 
+          .calc_performanceAP(mm=mm, object=object, 
+                              colsParam=colsParam, 
+                              puSummaryFunction=puSummaryFunction)
         ans <- names(metrics[[1]])
-        metrics <- matrix(unlist(metrics), length(metrics), length(metrics[[1]]), byrow=TRUE)
+        metrics <- matrix(unlist(metrics), 
+                          length(metrics), 
+                          length(metrics[[1]]), byrow=TRUE)
         colnames(metrics) <- ans
         ### sum(metrics.check==ans); prod(dim(ans)) ### test
       } else {
-        metrics <- t(sapply(1:nrow(object$results), fun.ap, object=object, colsParam=colsParam))
+        metrics <- t(sapply(1:nrow(object$results), 
+                            .calc_performanceAP, 
+                            object=object, 
+                            colsParam=colsParam, 
+                            puSummaryFunction=puSummaryFunction))
       }
       
       ### aggregate (mean and SD)
       puSummaryFunction <- metrics
-      colnames(puSummaryFunction) <- paste(colnames(puSummaryFunction), 'AP', sep="")
+      colnames(puSummaryFunction) <- paste(
+        colnames(puSummaryFunction), 'AP', sep="")
       
       #and combine if desired
       if (newMetricsOnly) {
         ### add a new metric
-        cl <- grep(object$metric, colnames(puSummaryFunction))
-        object$results <- cbind(object$results[,(1:n.param), drop=FALSE], 
+        cl <- grep(object$metric, 
+                   colnames(puSummaryFunction))
+        object$results <- cbind(object$results[,(1:n.param), 
+                                               drop=FALSE], 
                                 puSummaryFunction)
       } else {
         object$results <- cbind(object$results[,(1:n.param), drop=FALSE], 
@@ -126,56 +131,34 @@ update.trainOcc <- function ( object,
       
     } else { # the default, calculate 
       
-      ### ### ### ### ### ### 
-      ### useful stuff
-      
       index.partitions <- object$control$index
       n.partitions <- length(index.partitions)
       uniquePartitions <- unique(names(object$control$index))
       
       ### ### ### ### ### ### 
       ### initialize the resampling results 
-      
-      ### see what has to be saved... to handle failing resamples
-      
       dt <- holdOutPredictions( object, 
                                 modRow=1,
                                 aggregate=TRUE)
-      metric.na <- puSummaryFunction(.dataForSummaryFunction(dt), lev=c('pos', 'un'))
+      metric.na <- puSummaryFunction(dataForSummaryFunction(dt), lev=c('pos', 'un'))
       metric.na[] <- NA
       
-      #hop <- holdOutPredictions( object, modRow=mm, partition = 1 )
-      #data <- .dataForSummaryFunction(hop$pos, hop$un, resampling=hop$resampling$name)
-      #dummy <- puSummaryFunction(data, lev=c('pos', 'un'))
-      #n.metrics <- length(dummy)
-      #names.metrics <- names(dummy)
-      
-      
       ### expand.grid with the unique parameter combinations and Partitions
-      resamples <- expand.grid(c(lapply(.paramList(object), unique), Resample=list(uniquePartitions)))
+      resamples <- expand.grid(c(lapply(.paramList(object), 
+                                        unique), 
+                                 Resample=list(uniquePartitions)))
       
-      ### and add the metric 
-      #dummy <- data.frame(matrix(0, nrow(resamples), length(n.metrics)))
-      #colnames(dummy) <- names.metrics
-      #resamples <- cbind(resamples, dummy)
-      
-      ### replicate the data frame n.partition times, fill in the Resamples and 
-      #resamples <- matrix(rep(t(resamples), n.partitions), ncol=ncol(resamples), byrow=TRUE)
-      
-      #colsMetrics <- (n.param+2):(n.param+2+n.metrics-1)
-      
-      
-      # object$trainingData[, '.outcome'][object$control$indexOut[[6]]]
       fun <- function(rr) { 
         cat(paste(rr, '.', sep=""))
         dt <- holdOutPredictions( object, 
                                   modParam=resamples[rr,colsParam, drop=FALSE],
                                   partition = resamples$Resample[rr], 
                                   aggregate=TRUE)
-        if ( length(dt$pos)==0 | length(dt$neg==0) ) { ### errors like this should actually be handled in the summaryFunction!
+        ### the following check should be handled in the summaryFunction!
+        if ( length(dt$pos)==0 | length(dt$neg==0) ) { 
           return(metric.na)
         } else {
-          return(puSummaryFunction(.dataForSummaryFunction(dt), lev=c('pos', 'un'))) }
+          return(puSummaryFunction(dataForSummaryFunction(dt), lev=c('pos', 'un'))) }
       }
       
       #resamples[,colsMetrics] <- t(sapply(1:nrow(resamples), fun))
@@ -187,14 +170,22 @@ update.trainOcc <- function ( object,
       }
       
       ### aggregate (mean and SD)
-      puSummaryFunction <- aggregate( as.data.frame(metrics), metric=resamples[,colsParam, drop=FALSE], FUN=function(x) mean(x, na.rm=TRUE) )
+      puSummaryFunction <- aggregate( as.data.frame(metrics), 
+                                      metric=resamples[,colsParam, 
+                                                       drop=FALSE], 
+                                      FUN=function(x) mean(x, na.rm=TRUE) )
       puSummaryFunctionParam <- puSummaryFunction[,(1:n.param), drop=FALSE]
       puSummaryFunction <- puSummaryFunction[,-(1:n.param)]
-      puSummaryFunctionSD <- aggregate( as.data.frame(metrics), metric=resamples[,colsParam, drop=FALSE], FUN=function(x) sd(x, na.rm=TRUE) )[,-(1:n.param)]
+      puSummaryFunctionSD <- aggregate( as.data.frame(metrics), 
+                                        metric=resamples[,colsParam, drop=FALSE], 
+                                        FUN=function(x) sd(x, na.rm=TRUE) )[,-(1:n.param)]
       colnames(puSummaryFunctionSD) <- paste(colnames(puSummaryFunctionSD), 'SD', sep="")
       
       ### and combine
-      rw.idx <- apply ( object$results[,1:n.param, drop=FALSE], 1, function(p) which(duplicated(rbind(puSummaryFunctionParam, p), fromLast=TRUE)))
+      rw.idx <- apply(object$results[,1:n.param, drop=FALSE], 
+                      1, function(p) which(duplicated(rbind(
+                        puSummaryFunctionParam, p), 
+                        fromLast=TRUE)))
       
       ### check
       #       tst1 <- puSummaryFunctionParam[rw.idx,]
@@ -204,25 +195,35 @@ update.trainOcc <- function ( object,
       #       cbind(puSummaryFunctionParam[rw.idx,], object$results[,(1:n.param)])
       
       if (newMetricsOnly) {
-        object$results <- cbind(object$results[,(1:n.param), drop=FALSE], 
-                                puSummaryFunction[rw.idx,], puSummaryFunctionSD[rw.idx,])
+        object$results <- cbind(object$results[,(1:n.param), 
+                                               drop=FALSE], 
+                                puSummaryFunction[rw.idx,], 
+                                puSummaryFunctionSD[rw.idx,])
       } else {
-        object$results <- cbind(object$results[,(1:n.param), drop=FALSE], 
-                                puSummaryFunction[rw.idx,], oldMetrics, puSummaryFunctionSD[rw.idx,], oldMetricsSD)
+        object$results <- cbind(object$results[,(1:n.param), 
+                                               drop=FALSE], 
+                                puSummaryFunction[rw.idx,], 
+                                oldMetrics, 
+                                puSummaryFunctionSD[rw.idx,], 
+                                oldMetricsSD)
       }
     }
   }
-  ### TODO: when puSummaryFunction and u are given update the final model. 
-  ### else throw a message/warning that the metric has been calculated but the 
-  ### final model has not been changed.
   
-  #  if (any(!is.null(modParam), !is.null(modRow), !is.null(modRank))) {
   funcCallOc <- object$callOc
   time.train <- object$timeOc$train
   
-  mp <- modelPosition(object, modParam=modParam, modRow=modRow, modRank=modRank, by=metric)
-  
-  ### does this help to make the updating of predUn in .constructtrainOcc work?
+  if (!(metric %in% colnames(object$results))) {
+    mp <- modelPosition(object, modRank=1, 
+                        by=info_old$metric)
+    warning(paste("The specified metric is not avaialable.", 
+            "The parameter selection has not been updated!"))
+    metric <- info_old$metric
+  } else {
+    mp <- modelPosition(object, modParam=modParam, 
+                        modRow=modRow, modRank=modRank, 
+                        by=metric)
+  }
   
   object$callUpdateOc <- NULL
   object$dotsOc <- NULL
@@ -233,16 +234,22 @@ update.trainOcc <- function ( object,
   class(object) <- 'train'
   
   nwTrn <- update(object, param = mp$param)
-  nwOc <- .constructtrainOcc(nwTrn, u=u, mask=mask, time.train=time.train, 
-                             funcCall=funcCallOc, funcCallUpdate=funcCallUpdate)
+  nwOc <- .constructtrainOcc(nwTrn, u=u, mask=mask, 
+                             time.train=time.train, 
+                             funcCall=funcCallOc, 
+                             funcCallUpdate=funcCallUpdate)
   object <- nwOc
   
   #  }
   
   if (verbose) {
-    cat(paste("Old / new metric:  ", info_old$metric, " / ", object$metric), "\n", 
-        paste("Results of old (row: ", info_old$row, ") and new (row: ", mp$row, ") models:", sep=""), "\n" )
-    print( signif(object$results[c(info_old$row, mp$row), ], digits = 2) )    
+    cat(paste("Old / new metric:  ", info_old$metric, " / ", 
+              object$metric), "\n", 
+        paste("Results of old (row: ", info_old$row, 
+              ") and new (row: ", mp$row, ") models:", 
+              sep=""), "\n" )
+    print( signif(object$results[c(info_old$row, mp$row), ], 
+                  digits = 2) )    
   }
   
   return(object)
