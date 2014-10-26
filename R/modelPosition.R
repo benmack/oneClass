@@ -39,7 +39,7 @@ modelPosition <- function(x, modParam=NULL, modRow=NULL, modRank=NULL, by=NULL, 
       warning(paste('More than one model selection arguments given.\nThe first of the sequence modParam, modRow, modRow is used to select the model.'))
     
     if ( is.null(modParam) & is.null(modRow) & is.null(modRank) & is.null(by) ) {
-      modParam <- x$bestTune 
+      modParam <- x$bestTune
     } else if ( is.null(modParam) & is.null(modRow) & is.null(modRank) & !is.null(by) ) {
       modRank <- 1
     } 
