@@ -41,13 +41,15 @@ write_hist <-
       lines(perf$th, scaleMetric(perf$puF1, y), lwd=2, lty=2)
       dev.off()
       
-#       png(paste(folder_out, "/", sprintf("%03d", m), "_featurespace", 
-#                 ".png", sep=""))
-#       featurespace(model)
-#       dev.off()
+      if (ncol(model$trainingData)==3) {
+      png(paste(folder_out, "/", sprintf("%03d", m), "_featurespace", 
+                ".png", sep=""))
+      featurespace(model)
+      dev.off()
       save(pred, perf, 
          file = paste(folder_out, "/hist_model-", sprintf("%03d", m), 
                       ".png", sep="") )
+      }
     }
     
   }
