@@ -1,6 +1,6 @@
 #'@export
 write_hist <- 
-  function (model, U, modRows=NULL, thDepPerf=FALSE, 
+  function (model, U, modRows=NULL, thDepPerf=FALSE,
             folder_out=NULL) {
     
     if (is.null(folder_out)) {
@@ -12,7 +12,7 @@ write_hist <-
       modRows <- 1:nrow(model$results)
     
     for (m in modRows) {
-      
+      cat(m, "\n")
       model <- update(model, modRow=m)
       if (thDepPerf) {
         hop <- holdOutPredictions(model, aggregate=TRUE)
@@ -46,10 +46,13 @@ write_hist <-
                 ".png", sep=""))
       featurespace(model)
       dev.off()
+      }
+      
       save(pred, perf, 
          file = paste(folder_out, "/hist_model-", sprintf("%03d", m), 
-                      ".png", sep="") )
-      }
+                      ".RData", sep="") )
+      gc()
+      
     }
     
   }
