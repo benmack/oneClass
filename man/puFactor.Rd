@@ -6,7 +6,7 @@
 puFactor(y, positive = NULL)
 }
 \arguments{
-\item{y}{a vector of labels}
+\item{y}{a vector of labels or a numeric vector of length 2 where the first element specifies the number of positive and the second the number of negative samples.}
 
 \item{positive}{the label of the positive class in y. if not given the id with the smallest
 frequency is used.}
