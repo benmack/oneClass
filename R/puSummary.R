@@ -87,9 +87,12 @@ puSummary <- function(data, lev = NULL, model = NULL) { # , metrics=c("puAuc", "
   puF <- puF[[1]]
   puF1 <- puF1[[1]]
   
+  pn <- min(data[ data[, "obs"]=="un" ,"pos"]) <  0 &
+    max(data[ data[, "obs"]=="un" ,"pos"]) >  0
+  
   # negD01 <- .negD01(tpr=tpr, ppp=ppp) #.negD01:::
   
-  out <- c(tpr=tpr, puP=puP, ppp=ppp, puAuc=puAuc, puF=puF, puF1=puF1) #, "SensPu", "SpecPu")
+  out <- c(tpr=tpr, puP=puP, ppp=ppp, puAuc=puAuc, puF=puF, puF1=puF1, pn=pn) #, "SensPu", "SpecPu")
   
   return(out)
   
