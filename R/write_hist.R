@@ -8,9 +8,10 @@ write_hist <-
       cat("\nSave results in ", folder_out, "\n\n")
       dir.create(folder_out, showWarnings=FALSE)
     }
+    dir.create(folder_out, showWarnings = FALSE, recursive = TRUE)
+    
     if (is.null(modRows))
       modRows <- 1:nrow(model$results)
-    
     for (m in modRows) {
       cat(m, "\n")
       model <- update(model, modRow=m)
@@ -25,8 +26,9 @@ write_hist <-
                                 returnAll=TRUE)
         signif(perf)
       }
-      pred <- predict(model, U, returnRaster=FALSE)
+      pred <- predict(model, U)
       
+      graphics.off()
       png(paste(folder_out, "/", sprintf("%03d", m), "_histogram", 
                 ".png", sep=""))
       h <- hist(model, pred)
@@ -42,15 +44,16 @@ write_hist <-
       dev.off()
       
       if (ncol(model$trainingData)==3) {
-      png(paste(folder_out, "/", sprintf("%03d", m), "_featurespace", 
-                ".png", sep=""))
-      featurespace(model)
-      dev.off()
+        graphics.off()
+        png(paste(folder_out, "/", sprintf("%03d", m), "_featurespace", 
+                  ".png", sep=""))
+        featurespace(model)
+        dev.off()
       }
       
       save(pred, perf, 
-         file = paste(folder_out, "/hist_model-", sprintf("%03d", m), 
-                      ".RData", sep="") )
+           file = paste(folder_out, "/hist_model-", sprintf("%03d", m), 
+                        ".RData", sep="") )
       gc()
       
     }
