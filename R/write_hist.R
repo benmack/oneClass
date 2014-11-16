@@ -1,7 +1,7 @@
 #'@export
 write_hist <- 
-  function (model, U, modRows=NULL, thDepPerf=FALSE,
-            folder_out=NULL) {
+  function (model, x_un, modRows=NULL, thDepPerf=FALSE,
+            folder_out=NULL, format="png") {
     
     if (is.null(folder_out)) {
       folder_out <- paste(tempdir(), "\\iterOneClass", sep="")
@@ -12,6 +12,7 @@ write_hist <-
     
     if (is.null(modRows))
       modRows <- 1:nrow(model$results)
+    
     for (m in modRows) {
       cat(m, "\n")
       model <- update(model, modRow=m)
@@ -24,29 +25,45 @@ write_hist <-
         perf <- puSummaryThLoop(data, 
                                 thresholds = thresholds,
                                 returnAll=TRUE)
-        signif(perf)
       }
-      pred <- predict(model, U)
+      
+      pred <- predict(model, x_un)
       
       graphics.off()
-      png(paste(folder_out, "/", sprintf("%03d", m), "_histogram", 
-                ".png", sep=""))
+      if (format == "png") {
+        png(paste(folder_out, "/", sprintf("%03d", m), 
+                  "_histogram", ".png", sep=""))
+      } else if (format == "pdf") {
+        pdf(paste(folder_out, "/", sprintf("%03d", m), 
+                  "_histogram", ".pdf", sep=""))
+      } else {
+        error ('Supported format: \'pdf\', \'png\'.')
+      }
+      
       h <- hist(model, pred)
-      
       y <- c(0, h$ylim[2])
-      scaleMetric <- function ( x, y )
-        approx(range(x), y, xou=x)$y
-      lines(perf$th, perf$tpr*h$ylim[2], lwd=2, col="darkgrey")
-      lines(perf$th, perf$ppp*h$ylim[2], lwd=2, col="darkgrey")
-      lines(perf$th, perf$puP*h$ylim[2], lwd=2, col="darkgrey")
-      lines(perf$th, scaleMetric(perf$puF, y), lwd=2)
-      lines(perf$th, scaleMetric(perf$puF1, y), lwd=2, lty=2)
-      dev.off()
       
+      if (thDepPerf) {
+        scaleMetric <- function ( x, y )
+          approx(range(x), y, xou=x)$y
+        #lines(perf$th, perf$tpr*h$ylim[2], lwd=2, col="darkgrey")
+        #lines(perf$th, perf$ppp*h$ylim[2], lwd=2, col="darkgrey")
+        #lines(perf$th, perf$puP*h$ylim[2], lwd=2, col="darkgrey")
+        lines(perf$th, scaleMetric(perf$puF, y), lwd=2)
+        lines(perf$th, scaleMetric(perf$puF1, y), lwd=2, lty=2)
+        dev.off()
+      }
       if (ncol(model$trainingData)==3) {
         graphics.off()
+        if (format == "png") {
         png(paste(folder_out, "/", sprintf("%03d", m), "_featurespace", 
                   ".png", sep=""))
+      } else if (format == "pdf") {
+        pdf(paste(folder_out, "/", sprintf("%03d", m), "_featurespace", 
+                  ".pdf", sep=""))
+      } else {
+        error ('Supported format: \'pdf\', \'png\'.')
+      }
         featurespace(model)
         dev.off()
       }
