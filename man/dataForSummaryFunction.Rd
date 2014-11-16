@@ -3,12 +3,16 @@
 \alias{dataForSummaryFunction}
 \title{dataForSummaryFunction}
 \usage{
-dataForSummaryFunction(x, threshold = 0)
+dataForSummaryFunction(x, threshold = 0, newUn = NULL, ...)
 }
 \arguments{
-\item{x}{an object of class \code{\link{holdOutPredictions}}}
+\item{x}{an object of class \code{\link{holdOutPredictions}} or \code{\link{trainOcc}}}
 
 \item{threshold}{threshold used to binarize the data}
+
+\item{newUn}{predictions of new unlabeled samples to be used to replace the unlabeled hold-out predictions of \code{x}}
+
+\item{...}{other in case \code{x} is \code{\link{trainOcc}}, arguments that can be passed to \code{\link{holdOutPredictions}}}
 }
 \value{
 a data frame that can be passed to the \code{data} argument of \code{\link{puSummary}} function.
