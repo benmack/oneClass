@@ -113,7 +113,8 @@
 #' }
 #' @export
 hist.trainOcc <- function(x, predUn=NULL, th=NULL, cab=NULL, main=NULL, 
-                          ylim=NULL, breaks='Scott', col="grey", border=NA, ...) { # 
+                          ylim=NULL, breaks='Scott', col="grey", border=NA, 
+                          xlim=NULL, ...) { # 
   if (!is.null(x$holdOut$pos) & !is.null(x$holdOut$un)) {
     hop <- list(pos = x$holdOut$pos, un = x$holdOut$un)
   } else {
@@ -122,11 +123,17 @@ hist.trainOcc <- function(x, predUn=NULL, th=NULL, cab=NULL, main=NULL,
   
   if (!is.null(predUn)) {
     predictive.value <- predUn
+    if (is.null(xlim))
+      xlim <- range(predictive.value)
   } else if (!is.null(x$predUn)) {
     predictive.value <- x$predUn
+    if (is.null(xlim))
+      xlim <- range(predictive.value)
   } else if ( is.null(predUn) & is.null(x$predUn) ) {
     warning('No predicted unlabeled data found.\nUnlabeled hold-out predictions used to build the histogram.')
     predictive.value <- hop$un
+    if (is.null(xlim))
+      xlim <- range(c(unlist(hop$un), unlist(hop$pos)))
   }
   
   h <- hist(predictive.value, plot=FALSE, breaks=breaks, ...)
@@ -170,7 +177,7 @@ hist.trainOcc <- function(x, predUn=NULL, th=NULL, cab=NULL, main=NULL,
       col[idx] <- cab$colors[i]
     }
   }
-  plot(h, freq=FALSE, ylim=ylim, main=main, col=col, border=border, ...)
+  plot(h, freq=FALSE, ylim=ylim, xlim=xlim, main=main, col=col, border=border, ...)
   #   legend("topright", c("TPR", "1-PPP (train, U)", "1-PPP (all U)"), 
   #          lwd=c(2,2,2), lty=c(1,1,5), col=c("black", "black", clrs$pos))
   #   

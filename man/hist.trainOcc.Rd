@@ -6,7 +6,7 @@
 \usage{
 \method{hist}{trainOcc}(x, predUn = NULL, th = NULL, cab = NULL,
   main = NULL, ylim = NULL, breaks = "Scott", col = "grey",
-  border = NA, ...)
+  border = NA, xlim = NULL, ...)
 }
 \arguments{
 \item{x}{an object of class \code{\link{trainOcc}}.}
