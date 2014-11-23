@@ -172,10 +172,17 @@ hist.trainOcc <- function(x, predUn=NULL, th=NULL, cab=NULL, main=NULL,
   ylim[1] <- 0-diff(c(0,ylim[2]))*.15
   if (!is.null(cab) & is.list(cab)) {
     col <- rep(NA, length(h$mids))
-    for(i in 1:(length(cab$breaks)-1)) {
-      idx <- h$mids>=cab$breaks[i] & h$mids<cab$breaks[i+1]
+    for(i in 1:(length(cab$colors))) {
+      if (i==1) {
+        idx <- h$mids<cab$breaks[i]
+      } else if (i==length(cab$colors)) {
+        idx <- h$mids>=cab$breaks[i-1]
+      } else {
+        idx <- h$mids>=cab$breaks[i-1] & h$mids<cab$breaks[i]
+      }
       col[idx] <- cab$colors[i]
     }
+    
   }
   plot(h, freq=FALSE, ylim=ylim, xlim=xlim, main=main, col=col, border=border, ...)
   #   legend("topright", c("TPR", "1-PPP (train, U)", "1-PPP (all U)"), 
