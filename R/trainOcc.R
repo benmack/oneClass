@@ -34,6 +34,7 @@
 #' @param index a list of training indices for the resampling iterations. This will be passed 
 #' to the identically names argument of the \code{\link{trainControl}} function unless the argument \code{trControl} is not \code{NULL}.
 #' @param allowParallel enable or disable parallel processing. Even if \code{TRUE}, parallel processing is only possible if a parallel backend is loaded and available.
+#' @param verboseIter Logical for printing progress, does only work if parallel processing is disabled (defaults to \code{TRUE}).
 #' @param ... other arguments that can be passed to train. Be careful with trainControl... !
 #' @return A \code{\link{trainOcc}} object with is a child of the object \code{train}.
 #' @examples
@@ -111,7 +112,7 @@
 #' @export
 trainOcc <- function ( x, y, positive=NULL, method="biasedsvm", metric=NULL, 
                        trControl=NULL, index=NULL, 
-                       allowParallel=TRUE, ...) {
+                       allowParallel=TRUE, verboseIter=TRUE, ...) {
   
   funcCall <- match.call(expand.dots = TRUE)
   u=NULL
@@ -157,7 +158,7 @@ trainOcc <- function ( x, y, positive=NULL, method="biasedsvm", metric=NULL,
                                 classProbs=TRUE, 
                                 savePredictions = TRUE,
                                 returnResamp = "all",
-                                verboseIter = FALSE, 
+                                verboseIter = verboseIter, 
                                 allowParallel = allowParallel)
     } else {
       trControl <- trainControl(index=index, 
@@ -165,7 +166,7 @@ trainOcc <- function ( x, y, positive=NULL, method="biasedsvm", metric=NULL,
                                 classProbs=TRUE, 
                                 savePredictions = TRUE,
                                 returnResamp = "all",
-                                verboseIter = FALSE, 
+                                verboseIter = verboseIter, 
                                 allowParallel = allowParallel)
     }
   }

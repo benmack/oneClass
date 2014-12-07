@@ -4,7 +4,8 @@
 \title{Fit a one-class classification model over Different Tuning Parameters.}
 \usage{
 trainOcc(x, y, positive = NULL, method = "biasedsvm", metric = NULL,
-  trControl = NULL, index = NULL, allowParallel = TRUE, ...)
+  trControl = NULL, index = NULL, allowParallel = TRUE,
+  verboseIter = TRUE, ...)
 }
 \arguments{
 \item{x}{a data frame with the training data. The samples are in the rows and the features in the columns.}
@@ -25,6 +26,8 @@ If this argument is given, make sure that it makes sense (see details).}
 to the identically names argument of the \code{\link{trainControl}} function unless the argument \code{trControl} is not \code{NULL}.}
 
 \item{allowParallel}{enable or disable parallel processing. Even if \code{TRUE}, parallel processing is only possible if a parallel backend is loaded and available.}
+
+\item{verboseIter}{Logical for printing progress, does only work if parallel processing is disabled (defaults to \code{TRUE}).}
 
 \item{...}{other arguments that can be passed to train. Be careful with trainControl... !}
 }
