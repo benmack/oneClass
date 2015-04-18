@@ -15,7 +15,7 @@ histUev(model, ev, yLimits = NULL, ...)
 \item{...}{arguments that can be passed to \code{\link{hist.trainOcc}}, e.g. \code{pred}}
 }
 \value{
-Diagnostic plot with threshold depenent accuracy.
+yLimits (invisible) and the diagnostic plot with threshold depenent accuracy.
 }
 \description{
 The histogram of the predicted unlabeled data is shown together with the

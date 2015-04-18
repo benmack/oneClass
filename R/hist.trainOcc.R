@@ -121,6 +121,11 @@ hist.trainOcc <- function(x, predUn=NULL, th=NULL, cab=NULL, main=NULL,
     hop <- holdOutPredictions(x, aggregate=TRUE)
   }
   
+  trSet_pos <- x$trainingData[x$trainingData[,ncol(x$trainingData)]=="pos", 
+                              -ncol(x$trainingData)]
+  pred_tr_pos <- predict(x, trSet_pos)
+   
+  
   if (!is.null(predUn)) {
     predictive.value <- predUn
     if (is.null(xlim))
@@ -148,7 +153,11 @@ hist.trainOcc <- function(x, predUn=NULL, th=NULL, cab=NULL, main=NULL,
     ans <- boxplot(unlist(hop$pos), plot=FALSE)$stat[1]
     maxInRelevantRange <- max(h$density[h$mids>=ans & is.finite(h$density)])
     # ylim <- .ylimForHist( h, positives=unlist(hop$pos) )
-    ylim <- c(0, maxInRelevantRange*2) # range(h$density)
+    if (maxInRelevantRange < (max(h$density[is.finite(h$density)]))) {
+      ylim <- c(0, maxInRelevantRange*2) # range(h$density)
+    } else {
+      ylim <- c(0, maxInRelevantRange) # range(h$density)
+    }
     if (any(!is.finite(ylim)))
       ylim <- c(0, max( h$density ))
   }
@@ -194,6 +203,9 @@ hist.trainOcc <- function(x, predUn=NULL, th=NULL, cab=NULL, main=NULL,
   #   lines(percentiles.pnp, ylim[2]-prb.scld, lwd=2, lty=5)
   #   
   bxwx <- abs(ylim[1])*.75
+
+  boxplot(pred_tr_pos, frame=FALSE, axes=FALSE, y=0, horizontal=TRUE, 
+          at=ylim[1]*.25, add=TRUE, boxwex=bxwx, col="#a6cee3" )
   boxplot(unlist(hop$pos), frame=FALSE, axes=FALSE, y=0, horizontal=TRUE, 
           at=ylim[1]*.5, add=TRUE, boxwex=bxwx, col=clrs$pos )
   

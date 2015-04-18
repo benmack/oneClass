@@ -18,9 +18,13 @@ pppAtLowerWhisker <- function (x, modRow=NULL, u=NULL) {
     if (!is.null(u)) {
       hop$un <- predict(model, u)  
     }
-    th[i] =boxplot(hop$pos, plot=FALSE)$stats[1]
+    bpsP <- boxplot.stats(hop$pos)$stats
+    bpsU <- boxplot.stats(hop$un)$stats
+    th[i]=bpsP[1]
     ppp[i] <- sum(hop$un>=th)/length(hop$un)
+    
+    sDff <- (bpsP[1]-bpsU[5])/(bpsP[5]-bpsU[1])
   }
   
-  return(cbind(th=th, ppp=ppp))
+  return(cbind(th=th, ppp=ppp, sDff=sDff))
 }
