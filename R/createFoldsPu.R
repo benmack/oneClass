@@ -87,11 +87,11 @@ createFoldsPu <- function (y, k, positive=NULL, indepUn=NULL, seed=NULL) {
   }
   
   if (!is.null(indepUn)) {
-    if (length(indepUn)==1 & indepUn>0 & indepUn<1)
+    if (length(indepUn)==1 & indepUn[1]>0 & indepUn[1]<1) {
       if (!is.null(seed))
         set.seed(seed)
-      indepUn <- sample(which(y=="un"), round(sum(y=="un")*indepUn, 0) )
-  
+      indepUn <- sample(which(y=="un"), round(sum(y=="un")*indepUn, 0))
+    }
   }
   if (is.logical(indepUn))
     indepUn <- which(indepUn)
