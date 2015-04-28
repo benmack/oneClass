@@ -8,7 +8,7 @@
 #' @param modRow the model in \code{x} used to predict the data with which \code{nmm} has been estimated. If \code{null} the \code{finalModel} (\code{x$finalModel}) is used.
 #' @param fnamePlot if given the diagnostic is saved to the specified filename (defualt is \code{NULL})
 #' @export
-nmm_selection_criteria <- function(x, un=NULL, nmm=NULL, modRow=NULL, unFromNmm=FALSE, fnamePlot=NULL) {
+nmm_selection_criteria <- function(x, un=NULL, nmm=NULL, modRow=NULL, predU=NULL, predFromNumm=FALSE, fnamePlot=NULL) {
  
   # allow 
   #  #' @param aggregateHop should the hold-out predictions be aggregated (defualt is \code{TRUE})
@@ -82,7 +82,7 @@ nmm_selection_criteria <- function(x, un=NULL, nmm=NULL, modRow=NULL, unFromNmm=
     return(rtrn)
   }
   
-  getOverlap <- function(nmm, theo) {
+  getOverlap <- function(nmm, theo, th=NULL) {
     if (is.null(th)) {
       rng <- range(qnorm(c(.01, .99), theo$mean, theo$sd))
       olp <- integrate(min_f1f2, lower=rng[1], upper=rng[2], 
@@ -183,10 +183,13 @@ nmm_selection_criteria <- function(x, un=NULL, nmm=NULL, modRow=NULL, unFromNmm=
   
   ### here a loop would begin in the bootstrap case
   pos <- hop$pos[[1]]
-  if (unFromNmm)  {
+  if (predFromNumm)  {
     un <- nmm$data
   } else {
     un <- hop$un[[1]]
+  }
+  if (!is.null(predU)) {
+    un <- predU
   }
   
   empi <- list(mean=mean(pos), 
@@ -196,7 +199,6 @@ nmm_selection_criteria <- function(x, un=NULL, nmm=NULL, modRow=NULL, unFromNmm=
   
   ### ------------------------------------
   ### overlaps
-  olap <- getOverlap(nmm, theo)
   olap <- getOverlap(nmm, theo)
   
   olap.pp <- getOverlap_PP(theo, empi)
