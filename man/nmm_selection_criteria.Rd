@@ -4,7 +4,7 @@
 \title{nmm_selection_criteria}
 \usage{
 nmm_selection_criteria(x, un = NULL, nmm = NULL, modRow = NULL,
-  fnamePlot = NULL)
+  predU = NULL, predFromNumm = FALSE, fnamePlot = NULL)
 }
 \arguments{
 \item{x}{an object of class \code{trainOcc}}
