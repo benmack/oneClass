@@ -213,7 +213,7 @@ trainOcc <- function ( x, y, positive=NULL, method="biasedsvm", metric=NULL,
   ### final model
   isPuPart <- .isPuPartition(oc)
   oc$isPuPartition <- isPuPart
-  if (isPuPart) {
+  if (isPuPart & oc$modelInfo$label != "one-class svm") {
     oc$trainingDataValUn <- oc$trainingData[attr(isPuPart, "indexUnVal"), ]
     oc$trainingData <- oc$trainingData[-attr(isPuPart, "indexUnVal"), ]
     oc <- update(oc, modRank=1)
