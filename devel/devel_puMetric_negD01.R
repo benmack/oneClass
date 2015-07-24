@@ -4,6 +4,8 @@ cl <- makeCluster(detectCores())
 registerDoParallel(cl)
 require(ROCR)
 require(dismo)
+require(akima)
+require(RColorBrewer)
 
 data(bananas)
 y <- bananas$y[]
@@ -80,3 +82,25 @@ par(pty="s")
 image(fit.acc, col=brewer.pal(11, "RdBu"))
 points(rep(0, 10), rep(1, 10), cex=c(1, seq(10, 100, length.out=10)))
 points(df$PPP, df$TPR, pch=16, cex=0.1)
+
+
+grd <- expand.grid("k"=seq(-1, 1, length.out=100), 
+                   "A"=seq(0, 1, length.out=50))
+grd$c1 <- (grd$A+grd$k)/2
+grd$c2 <- (grd$A^2+grd$k^2)/(grd$A+grd$k)
+
+grd <- grd[!grd$c2==Inf,]
+
+fc1 <- interp(grd$A, grd$k, grd$c1,
+              xo=seq(0, 1, length = 100),
+              yo=seq(0, 1, length = 100),
+              duplicate="strip")
+fc2 <- interp(grd$A, grd$k, grd$c2,
+              xo=seq(0, 1, length = 100),
+              yo=seq(0, 1, length = 100),
+              duplicate="strip")
+
+par(mfrow=c(1,2), pty="s")
+image(fc1, col=brewer.pal(11, "RdBu"))
+image(fc2, col=brewer.pal(11, "RdBu"))
+
