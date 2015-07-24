@@ -1,0 +1,43 @@
+Fri Jul 24 16:10:07 CEST 2015
+MaxEnt version 3.3.3k
+Reading file absence
+readGrid: max memory 477626368, total allocated 62914560, free 40759528, used 22155032, increment -4890248
+Reading samples from presence
+Read samples: max memory 477626368, total allocated 62914560, free 40290704, used 22623856, increment 468824
+Adding samples to background in feature space
+Command line used:  autorun -e devel/maxent_tuneFC/maxentResults01/fc-L_beta-10_uid-566/absence -o devel/maxent_tuneFC/maxentResults01/fc-L_beta-10_uid-566 -s devel/maxent_tuneFC/maxentResults01/fc-L_beta-10_uid-566/presence -z autofeature=false betamultiplier=10 linear=true quadratic=false hinge=false product=false threshold=false
+Command line to repeat: java density.MaxEnt nowarnings noprefixes outputdirectory=devel/maxent_tuneFC/maxentResults01/fc-L_beta-10_uid-566 samplesfile=devel/maxent_tuneFC/maxentResults01/fc-L_beta-10_uid-566/presence environmentallayers=devel/maxent_tuneFC/maxentResults01/fc-L_beta-10_uid-566/absence betamultiplier=10.0 noquadratic noproduct nothreshold nohinge autorun novisible noautofeature
+Species: species
+Layers: x1 x2
+Layertypes: Continuous Continuous
+outputdirectory: devel/maxent_tuneFC/maxentResults01/fc-L_beta-10_uid-566
+samplesfile: devel/maxent_tuneFC/maxentResults01/fc-L_beta-10_uid-566/presence
+environmentallayers: devel/maxent_tuneFC/maxentResults01/fc-L_beta-10_uid-566/absence
+betamultiplier: 10.0
+quadratic: false
+product: false
+threshold: false
+hinge: false
+autorun: true
+visible: false
+autofeature: false
+
+getSamples: max memory 477626368, total allocated 62914560, free 40290704, used 22623856, increment 0
+Making features
+makeFeatures: max memory 477626368, total allocated 62914560, free 40290704, used 22623856, increment 0
+species: 
+Regularization values: linear/quadratic/product: 1.000, categorical: 0.530, threshold: 1.920, hinge: 0.500
+8 samples
+Density: max memory 477626368, total allocated 62914560, free 40290704, used 22623856, increment 0
+linearPredictor: max memory 477626368, total allocated 62914560, free 40290704, used 22623856, increment 0
+FeaturedSpace: max memory 477626368, total allocated 62914560, free 40290704, used 22623856, increment 0
+Sequential: max memory 477626368, total allocated 62914560, free 40290704, used 22623856, increment 0
+Initial loss: 4.584967478670572
+20: time = 0,000000 loss = 4,584967
+Resulting gain: 0.0
+Leaving out Fixed cumulative value 5 from threshold table, as uninitialized
+Leaving out Fixed cumulative value 10 from threshold table, as uninitialized
+Leaving out Equate entropy of thresholded and original distributions from threshold table, as uninitialized
+Projecting...
+Writing file devel\maxent_tuneFC\maxentResults01\fc-L_beta-10_uid-566\species.csv
+Ending

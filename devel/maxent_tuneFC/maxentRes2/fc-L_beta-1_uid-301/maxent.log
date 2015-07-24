@@ -1,0 +1,35 @@
+Fri Jul 24 15:29:52 CEST 2015
+MaxEnt version 3.3.3k
+Reading file absence
+readGrid: max memory 477626368, total allocated 63438848, free 14753256, used 48685592, increment -4378600
+Reading samples from presence
+Read samples: max memory 477626368, total allocated 63438848, free 14753256, used 48685592, increment 0
+Adding samples to background in feature space
+Command line used:  autorun -e devel/maxent_tuneFC/maxentRes2/fc-L_beta-1_uid-301/absence -o devel/maxent_tuneFC/maxentRes2/fc-L_beta-1_uid-301 -s devel/maxent_tuneFC/maxentRes2/fc-L_beta-1_uid-301/presence -z autofeature=false betamultiplier=1 linear=true
+Command line to repeat: java density.MaxEnt nowarnings noprefixes outputdirectory=devel/maxent_tuneFC/maxentRes2/fc-L_beta-1_uid-301 samplesfile=devel/maxent_tuneFC/maxentRes2/fc-L_beta-1_uid-301/presence environmentallayers=devel/maxent_tuneFC/maxentRes2/fc-L_beta-1_uid-301/absence autorun novisible noautofeature
+Species: species
+Layers: x1 x2
+Layertypes: Continuous Continuous
+outputdirectory: devel/maxent_tuneFC/maxentRes2/fc-L_beta-1_uid-301
+samplesfile: devel/maxent_tuneFC/maxentRes2/fc-L_beta-1_uid-301/presence
+environmentallayers: devel/maxent_tuneFC/maxentRes2/fc-L_beta-1_uid-301/absence
+autorun: true
+visible: false
+autofeature: false
+
+getSamples: max memory 477626368, total allocated 63438848, free 14275024, used 49163824, increment 478232
+Making features
+makeFeatures: max memory 477626368, total allocated 63438848, free 14275024, used 49163824, increment 0
+species: 
+Regularization values: linear/quadratic/product: 1.600, categorical: 0.500, threshold: 1.900, hinge: 0.500
+10 samples
+Density: max memory 477626368, total allocated 63438848, free 14275024, used 49163824, increment 0
+linearPredictor: max memory 477626368, total allocated 63438848, free 14275024, used 49163824, increment 0
+FeaturedSpace: max memory 477626368, total allocated 63438848, free 14275024, used 49163824, increment 0
+Sequential: max memory 477626368, total allocated 63438848, free 14275024, used 49163824, increment 0
+Initial loss: 4.0943445622221
+160: time = 0,015000 loss = 3,477633
+Resulting gain: 0.6167118134685761
+Projecting...
+Writing file devel\maxent_tuneFC\maxentRes2\fc-L_beta-1_uid-301\species.csv
+Ending

@@ -1,0 +1,39 @@
+Fri Jul 24 15:54:46 CEST 2015
+MaxEnt version 3.3.3k
+Reading file absence
+readGrid: max memory 477626368, total allocated 64487424, free 51580384, used 12907040, increment -5585144
+Reading samples from presence
+Read samples: max memory 477626368, total allocated 64487424, free 51580384, used 12907040, increment 0
+Adding samples to background in feature space
+Command line used:  autorun -e devel/maxent_tuneFC/maxentRes6/fc-D_beta-1_uid-463/absence -o devel/maxent_tuneFC/maxentRes6/fc-D_beta-1_uid-463 -s devel/maxent_tuneFC/maxentRes6/fc-D_beta-1_uid-463/presence -z autofeature=false betamultiplier=1 linear=true quadratic=false hinge=false product=false threshold=false
+Command line to repeat: java density.MaxEnt nowarnings noprefixes outputdirectory=devel/maxent_tuneFC/maxentRes6/fc-D_beta-1_uid-463 samplesfile=devel/maxent_tuneFC/maxentRes6/fc-D_beta-1_uid-463/presence environmentallayers=devel/maxent_tuneFC/maxentRes6/fc-D_beta-1_uid-463/absence noquadratic noproduct nothreshold nohinge autorun novisible noautofeature
+Species: species
+Layers: x1 x2
+Layertypes: Continuous Continuous
+outputdirectory: devel/maxent_tuneFC/maxentRes6/fc-D_beta-1_uid-463
+samplesfile: devel/maxent_tuneFC/maxentRes6/fc-D_beta-1_uid-463/presence
+environmentallayers: devel/maxent_tuneFC/maxentRes6/fc-D_beta-1_uid-463/absence
+quadratic: false
+product: false
+threshold: false
+hinge: false
+autorun: true
+visible: false
+autofeature: false
+
+getSamples: max memory 477626368, total allocated 64487424, free 51085848, used 13401576, increment 494536
+Making features
+makeFeatures: max memory 477626368, total allocated 64487424, free 51085848, used 13401576, increment 0
+species: 
+Regularization values: linear/quadratic/product: 1.000, categorical: 0.590, threshold: 1.960, hinge: 0.500
+4 samples
+Density: max memory 477626368, total allocated 64487424, free 51085848, used 13401576, increment 0
+linearPredictor: max memory 477626368, total allocated 64487424, free 51085848, used 13401576, increment 0
+FeaturedSpace: max memory 477626368, total allocated 64487424, free 51085848, used 13401576, increment 0
+Sequential: max memory 477626368, total allocated 64487424, free 51085848, used 13401576, increment 0
+Initial loss: 3.9889840465642745
+60: time = 0,001000 loss = 3,718656
+Resulting gain: 0.27032817573764456
+Projecting...
+Writing file devel\maxent_tuneFC\maxentRes6\fc-D_beta-1_uid-463\species.csv
+Ending

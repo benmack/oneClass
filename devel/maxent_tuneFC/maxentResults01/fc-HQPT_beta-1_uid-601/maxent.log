@@ -1,0 +1,36 @@
+Fri Jul 24 16:10:40 CEST 2015
+MaxEnt version 3.3.3k
+Reading file absence
+readGrid: max memory 477626368, total allocated 62914560, free 31868352, used 31046208, increment -5480288
+Reading samples from presence
+Read samples: max memory 477626368, total allocated 62914560, free 31399224, used 31515336, increment 469128
+Adding samples to background in feature space
+Command line used:  autorun -e devel/maxent_tuneFC/maxentResults01/fc-HQPT_beta-1_uid-601/absence -o devel/maxent_tuneFC/maxentResults01/fc-HQPT_beta-1_uid-601 -s devel/maxent_tuneFC/maxentResults01/fc-HQPT_beta-1_uid-601/presence -z autofeature=false betamultiplier=1 linear=false quadratic=true hinge=true product=true threshold=true
+Command line to repeat: java density.MaxEnt nowarnings noprefixes outputdirectory=devel/maxent_tuneFC/maxentResults01/fc-HQPT_beta-1_uid-601 samplesfile=devel/maxent_tuneFC/maxentResults01/fc-HQPT_beta-1_uid-601/presence environmentallayers=devel/maxent_tuneFC/maxentResults01/fc-HQPT_beta-1_uid-601/absence nolinear autorun novisible noautofeature
+Species: species
+Layers: x1 x2
+Layertypes: Continuous Continuous
+outputdirectory: devel/maxent_tuneFC/maxentResults01/fc-HQPT_beta-1_uid-601
+samplesfile: devel/maxent_tuneFC/maxentResults01/fc-HQPT_beta-1_uid-601/presence
+environmentallayers: devel/maxent_tuneFC/maxentResults01/fc-HQPT_beta-1_uid-601/absence
+linear: false
+autorun: true
+visible: false
+autofeature: false
+
+getSamples: max memory 477626368, total allocated 62914560, free 31399224, used 31515336, increment 0
+Making features
+makeFeatures: max memory 477626368, total allocated 62914560, free 31399224, used 31515336, increment 0
+species: 
+Regularization values: linear/quadratic/product: 1.800, categorical: 0.530, threshold: 1.920, hinge: 0.500
+8 samples
+Density: max memory 477626368, total allocated 62914560, free 30930136, used 31984424, increment 469088
+linearPredictor: max memory 477626368, total allocated 62914560, free 30930136, used 31984424, increment 0
+FeaturedSpace: max memory 477626368, total allocated 62914560, free 30930136, used 31984424, increment 0
+Sequential: max memory 477626368, total allocated 62914560, free 30930136, used 31984424, increment 0
+Initial loss: 4.584967478670572
+180: time = 0,022000 loss = 3,775680
+Resulting gain: 0.8092879036292127
+Projecting...
+Writing file devel\maxent_tuneFC\maxentResults01\fc-HQPT_beta-1_uid-601\species.csv
+Ending

@@ -1,0 +1,36 @@
+Fri Jul 24 15:20:48 CEST 2015
+MaxEnt version 3.3.3k
+Reading file absence
+readGrid: max memory 477626368, total allocated 76546048, free 70630312, used 5915736, increment -12093752
+Reading samples from presence
+Read samples: max memory 477626368, total allocated 76546048, free 70630312, used 5915736, increment 0
+Adding samples to background in feature space
+Command line used:  autorun -e devel/maxent_tuneFC/maxentRes/fc-LQbeta-0.1_uid-55/absence -o devel/maxent_tuneFC/maxentRes/fc-LQbeta-0.1_uid-55 -s devel/maxent_tuneFC/maxentRes/fc-LQbeta-0.1_uid-55/presence -z autofeature=false betamultiplier=0.1 linear=true quadratic=true
+Command line to repeat: java density.MaxEnt nowarnings noprefixes outputdirectory=devel/maxent_tuneFC/maxentRes/fc-LQbeta-0.1_uid-55 samplesfile=devel/maxent_tuneFC/maxentRes/fc-LQbeta-0.1_uid-55/presence environmentallayers=devel/maxent_tuneFC/maxentRes/fc-LQbeta-0.1_uid-55/absence betamultiplier=0.1 autorun novisible noautofeature
+Species: species
+Layers: x1 x2
+Layertypes: Continuous Continuous
+outputdirectory: devel/maxent_tuneFC/maxentRes/fc-LQbeta-0.1_uid-55
+samplesfile: devel/maxent_tuneFC/maxentRes/fc-LQbeta-0.1_uid-55/presence
+environmentallayers: devel/maxent_tuneFC/maxentRes/fc-LQbeta-0.1_uid-55/absence
+betamultiplier: 0.1
+autorun: true
+visible: false
+autofeature: false
+
+getSamples: max memory 477626368, total allocated 76546048, free 70630312, used 5915736, increment 0
+Making features
+makeFeatures: max memory 477626368, total allocated 76546048, free 70630312, used 5915736, increment 0
+species: 
+Regularization values: linear/quadratic/product: 0.873, categorical: 0.250, threshold: 1.820, hinge: 0.500
+18 samples
+Density: max memory 477626368, total allocated 76546048, free 69931576, used 6614472, increment 698736
+linearPredictor: max memory 477626368, total allocated 76546048, free 69931576, used 6614472, increment 0
+FeaturedSpace: max memory 477626368, total allocated 76546048, free 69931576, used 6614472, increment 0
+Sequential: max memory 477626368, total allocated 76546048, free 69931576, used 6614472, increment 0
+Initial loss: 4.68213122712422
+500: time = 0,067000 loss = 3,280332
+Resulting gain: 1.4017993527119037
+Projecting...
+Writing file devel\maxent_tuneFC\maxentRes\fc-LQbeta-0.1_uid-55\species.csv
+Ending

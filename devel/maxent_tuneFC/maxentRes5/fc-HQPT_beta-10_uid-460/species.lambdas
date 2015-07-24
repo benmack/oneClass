@@ -1,0 +1,6 @@
+x1, 0.0, -9.83271598815918, 6.491219997406006
+x2, 0.0, -8.53293228149414, 5.743815898895264
+linearPredictorNormalizer, 0.0
+densityNormalizer, 60.0
+numBackgroundPoints, 60
+entropy, 4.094344562222102

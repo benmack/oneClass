@@ -1,0 +1,11 @@
+Fri Jul 24 15:59:22 CEST 2015
+MaxEnt version 3.3.3k
+Reading file absence
+readGrid: max memory 477626368, total allocated 64487424, free 29245960, used 35241464, increment 1886288
+Error reading files: java.io.IOException: File devel/maxent_tuneFC/maxentRes7/fc-L_beta-10_uid-508/absence: For input string: "A"
+java.io.IOException: File devel/maxent_tuneFC/maxentRes7/fc-L_beta-10_uid-508/absence: For input string: "A"
+	at density.GridSetFromFile.<init>(GridSetFromFile.java:68)
+	at density.Runner.initializeGrids(Runner.java:165)
+	at density.Runner.start(Runner.java:281)
+	at mebridge.fit(mebridge.java:45)
+Ending

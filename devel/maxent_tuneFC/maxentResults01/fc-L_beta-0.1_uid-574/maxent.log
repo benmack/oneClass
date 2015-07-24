@@ -1,0 +1,40 @@
+Fri Jul 24 16:10:11 CEST 2015
+MaxEnt version 3.3.3k
+Reading file absence
+readGrid: max memory 477626368, total allocated 62914560, free 32514072, used 30400488, increment -5655472
+Reading samples from presence
+Read samples: max memory 477626368, total allocated 62914560, free 32046832, used 30867728, increment 467240
+Adding samples to background in feature space
+Command line used:  autorun -e devel/maxent_tuneFC/maxentResults01/fc-L_beta-0.1_uid-574/absence -o devel/maxent_tuneFC/maxentResults01/fc-L_beta-0.1_uid-574 -s devel/maxent_tuneFC/maxentResults01/fc-L_beta-0.1_uid-574/presence -z autofeature=false betamultiplier=0.1 linear=true quadratic=false hinge=false product=false threshold=false
+Command line to repeat: java density.MaxEnt nowarnings noprefixes outputdirectory=devel/maxent_tuneFC/maxentResults01/fc-L_beta-0.1_uid-574 samplesfile=devel/maxent_tuneFC/maxentResults01/fc-L_beta-0.1_uid-574/presence environmentallayers=devel/maxent_tuneFC/maxentResults01/fc-L_beta-0.1_uid-574/absence betamultiplier=0.1 noquadratic noproduct nothreshold nohinge autorun novisible noautofeature
+Species: species
+Layers: x1 x2
+Layertypes: Continuous Continuous
+outputdirectory: devel/maxent_tuneFC/maxentResults01/fc-L_beta-0.1_uid-574
+samplesfile: devel/maxent_tuneFC/maxentResults01/fc-L_beta-0.1_uid-574/presence
+environmentallayers: devel/maxent_tuneFC/maxentResults01/fc-L_beta-0.1_uid-574/absence
+betamultiplier: 0.1
+quadratic: false
+product: false
+threshold: false
+hinge: false
+autorun: true
+visible: false
+autofeature: false
+
+getSamples: max memory 477626368, total allocated 62914560, free 32046832, used 30867728, increment 0
+Making features
+makeFeatures: max memory 477626368, total allocated 62914560, free 32046832, used 30867728, increment 0
+species: 
+Regularization values: linear/quadratic/product: 1.000, categorical: 0.530, threshold: 1.920, hinge: 0.500
+8 samples
+Density: max memory 477626368, total allocated 62914560, free 32046832, used 30867728, increment 0
+linearPredictor: max memory 477626368, total allocated 62914560, free 32046832, used 30867728, increment 0
+FeaturedSpace: max memory 477626368, total allocated 62914560, free 32046832, used 30867728, increment 0
+Sequential: max memory 477626368, total allocated 62914560, free 32046832, used 30867728, increment 0
+Initial loss: 4.584967478670572
+60: time = 0,000000 loss = 4,131999
+Resulting gain: 0.4529685663472005
+Projecting...
+Writing file devel\maxent_tuneFC\maxentResults01\fc-L_beta-0.1_uid-574\species.csv
+Ending

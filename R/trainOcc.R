@@ -192,11 +192,14 @@ trainOcc <- function ( x, y, positive=NULL, method="biasedsvm", metric=NULL,
   ### -----------------------------------------------------------------------
   ### run train ...
   dong <- proc.time()
-  tune <- train(x, y,
-                method = method, 
-                metric = metric, 
-                trControl = trControl, 
-                ...)
+  if (method=="maxent") {
+    nPos=sum(y=="pos")
+    tune <- train(x, y, method=method, metric=metric, 
+                  trControl=trControl, nPos=...)
+  } else {
+    tune <- train(x, y, method=method, metric=metric, 
+                  trControl=trControl, ...)
+  }
   time.train <- proc.time()-dong
   
   
