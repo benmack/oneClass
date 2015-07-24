@@ -15,4 +15,9 @@ the same object as the input but with columns \code{x$results$nSV} and \code{x$r
 \description{
 Add the performance criteria \code{puSV} to the results table of an object of class \code{\link{trainOcc}}.
 }
+\references{
+Muñoz-Marí, Jordi and Bovolo, Francesca and Gómez-Chova, Luis and Bruzzone, Lorenzo and Camp-Valls, Gustavo (2010):
+Semisupervised one-class support vector machines for classification of remote sensing data.
+IEEE TGaRS, 48, 8.\cr
+}
 
