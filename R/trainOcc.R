@@ -32,7 +32,9 @@
 #' @param trControl see \code{\link{train}} and \code{\link{trainControl}}. 
 #' If this argument is given, make sure that it makes sense (see details). 
 #' @param index a list of training indices for the resampling iterations. This will be passed 
-#' to the identically names argument of the \code{\link{trainControl}} function unless the argument \code{trControl} is not \code{NULL}.
+#' to the identically named argument of the \code{\link{trainControl}} function unless the argument \code{trControl} is not \code{NULL}.
+#' @param summaryFunction a function to compute performance metrics across resamples. This will be passed 
+#' to the identically named argument of the \code{\link{trainControl}} function unless the argument \code{trControl} is not \code{NULL}.
 #' @param allowParallel enable or disable parallel processing. Even if \code{TRUE}, parallel processing is only possible if a parallel backend is loaded and available.
 #' @param verboseIter Logical for printing progress, does only work if parallel processing is disabled (defaults to \code{TRUE}).
 #' @param ... other arguments that can be passed to train. Be careful with trainControl... !
@@ -111,7 +113,7 @@
 #' }
 #' @export
 trainOcc <- function ( x, y, positive=NULL, method="biasedsvm", metric=NULL, 
-                       trControl=NULL, index=NULL, 
+                       trControl=NULL, index=NULL, summaryFunction=NULL, 
                        allowParallel=TRUE, verboseIter=TRUE, ...) {
   
   funcCall <- match.call(expand.dots = TRUE)
@@ -169,8 +171,11 @@ trainOcc <- function ( x, y, positive=NULL, method="biasedsvm", metric=NULL,
                                 verboseIter = verboseIter, 
                                 allowParallel = allowParallel)
     }
+  if (!is.null(summaryFunction)) {
+    trControl$summaryFunction <- summaryFunction
   }
-  
+    
+  }
   load(system.file("models", "models.RData", package = "oneClass"))
   
   # source("inst/models/parseModels.R")

@@ -5,8 +5,8 @@
 \title{Fit a one-class classification model over Different Tuning Parameters.}
 \usage{
 trainOcc(x, y, positive = NULL, method = "biasedsvm", metric = NULL,
-  trControl = NULL, index = NULL, allowParallel = TRUE,
-  verboseIter = TRUE, ...)
+  trControl = NULL, index = NULL, summaryFunction = NULL,
+  allowParallel = TRUE, verboseIter = TRUE, ...)
 }
 \arguments{
 \item{x}{a data frame with the training data. The samples are in the rows and the features in the columns.}
@@ -24,7 +24,10 @@ Default for \code{ocsvm} and  \code{biasedsvm} is \code{puF} and for \code{maxen
 If this argument is given, make sure that it makes sense (see details).}
 
 \item{index}{a list of training indices for the resampling iterations. This will be passed
-to the identically names argument of the \code{\link{trainControl}} function unless the argument \code{trControl} is not \code{NULL}.}
+to the identically named argument of the \code{\link{trainControl}} function unless the argument \code{trControl} is not \code{NULL}.}
+
+\item{summaryFunction}{a function to compute performance metrics across resamples. This will be passed
+to the identically named argument of the \code{\link{trainControl}} function unless the argument \code{trControl} is not \code{NULL}.}
 
 \item{allowParallel}{enable or disable parallel processing. Even if \code{TRUE}, parallel processing is only possible if a parallel backend is loaded and available.}
 
