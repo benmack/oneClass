@@ -25,10 +25,12 @@ modelInfo <-
          .fc.default <- function(nPos) {
            if (nPos<10) {
              fc="L"
-           } else if (10<=nPos & nPos<80) {
+           } else if (nPos>=10 & nPos<15) {  # 
              fc="LQ"
-           } else if (80<=nPos) {
-             fc="LQPT"
+           } else if (nPos>=15 & nPos<80) {
+             fc="LQH"
+           } else if (nPos>=80) {
+             fc="LQHPT"
            }
            return(fc)
          }
