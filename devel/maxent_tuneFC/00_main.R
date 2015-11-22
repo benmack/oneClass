@@ -3,9 +3,15 @@
 # source("devel/maxent_tuneFC/new_maxent_model.R")
 require(dismo)
 require(oneClass)
+
+#-----------------------------------------------------------
+### 
 data(bananas)
 y <- bananas$y[]
 x <- bananas$x[]
+
+#-----------------------------------------------------------
+### 
 getTrainset <- function(nP, nU, seed) {
   set.seed(seed)
   xTr <- as.data.frame(rbind(x[sample(which(y==1), nP), ],
@@ -33,6 +39,22 @@ trainMaxent <- function(nP, nU, seed, withDismo=TRUE) {
   return(mod)
 }
 
+
+#-----------------------------------------------------------
+### 
+trset = getTrainset(40, 100, 123)
+mod <- dismo::maxent(x=trset[, -1], trset[, 1])
+grid <- expand.grid(fc="D", beta = 1)
+
+source("devel/maxent_tuneFC/maxentList.R")
+modelInfo$label
+mod <- trainOcc(trset[, -1], trset[, 1],
+               method=modelInfo, tuneGrid=grid,
+               verbose=FALSE,
+               path="devel/maxent_tuneFC/res5", 
+               deleteMaxentOutput=TRUE)
+
+#-----------------------------------------------------------
 ### Train Maxent models with different |P| and open html
 for (nP in c(9, 10, 14, 15, 79, 80)) {
   mod <- trainMaxent(nP, 100, 123)

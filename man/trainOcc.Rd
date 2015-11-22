@@ -6,7 +6,7 @@
 \usage{
 trainOcc(x, y, positive = NULL, method = "biasedsvm", metric = NULL,
   trControl = NULL, index = NULL, summaryFunction = NULL,
-  allowParallel = TRUE, verboseIter = TRUE, ...)
+  allowParallel = TRUE, verboseIter = TRUE, dirModelInfo = NULL, ...)
 }
 \arguments{
 \item{x}{a data frame with the training data. The samples are in the rows and the features in the columns.}

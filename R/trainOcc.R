@@ -114,7 +114,9 @@
 #' @export
 trainOcc <- function ( x, y, positive=NULL, method="biasedsvm", metric=NULL, 
                        trControl=NULL, index=NULL, summaryFunction=NULL, 
-                       allowParallel=TRUE, verboseIter=TRUE, ...) {
+                       allowParallel=TRUE, verboseIter=TRUE,
+                       dirModelInfo=NULL,
+                       ...) {
   
   funcCall <- match.call(expand.dots = TRUE)
   u=NULL
@@ -199,7 +201,8 @@ trainOcc <- function ( x, y, positive=NULL, method="biasedsvm", metric=NULL,
   dong <- proc.time()
   if (method$label=="maxent") {
     tune <- train(x, y, method=method, metric=metric, 
-                  trControl=trControl, nPos=sum(y=="pos"), ...)
+                  trControl=trControl, nPos=sum(y=="pos"), 
+                  ...)
   } else {
     tune <- train(x, y, method=method, metric=metric, 
                   trControl=trControl, ...)
