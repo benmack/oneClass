@@ -46,6 +46,13 @@ trset = getTrainset(40, 100, 123)
 mod <- dismo::maxent(x=trset[, -1], trset[, 1])
 grid <- expand.grid(fc="D", beta = 1)
 
+mod <- trainOcc(trset[, -1], trset[, 1],
+               method='maxent', tuneGrid=grid,
+               verbose=FALSE,
+               path="devel/maxent_tuneFC/res_pkg_modList", 
+               deleteMaxentOutput=TRUE)
+hist(mod)  
+
 source("devel/maxent_tuneFC/maxentList.R")
 modelInfo$label
 mod <- trainOcc(trset[, -1], trset[, 1],

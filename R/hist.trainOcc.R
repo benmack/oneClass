@@ -162,10 +162,14 @@ hist.trainOcc <- function(x, predUn=NULL, th=NULL, cab=NULL, main=NULL,
       ylim <- c(0, max( h$density ))
   }
   
-  if (is.null(main))
-    main <- paste(paste(names(x$bestTune), signif(x$bestTune,3), collapse=" / "), 
-                  paste("\nrow", modelPosition(x)$row, "/ #U", length(predictive.value) ) )
-  
+  if (is.null(main)) {
+      parvals <- sapply(x$bestTune, 
+             function(parval) 
+               ifelse(is.numeric(parval), signif(parval,3), as.character(parval)))
+      signif(x$bestTune[is.numeric(x$bestTune)],3)
+    main <- paste(paste(names(x$bestTune), parvals, collapse=" / "), 
+                  paste("\nrow", modelPosition(x)$row, "/ #U", length(predictive.value)))
+  }
   clrs <- .clrs('PU')
   
   
