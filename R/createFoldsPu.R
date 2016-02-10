@@ -57,8 +57,6 @@
 createFoldsPu <- function (y, k, positive=NULL, indepUn=NULL, seed=NULL) {
   # until now only indepUnendent unlabeled samples are supported  
 
-  #' y <- puFactor(
-  
   y.pos <- rep(1, 20)
   y.un.tr <- rep(1, 20)
   y.un.val <- rep(1, 20)

@@ -1,17 +1,18 @@
 ################################################################################
-#' puFactor
+#' @title Convert a vector in a PU-Vector.
 #' 
-#' Convert a vector in a ordert factor with levels \code{un<pos} as required when using 
+#' @description Convert a vector in a ordert factor with 
+#' levels \code{un<pos} as required when using 
 #' the one-class classiifiers from \code{\link{trainOcc}}.
 #'
 #' @param  y a vector of labels or a numeric vector of length 2 where the first element specifies the number of positive and the second the number of negative samples. 
 #' @param  positive the label of the positive class in y. if not given the id with the smallest
 #' frequency is used.
 #' @return an ordererd factor with the levels un<pos
-#' @examples
+#' @examples 
 #' puFactor(rep( c( -1, -2, 1 ), c( 5, 10, 3 ) ), positive=1)
 #' @export
-puFactor <- function (y, positive=NULL) { # , labels=c("un", "pos")
+puFactor <- function(y, positive=NULL) { # , labels=c("un", "pos")
   
   if (length(y)==2)
     y <- rep(c(1, 0), y) 
