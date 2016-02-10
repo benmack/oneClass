@@ -32,3 +32,4 @@ Suggests:
     testthat
 Roxygen: list(wrap = FALSE)
 URL: https://github.com/benmack/oneClass
+RoxygenNote: 5.0.1
