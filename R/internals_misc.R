@@ -98,6 +98,8 @@
 }
 ################################################################################
 .rowFromRank <- function(x, modRank = NULL, by = NULL, decreasing=TRUE) {
+  # temporarily overwrite rownames with row index
+  rownames(x$results) <- 1:nrow(x$results)
   rw <- as.numeric(rownames(sort(x, printTable=FALSE, by=by, decreasing=decreasing)))[modRank]
   return(rw)
 }
