@@ -7,7 +7,7 @@
 \usage{
 \method{hist}{trainOcc}(x, predUn = NULL, th = NULL, cab = NULL,
   main = NULL, ylim = NULL, breaks = "Scott", col = "grey",
-  border = NA, xlim = NULL, ...)
+  border = NA, xlim = NULL, add_calBoxplot = TRUE, ...)
 }
 \arguments{
 \item{x}{an object of class \code{\link{trainOcc}}.}
@@ -28,6 +28,8 @@ elements \code{colors} (vector of \code{R} colors, length n) and \code{breaks} (
 \item{col}{a colour to be used to fill the bars.}
 
 \item{border}{the color of the border around the bars.}
+
+\item{add_calBoxplot}{bool. Should the positive calibration predictions be plotted? Defaults to \code{TRUE}.}
 
 \item{...}{other arguments that can be passed to \code{\link{plot}}.}
 }
