@@ -17,6 +17,7 @@
 #' @param breaks see identically named argument in \code{\link{hist}}
 #' @param col a colour to be used to fill the bars.
 #' @param border the color of the border around the bars.
+#' @param add_calBoxplot bool. Should the positive calibration predictions be plotted? Defaults to \code{TRUE}.  
 #' @param ... other arguments that can be passed to \code{\link{plot}}. 
 #' @return Diagnostic distributions plot.
 #' @method hist trainOcc
@@ -74,7 +75,7 @@
 #' # and the model in the 2D feature space 
 #' set.seed(123)
 #' idx.pred <- sample(400*400, 16000)
-#' hist(oc, predict(oc, bananas$x[][idx.pred,]), th=0)
+#' hist(oc, predict(oc, bananas$x[][idx.pred,]), th=0, add_calBoxplot=F)
 #' featurespace(oc, th=0)
 #' 
 #' ### an overfitted model 
@@ -91,8 +92,8 @@
 #' featurespace(oc, th=0)
 #' 
 #' ### a good model 
-#' oc <- trainOcc (x = bananas$tr[, -1], y = bananas$tr[, 1], 
-#'                 tuneGrid=expand.grid(sigma=1, 
+#' oc <- trainOcc(x = bananas$tr[, -1], y = bananas$tr[, 1], 
+#'                tuneGrid=expand.grid(sigma=1, 
 #'                                      cNeg=0.0625, 
 #'                                      cMultiplier=64))
 #' ### predict 10% or the unlabeled data and plot 
@@ -114,7 +115,7 @@
 #' @export
 hist.trainOcc <- function(x, predUn=NULL, th=NULL, cab=NULL, main=NULL, 
                           ylim=NULL, breaks='Scott', col="grey", border=NA, 
-                          xlim=NULL, ...) { # 
+                          xlim=NULL, add_calBoxplot=TRUE, ...) { # 
   if (!is.null(x$holdOut$pos) & !is.null(x$holdOut$un)) {
     hop <- list(pos = x$holdOut$pos, un = x$holdOut$un)
   } else {
@@ -207,9 +208,9 @@ hist.trainOcc <- function(x, predUn=NULL, th=NULL, cab=NULL, main=NULL,
   #   lines(percentiles.pnp, ylim[2]-prb.scld, lwd=2, lty=5)
   #   
   bxwx <- abs(ylim[1])*.75
-
-  boxplot(pred_tr_pos, frame=FALSE, axes=FALSE, y=0, horizontal=TRUE, 
-          at=ylim[1]*.25, add=TRUE, boxwex=bxwx, col="#a6cee3" )
+  if (add_calBoxplot)
+    boxplot(pred_tr_pos, frame=FALSE, axes=FALSE, y=0, horizontal=TRUE, 
+            at=ylim[1]*.25, add=TRUE, boxwex=bxwx, col="#a6cee3")
   boxplot(unlist(hop$pos), frame=FALSE, axes=FALSE, y=0, horizontal=TRUE, 
           at=ylim[1]*.5, add=TRUE, boxwex=bxwx, col=clrs$pos )
   
