@@ -129,16 +129,16 @@ hist.trainOcc <- function(x, predUn=NULL, th=NULL, cab=NULL, main=NULL,
   if (!is.null(predUn)) {
     predictive.value <- predUn
     if (is.null(xlim))
-      xlim <- range(predictive.value)
+      xlim <- range(predictive.value, na.rm=T)
   } else if (!is.null(x$predUn)) {
     predictive.value <- x$predUn
     if (is.null(xlim))
-      xlim <- range(predictive.value)
+      xlim <- range(predictive.value, na.rm=T)
   } else if ( is.null(predUn) & is.null(x$predUn) ) {
     warning('No predicted unlabeled data found.\nUnlabeled hold-out predictions used to build the histogram.')
     predictive.value <- hop$un
     if (is.null(xlim))
-      xlim <- range(c(unlist(hop$un), unlist(hop$pos)))
+      xlim <- range(c(unlist(hop$un), unlist(hop$pos)), na.rm=T)
   }
   
   h <- hist(predictive.value, plot=FALSE, breaks=breaks, ...)
