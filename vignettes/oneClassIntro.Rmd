@@ -1,6 +1,6 @@
 ---
 title: "An Introduction to one-class classification with the 
-oneClass package"
+**oneClass** package"
 author: "Benjamin Mack"
 date: "8. März 2016"
 output: html_document
@@ -25,27 +25,27 @@ The convenience of not requiring negative training data comes at a price.
 One-class classification is challenging due to the limited information contained in the training set. 
 Unlabeled training data can be necessary for some classification problems in order to learn  more accurate predictive models. 
 However, the process is still uncertain and the classification outcome has to be treated with caution.
-The package oneClass shall serve the requirements of two potential users, the analyst and the developer.
+The package **oneClass** shall serve the requirements of two potential users, the analyst and the developer.
 These are extrem characters and in reality one will usually be located somewhere in between. 
 The analyst is faced with a particular one-class classification problem, i.e. a set of positive training samples and the unlabeled data to be classified. 
 It is assumed that no complete and representative test set is available for the purpose of validation and testing. 
 In such a situation a careful evaluation of the classification outcome based on the available (positive and unlabeled) data is 
 required in order to select the most promising final model and threshold [1]. 
-The function trainOcc() is a wrapper for carets (http://caret.r-forge.r-project.org/, [2]) train() function which is called with one of the one-class classification methods implemented in oneClass (see Section4). 
+The function trainOcc() is a wrapper for the `train()` function of **caret** (http://caret.r-forge.r-project.org/, [2]) which is called with one of the one-class classification methods implemented in **oneClass** (see Section4). 
 trainOcc() returns an object of class trainOcc which inherits from class train. 
-Thus, the extensive infrastructure of caret is available, such as parallel processing and different methods for pre-processing, resampling, and model comparision. 
-Furthermore, the oneClass infrastructure comprises one-class classification specific methods, such as performance metrics based on positive and unlabeled data (see Section1.2) and diagnostic plots, which further support the handling of the one-class classification methods and particularly understanding their outcome in the absence of representative test data. 
+Thus, the extensive infrastructure of **caret** is available, such as parallel processing and different methods for pre-processing, resampling, and model comparision. 
+Furthermore, the **oneClass** infrastructure comprises one-class classification specific methods, such as performance metrics based on positive and unlabeled data (see Section1.2) and diagnostic plots, which further support the handling of the one-class classification methods and particularly understanding their outcome in the absence of representative test data. 
 In Section4 a one-class classification task is solved step by step in order to show which outcomes should be screend by the analyst in order to detect deficient settings, input data, or model outcomes and improve the model if necessary (Section 4). 
 Hopefully the package is helpful for solving one-class classification problems more effectively and conveniently.
-The developer is interested in the developement of new or optimization of existing methods. The package oneClass builds upon the powerful package caret and tries to adapt its philosophy. 
-The package caret allows the user to embed own custom functions and performance metrics in the rich infrastructure of the caret package. 
+The developer is interested in the developement of new or optimization of existing methods. The package **oneClass** builds upon the powerful package **caret** and tries to adapt its philosophy. 
+The package **caret** allows the user to embed own custom functions and performance metrics in the rich infrastructure of the **caret** package. 
 Furthermore, convenient functions are available for testing the classifier outcome with positive/negative (PN) test sets (Section 5).
 
 ## One-class classifiers
 
-The oneClass package is a user-oriented environment for analyzing one-class classification problems. 
-It implements three commonly used classifiers, the one-class SVM (OCSVM) [3] and biased SVM (BSVM) [4, 5] via the package kernlab [6], and a one-class classifier based on calculating a density ratio with a maximum entropy approach (MAXENT) [7, 8] via the package dismo [9]. 
-As mentioned before these classifiers are implemented as custom functions for train() for the package caret [2]. 
+The **oneClass** package is a user-oriented environment for analyzing one-class classification problems. 
+It implements three commonly used classifiers, the one-class SVM (OCSVM) [3] and biased SVM (BSVM) [4, 5] via the package **kernlab** [6], and a one-class classifier based on calculating a density ratio with a maximum entropy approach (MAXENT) [7, 8] via the package **dismo** [9]. 
+As mentioned before these classifiers are implemented as custom functions for train() for the package **caret** [2]. 
 The one-class SVM is a P-classifier, i.e. the classification model is trained with positive samples only. 
 Nevertheless, unlabeled samples can be used to calculate PU-performance and support model selection. 
 The biased SVM and Maxent are PUclassifiers, i.e. they are trained on positive and unlabeled data. 
