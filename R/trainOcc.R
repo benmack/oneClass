@@ -23,7 +23,7 @@
 #' \code{TRUE} in order to make all diagnostic methods available for later analaysis. }
 #'}
 #'
-#' @param  x a data frame with the training data. The samples are in the rows and the features in the columns.  
+#' @param  x a data frame with the training data. The samples are in the rows and the features in the columns.
 #' @param y a vector containing the labels encoding if a sample is positive or unlabeled.
 #' @param positive The positive class in \code{y}.
 #' @param method a one-class classification method. Implemented are \code{ocsvm} (one-class SVM, via \code{\link[kernlab]{ksvm}}), \code{biasedsvm} (biased SVM, via \code{\link[kernlab]{ksvm}}), \code{maxent} (via \code{\link[dismo]{maxent}}), or a costum method that can be passed to \code{\link{train}}.
@@ -32,8 +32,11 @@
 #' @param trControl see \code{\link{train}} and \code{\link{trainControl}}. 
 #' If this argument is given, make sure that it makes sense (see details). 
 #' @param index a list of training indices for the resampling iterations. This will be passed 
-#' to the identically names argument of the \code{\link{trainControl}} function unless the argument \code{trControl} is not \code{NULL}.
+#' to the identically named argument of the \code{\link{trainControl}} function unless the argument \code{trControl} is not \code{NULL}.
+#' @param summaryFunction a function to compute performance metrics across resamples. This will be passed 
+#' to the identically named argument of the \code{\link{trainControl}} function unless the argument \code{trControl} is not \code{NULL}.
 #' @param allowParallel enable or disable parallel processing. Even if \code{TRUE}, parallel processing is only possible if a parallel backend is loaded and available.
+#' @param verboseIter Logical for printing progress, does only work if parallel processing is disabled (defaults to \code{TRUE}).
 #' @param ... other arguments that can be passed to train. Be careful with trainControl... !
 #' @return A \code{\link{trainOcc}} object with is a child of the object \code{train}.
 #' @examples
@@ -110,8 +113,10 @@
 #' }
 #' @export
 trainOcc <- function ( x, y, positive=NULL, method="biasedsvm", metric=NULL, 
-                       trControl=NULL, index=NULL, 
-                       allowParallel=TRUE, ...) {
+                       trControl=NULL, index=NULL, summaryFunction=NULL, 
+                       allowParallel=TRUE, verboseIter=TRUE,
+                       dirModelInfo=NULL,
+                       ...) {
   
   funcCall <- match.call(expand.dots = TRUE)
   u=NULL
@@ -157,7 +162,7 @@ trainOcc <- function ( x, y, positive=NULL, method="biasedsvm", metric=NULL,
                                 classProbs=TRUE, 
                                 savePredictions = TRUE,
                                 returnResamp = "all",
-                                verboseIter = FALSE, 
+                                verboseIter = verboseIter, 
                                 allowParallel = allowParallel)
     } else {
       trControl <- trainControl(index=index, 
@@ -165,11 +170,14 @@ trainOcc <- function ( x, y, positive=NULL, method="biasedsvm", metric=NULL,
                                 classProbs=TRUE, 
                                 savePredictions = TRUE,
                                 returnResamp = "all",
-                                verboseIter = FALSE, 
+                                verboseIter = verboseIter, 
                                 allowParallel = allowParallel)
     }
+  if (!is.null(summaryFunction)) {
+    trControl$summaryFunction <- summaryFunction
   }
-  
+    
+  }
   load(system.file("models", "models.RData", package = "oneClass"))
   
   # source("inst/models/parseModels.R")
@@ -191,11 +199,14 @@ trainOcc <- function ( x, y, positive=NULL, method="biasedsvm", metric=NULL,
   ### -----------------------------------------------------------------------
   ### run train ...
   dong <- proc.time()
-  tune <- train(x, y,
-                method = method, 
-                metric = metric, 
-                trControl = trControl, 
-                ...)
+  if (method$label=="maxent") {
+    tune <- train(x, y, method=method, metric=metric, 
+                  trControl=trControl, nPos=sum(y=="pos"), 
+                  ...)
+  } else {
+    tune <- train(x, y, method=method, metric=metric, 
+                  trControl=trControl, ...)
+  }
   time.train <- proc.time()-dong
   
   
@@ -212,7 +223,7 @@ trainOcc <- function ( x, y, positive=NULL, method="biasedsvm", metric=NULL,
   ### final model
   isPuPart <- .isPuPartition(oc)
   oc$isPuPartition <- isPuPart
-  if (isPuPart) {
+  if (isPuPart & oc$modelInfo$label != "one-class svm") {
     oc$trainingDataValUn <- oc$trainingData[attr(isPuPart, "indexUnVal"), ]
     oc$trainingData <- oc$trainingData[-attr(isPuPart, "indexUnVal"), ]
     oc <- update(oc, modRank=1)

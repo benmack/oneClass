@@ -1,0 +1,9 @@
+---
+title: "An Introduction to one-class classification with the oneClass package"
+author: "Benjamin Mack"
+date: "8. März 2016"
+output: html_document
+---
+
+# Introduction to one-class classification
+

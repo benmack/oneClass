@@ -1,8 +1,8 @@
 Package: oneClass
 Type: Package
 Title: One-class classification in the absence of test data
-Version: 0.1-1
-Date: 2014-08-31
+Version: 0.1-2
+Date: 2014-10-16
 Author: Benjamin Mack
 Maintainer: Benjamin Mack <knecmab@gmail.com>
 Description: oneClass implements the one-class classifiers one-class SVM,
@@ -32,3 +32,4 @@ Suggests:
     testthat
 Roxygen: list(wrap = FALSE)
 URL: https://github.com/benmack/oneClass
+RoxygenNote: 5.0.1

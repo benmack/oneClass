@@ -30,8 +30,12 @@ print.ModelSelectionEvaluation <- function (x, by=NULL, digits=2, invisible=FALS
   if (!is.null(by))
     df <- df[order(df[, by]), ]
   
-  if (!invisible)
-    print(round(df, 2), ...)
+  if (!invisible) {
+    ans <- df
+    num <- is.numeric(df[1, ])
+    ans[, num] <- round(df[, num], 2)
+    print(ans, ...)
+  }
   
   invisible(df)
 }

@@ -61,22 +61,38 @@ puSummary <- function(data, lev = NULL, model = NULL) { # , metrics=c("puAuc", "
   if (!all(levels(data[, "pred"]) == levels(data[, "obs"]))) 
     stop("levels of observed and predicted data do not match")
   
-#   require(pROC, quietly = TRUE)
+  ans <- require(pROC, quietly = TRUE, warn.conflicts = FALSE)
+  if (!ans)
+    warning("The pu-performance metric 'aucPu' will not be available.")
+  
   rocObject <- try(pROC::roc(response=data$obs, predictor=data[, 'pos'], 
                              levels=c('pos', 'un')), silent = TRUE)
   puAuc <- ifelse (class(rocObject)[1] == "try-error", 0, rocObject$auc)
   
-  tpr <- sum(data[,"pred"]=="pos" & data[,"obs"]=="pos")/sum(data[,"obs"]=="pos")
+  tp <- sum(data[,"pred"]=="pos" & data[,"obs"]=="pos")
+  fn <- sum(data[,"pred"]!="pos" & data[,"obs"]=="pos")
+  fpPu <- sum(data[,"pred"]=="pos" & data[,"obs"]!="pos")
+  
+  tpr <- tp/(tp+fn)
   ppp <- (sum(data[,"pred"]=="pos")/length(data[,"pred"]))
+  puP <- tp/(tp+fpPu)
   puF <- (tpr^2)/ppp
+  puF1 <- 2 * ( (puP*tpr) / (puP+tpr) )
+  
   if (is.na(puF))
     puF[1] <- 0
+  if (is.na(puF1))
+    puF1[1] <- 0
   
   puF <- puF[[1]]
+  puF1 <- puF1[[1]]
+  
+  pn <- min(data[ data[, "obs"]=="un" ,"pos"]) <  0 &
+    max(data[ data[, "obs"]=="un" ,"pos"]) >  0
   
   # negD01 <- .negD01(tpr=tpr, ppp=ppp) #.negD01:::
   
-  out <- c(tpr=tpr, ppp=ppp, puAuc=puAuc, puF=puF) #, "SensPu", "SpecPu")
+  out <- c(tpr=tpr, puP=puP, ppp=ppp, puAuc=puAuc, puF=puF, puF1=puF1, pn=pn) #, "SensPu", "SpecPu")
   
   return(out)
   

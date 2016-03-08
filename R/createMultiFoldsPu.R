@@ -11,13 +11,13 @@
 #' @param times the number of repetitions to create
 #' @param positive the positive class in y. if empty the label with the smaller 
 #' frequency is assumed to be the positive class. 
-#' @param index.indep optional, the elements in y which should always been used 
+#' @param indepUn optional, the elements in y which should always been used 
 #' in the test group. If not given and the indices are passed to trainOcc they are 
 #' randomly sampled frm the argument \code{u}. 
 #' @param seed an integer in order to set a seed point
 #' @seealso \code{\link{createMultiFoldsPu}}, \code{\link{createFolds}}
 #' @export
-createMultiFoldsPu <- function (y, k, times=5, positive=NULL, index.indep=NULL, seed=NULL) {
+createMultiFoldsPu <- function (y, k, times=5, positive=NULL, indepUn=NULL, seed=NULL) {
   
   
   if ( !( identical(levels(y), c("un", "pos")) & is.ordered(y) ) ) {
@@ -35,9 +35,9 @@ createMultiFoldsPu <- function (y, k, times=5, positive=NULL, index.indep=NULL, 
       stop('If seed is given it must be be of length \'times\'')
   
   if (!is.null(seed)) {
-    multiIndex <- lapply(1:times, function(i) createFoldsPu(y=y, k=k, positive=positive, index.indep=index.indep, seed=seed[i]))
+    multiIndex <- lapply(1:times, function(i) createFoldsPu(y=y, k=k, positive=positive, indepUn=indepUn, seed=seed[i]))
   } else {
-    multiIndex <- lapply(1:times, function(i) createFoldsPu(y=y, k=k, positive=positive, index.indep=index.indep))
+    multiIndex <- lapply(1:times, function(i) createFoldsPu(y=y, k=k, positive=positive, indepUn=indepUn))
   }
   
   foldnames <- paste("Fold", gsub(" ", "0", format(1:k)), sep = "")

@@ -8,9 +8,9 @@ partitions <- list(
   cv = createFolds(toy$tr$y, k=2)
   , repeatedcv = createMultiFolds(toy$tr$y, k=2, times=2)
   , boot = createResample(toy$tr$y, times=2) 
-  #, cvPu = createFoldsPu(toy$tr$y, k=2, positive=1, index.indep=71:120), 
-  #, repeatedcvPu = createMultiFoldsPu(toy$tr$y, k=2, times=2, positive=1, index.indep=71:120), 
-  #, bootPu = createResamplePu(toy$tr$y, times=2, positive=1, index.indep=71:120)
+  #, cvPu = createFoldsPu(toy$tr$y, k=2, positive=1, indepUn=71:120), 
+  #, repeatedcvPu = createMultiFoldsPu(toy$tr$y, k=2, times=2, positive=1, indepUn=71:120), 
+  #, bootPu = createResamplePu(toy$tr$y, times=2, positive=1, indepUn=71:120)
 )
 
 

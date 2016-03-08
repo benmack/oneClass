@@ -15,6 +15,9 @@
 #' @param main a title for the plot. if not given the parameters of the model are added.
 #' @param ylim the y limits of the plot.
 #' @param breaks see identically named argument in \code{\link{hist}}
+#' @param col a colour to be used to fill the bars.
+#' @param border the color of the border around the bars.
+#' @param add_calBoxplot bool. Should the positive calibration predictions be plotted? Defaults to \code{TRUE}.  
 #' @param ... other arguments that can be passed to \code{\link{plot}}. 
 #' @return Diagnostic distributions plot.
 #' @method hist trainOcc
@@ -72,7 +75,7 @@
 #' # and the model in the 2D feature space 
 #' set.seed(123)
 #' idx.pred <- sample(400*400, 16000)
-#' hist(oc, predict(oc, bananas$x[][idx.pred,]), th=0)
+#' hist(oc, predict(oc, bananas$x[][idx.pred,]), th=0, add_calBoxplot=F)
 #' featurespace(oc, th=0)
 #' 
 #' ### an overfitted model 
@@ -89,8 +92,8 @@
 #' featurespace(oc, th=0)
 #' 
 #' ### a good model 
-#' oc <- trainOcc (x = bananas$tr[, -1], y = bananas$tr[, 1], 
-#'                 tuneGrid=expand.grid(sigma=1, 
+#' oc <- trainOcc(x = bananas$tr[, -1], y = bananas$tr[, 1], 
+#'                tuneGrid=expand.grid(sigma=1, 
 #'                                      cNeg=0.0625, 
 #'                                      cMultiplier=64))
 #' ### predict 10% or the unlabeled data and plot 
@@ -111,20 +114,32 @@
 #' }
 #' @export
 hist.trainOcc <- function(x, predUn=NULL, th=NULL, cab=NULL, main=NULL, 
-                          ylim=NULL, breaks='Scott', ...) { # 
+                          ylim=NULL, breaks='Scott', col="grey", border=NA, 
+                          xlim=NULL, add_calBoxplot=TRUE, ...) { # 
   if (!is.null(x$holdOut$pos) & !is.null(x$holdOut$un)) {
     hop <- list(pos = x$holdOut$pos, un = x$holdOut$un)
   } else {
     hop <- holdOutPredictions(x, aggregate=TRUE)
   }
   
+  trSet_pos <- x$trainingData[x$trainingData[,ncol(x$trainingData)]=="pos", 
+                              -ncol(x$trainingData)]
+  pred_tr_pos <- predict(x, trSet_pos)
+   
+  
   if (!is.null(predUn)) {
     predictive.value <- predUn
+    if (is.null(xlim))
+      xlim <- range(predictive.value, na.rm=T)
   } else if (!is.null(x$predUn)) {
     predictive.value <- x$predUn
-  } else if ( is.null(predUn) & !is.null(x$predUn) ) {
-    warning('No predicted unlabeled data found. Hold-out predictions used to build the histogram.')
-    predictive.value <- c(hop$pos, hop$un)
+    if (is.null(xlim))
+      xlim <- range(predictive.value, na.rm=T)
+  } else if ( is.null(predUn) & is.null(x$predUn) ) {
+    warning('No predicted unlabeled data found.\nUnlabeled hold-out predictions used to build the histogram.')
+    predictive.value <- hop$un
+    if (is.null(xlim))
+      xlim <- range(c(unlist(hop$un), unlist(hop$pos)), na.rm=T)
   }
   
   h <- hist(predictive.value, plot=FALSE, breaks=breaks, ...)
@@ -139,14 +154,23 @@ hist.trainOcc <- function(x, predUn=NULL, th=NULL, cab=NULL, main=NULL,
     ans <- boxplot(unlist(hop$pos), plot=FALSE)$stat[1]
     maxInRelevantRange <- max(h$density[h$mids>=ans & is.finite(h$density)])
     # ylim <- .ylimForHist( h, positives=unlist(hop$pos) )
-    ylim <- c(0, maxInRelevantRange*2) # range(h$density)
+    if (maxInRelevantRange < (max(h$density[is.finite(h$density)]))) {
+      ylim <- c(0, maxInRelevantRange*2) # range(h$density)
+    } else {
+      ylim <- c(0, maxInRelevantRange) # range(h$density)
+    }
     if (any(!is.finite(ylim)))
       ylim <- c(0, max( h$density ))
   }
   
-  if (is.null(main))
-    main <- paste(names(x$bestTune), signif(x$bestTune,3), collapse=" / ")
-  
+  if (is.null(main)) {
+      parvals <- sapply(x$bestTune, 
+             function(parval) 
+               ifelse(is.numeric(parval), signif(parval,3), as.character(parval)))
+      signif(x$bestTune[is.numeric(x$bestTune)],3)
+    main <- paste(paste(names(x$bestTune), parvals, collapse=" / "), 
+                  paste("\nrow", modelPosition(x)$row, "/ #U", length(predictive.value)))
+  }
   clrs <- .clrs('PU')
   
   
@@ -162,14 +186,19 @@ hist.trainOcc <- function(x, predUn=NULL, th=NULL, cab=NULL, main=NULL,
   ylim[1] <- 0-diff(c(0,ylim[2]))*.15
   if (!is.null(cab) & is.list(cab)) {
     col <- rep(NA, length(h$mids))
-    for(i in 1:(length(cab$breaks)-1)) {
-      idx <- h$mids>=cab$breaks[i] & h$mids<cab$breaks[i+1]
+    for(i in 1:(length(cab$colors))) {
+      if (i==1) {
+        idx <- h$mids<cab$breaks[i]
+      } else if (i==length(cab$colors)) {
+        idx <- h$mids>=cab$breaks[i-1]
+      } else {
+        idx <- h$mids>=cab$breaks[i-1] & h$mids<cab$breaks[i]
+      }
       col[idx] <- cab$colors[i]
     }
-    plot(h, freq=FALSE, ylim=ylim, main=main, col=col, ...)
-  } else {
-    plot(h, freq=FALSE, ylim=ylim, main=main, ...)
+    
   }
+  plot(h, freq=FALSE, ylim=ylim, xlim=xlim, main=main, col=col, border=border, ...)
   #   legend("topright", c("TPR", "1-PPP (train, U)", "1-PPP (all U)"), 
   #          lwd=c(2,2,2), lty=c(1,1,5), col=c("black", "black", clrs$pos))
   #   
@@ -179,6 +208,9 @@ hist.trainOcc <- function(x, predUn=NULL, th=NULL, cab=NULL, main=NULL,
   #   lines(percentiles.pnp, ylim[2]-prb.scld, lwd=2, lty=5)
   #   
   bxwx <- abs(ylim[1])*.75
+  if (add_calBoxplot)
+    boxplot(pred_tr_pos, frame=FALSE, axes=FALSE, y=0, horizontal=TRUE, 
+            at=ylim[1]*.25, add=TRUE, boxwex=bxwx, col="#a6cee3")
   boxplot(unlist(hop$pos), frame=FALSE, axes=FALSE, y=0, horizontal=TRUE, 
           at=ylim[1]*.5, add=TRUE, boxwex=bxwx, col=clrs$pos )
   

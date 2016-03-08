@@ -12,17 +12,51 @@
 #' @param k an integer for the number of folds (applied to the positive class) 
 #' @param positive the positive class in y. if empty the label with the smaller 
 #' frequency is assumed to be the positive class. 
-#' @param index.indep optional, the elements in y which should always been used 
-#' in the test group. If not given and the indices are passed to trainOcc they are 
-#' randomly sampled from the argument \code{u}. 
+#' @param indepUn optional, a fraction (0<indepUn<1) specifying the fraction of or a vector of indices specifying the unlabeled samples to be used for validation. 
 #' @param seed an integer in order to set a seed point
 #' @seealso \code{\link{createMultiFoldsPu}}, \code{\link{createFolds}}
+#' @examples
+#' \dontrun{
+#' 
+#' ## a synthetic data set
+#' data(bananas)
+#' 
+#' ## create a pu-adapted partiton:
+#' ## leave-one-out with the positive training samples
+#' ## independent training/validation sets with unlabeled samples
+#' ## note that the validation samples will not be included in the final model. 
+#' 
+#' idx <- createFoldsPu(bananas$tr$y, 20, positive=1, 
+#'            indepUn=which(bananas$tr$y==0)[1:250]) 
+#' fit <- trainOcc(x=bananas$tr[, -1], y=bananas$tr[, 1], 
+#'                 index=idx)
+#' pred <- predict(fit, bananas$x)
+#' 
+#' ### compare the TPR estimated from training/test data
+#' hist(fit, pred, ylim=c(0, .25))
+#' hop.pos <- holdOutPredictions(fit)$pos 
+#' ### compare the TPR derived from train and test data.
+#' lines( quantile(hop.pos, seq(0, 1, 0.1)), 
+#'        seq(0, 1, 0.1)*.25 )
+#' lines( quantile(pred[bananas$y[]==1], seq(0, 1, 0.1)), 
+#'        seq(0, 1, 0.1)*.25, col="red")
+#' featurespace(fit)
+#' ### note: final model fitted without the unlabeled validation data
+#' ### specified above by indepUn=which(bananas$tr$y==0)[1:250]
+#' rownames(fit$trainingData)
+#' ### note: you might want to aggregate the predictions first and then
+#' ### calcualte the performance metric based on aggregated hold-out predictions
+#' fit.up <- update(fit, aggregatePredictions=TRUE)
+#' plot(fit.up$results$puF, fit.up$results$puFAP)
+#' fit.up$results[which.max(fit.up$results$puF), ]
+#' fit.up$results[which.max(fit.up$results$puFAP), ]
+#' featurespace(fit)
+#' colnames(fit.up$results)  
+#' }
 #' @export
-createFoldsPu <- function (y, k, positive=NULL, index.indep=NULL, seed=NULL) {
-  # until now only index.independent unlabeled samples are supported  
+createFoldsPu <- function (y, k, positive=NULL, indepUn=NULL, seed=NULL) {
+  # until now only indepUnendent unlabeled samples are supported  
 
-  #' y <- puFactor(
-  
   y.pos <- rep(1, 20)
   y.un.tr <- rep(1, 20)
   y.un.val <- rep(1, 20)
@@ -49,17 +83,25 @@ createFoldsPu <- function (y, k, positive=NULL, index.indep=NULL, seed=NULL) {
       y <- puFactor(y, positive)
     }
   }
-  if (is.logical(index.indep))
-    index.indep <- which(index.indep)
+  
+  if (!is.null(indepUn)) {
+    if (length(indepUn)==1 & indepUn[1]>0 & indepUn[1]<1) {
+      if (!is.null(seed))
+        set.seed(seed)
+      indepUn <- sample(which(y=="un"), round(sum(y=="un")*indepUn, 0))
+    }
+  }
+  if (is.logical(indepUn))
+    indepUn <- which(indepUn)
   
   idx <- 1:length(y)
   idx.un <- which(y=='un')
-  if (is.null(index.indep)) {
+  if (is.null(indepUn)) {
     idx.un.tr <- idx.un
     idx.un.val <- NULL
   } else {
-    idx.un.tr <-  idx.un[!(idx.un%in%index.indep)]
-    idx.un.val <- idx.un[idx.un%in%index.indep]
+    idx.un.tr <-  idx.un[!(idx.un%in%indepUn)]
+    idx.un.val <- idx.un[idx.un%in%indepUn]
   }
   indexP <- createFolds(y[y=='pos'], k=k, returnTrain = TRUE)
   index <- lapply(indexP, c, idx.un.tr)

@@ -39,11 +39,12 @@ plot.ModelEvaluation <- function(x, add=FALSE, yLimits=c(0, 1), ...) {
   #points(plt, lwd=2, ...)
   lines(x@t, scaleToYLimits(x@TPR, yLimits), lwd=2, lty=4) # PA
   lines(x@t, scaleToYLimits(x@PPP, yLimits), lwd=2, lty=5) # UA
-  legend('topright', legend=c('kappa', 'PA', 'UA'), 
+  legend(x=x@t[1], y=.7, legend=c('kappa', 'PA', 'UA'), 
          lty=c(1, 4, 5), 
          col=c('black'), 
          #col.pch=c('black', NA, NA), 
-         lwd=2)
+         lwd=2, 
+         bty = "n")
   # lines(x@t, x@TNR, lwd=2, col=.clrs('PN')[2], type='l')
   axis(4, at=scaleToYLimits(seq(0,1,.25), yLimits), labels=seq(0,1,.25))
   # mtext("accuracy", 4)

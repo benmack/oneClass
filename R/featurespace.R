@@ -22,6 +22,7 @@
 #' @return a plot of the feature space
 #' @examples
 #' \dontrun{
+#' data(bananas)
 #' tr <- bananas$tr
 #' ### underfitted model
 #' oc <- trainOcc ( x = tr[, -1], y = tr[, 1], 
