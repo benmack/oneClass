@@ -115,8 +115,7 @@
 trainOcc <- function ( x, y, positive=NULL, method="biasedsvm", metric=NULL, 
                        trControl=NULL, index=NULL, summaryFunction=NULL, 
                        allowParallel=TRUE, verboseIter=TRUE,
-                       dirModelInfo=NULL,
-                       ...) {
+                       dirModelInfo=NULL, ...) {
   
   funcCall <- match.call(expand.dots = TRUE)
   u=NULL
@@ -221,12 +220,14 @@ trainOcc <- function ( x, y, positive=NULL, method="biasedsvm", metric=NULL,
   ### check if resampling has been performed with puPartition and delete 
   ### the unlabeled validation data from oc$trainingData and update the 
   ### final model
-  isPuPart <- .isPuPartition(oc)
-  oc$isPuPartition <- isPuPart
-  if (isPuPart & oc$modelInfo$label != "one-class svm") {
-    oc$trainingDataValUn <- oc$trainingData[attr(isPuPart, "indexUnVal"), ]
-    oc$trainingData <- oc$trainingData[-attr(isPuPart, "indexUnVal"), ]
-    oc <- update(oc, modRank=1)
+  if (oc$control$method!="none") {
+    isPuPart <- .isPuPartition(oc)
+    oc$isPuPartition <- isPuPart
+    if (isPuPart & oc$modelInfo$label != "one-class svm") {
+      oc$trainingDataValUn <- oc$trainingData[attr(isPuPart, "indexUnVal"), ]
+      oc$trainingData <- oc$trainingData[-attr(isPuPart, "indexUnVal"), ]
+      oc <- update(oc, modRank=1)
+    }
   }
   return(oc)
 } ### end trainOcc.default ################################################
