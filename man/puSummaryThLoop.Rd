@@ -5,7 +5,7 @@
 \title{puSummaryThLoop}
 \usage{
 puSummaryThLoop(data, lev = NULL, model = NULL, thresholds = NULL,
-  returnAll = FALSE)
+  maximize = c("puF", "puF1"), returnAll = FALSE)
 }
 \arguments{
 \item{data}{a data frame or matrix with columns \code{obs}, \code{pred}, and \code{pos}.

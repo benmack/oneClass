@@ -7,6 +7,8 @@
 #' @param lev a character vector of factors levels for the response (default is \code{NULL}).
 #' @param model a character string for the model name (as taken form the method argument of train (default is \code{NULL}).
 #' @param thresholds thresholds for which to calcualte the performance metrics 
+#' @param maximize Charater (vector). The metrics to be maximized. 
+#' Must correspond to a name of the vector returned by \code{puSummary).
 #' @param returnAll return metrics for all thresholds.
 #' @return A vector of performance estimates.
 #'@return a numeric vector containing reasonable thresholds 
@@ -45,6 +47,7 @@
 #'@export
 puSummaryThLoop <- function(data, lev = NULL, model = NULL, 
                             thresholds = NULL, 
+                            maximize=c("puF", "puF1"), 
                             returnAll=FALSE) {   
   
   if (!all(levels(data[, "pred"]) == levels(data[, "obs"]))) 
@@ -69,15 +72,21 @@ puSummaryThLoop <- function(data, lev = NULL, model = NULL,
     data[, "pred"] <- ifelse(data[, "pos"]>=th, "pos", "un")
     rtrn[i, ] <- puSummary(data)
   }
-  
-  if (returnAll) {
-    return( data.frame(th = thresholds, rtrn) )
-  } else {
-    idx.max <- which(rtrn[, "puF"]==max(rtrn[, "puF"], na.rm=TRUE))
-    if (length(idx.max)>1)
-      idx.max <- idx.max[1]
-    rtrn <- rtrn[idx.max, ]
-    names(rtrn) <- paste("th.", names(rtrn), sep="")
-    return( c("th" = thresholds[idx.max], rtrn) )
+  rtrn <- data.frame(th = thresholds, rtrn)
+  if (!returnAll) {
+    #     idx.max <- which(rtrn[, "puF"]==max(rtrn[, "puF"], na.rm=TRUE))
+    #     if (length(idx.max)>1)
+    #       idx.max <- idx.max[1]
+    #     rtrn <- rtrn[idx.max, ]
+    #     names(rtrn) <- paste("th.", names(rtrn), sep="")
+    #     return( c("th" = thresholds[idx.max], rtrn) )
+    idx.max <- sapply(maximize, function(met) which(rtrn[, met]==max(rtrn[, met], na.rm=T))) 
+    rtrn <- lapply(1:length(maximize), function(i) {
+      rtrn.row <- rtrn[idx.max[i], ]
+      colnames(rtrn.row) <- paste(maximize[i], colnames(rtrn.row), sep=".")
+      rtrn.row
+    })
+    rtrn <- do.call(cbind, rtrn)
   }
+  return(rtrn)
 }
