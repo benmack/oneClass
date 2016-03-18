@@ -17,14 +17,23 @@
 #' }
 #' @export
 maxent_default_fc <- function(nPos) {
- if (nPos<10) {
-   fc="L"
- } else if (nPos>=10 & nPos<15) {  # 
-   fc="LQ"
- } else if (nPos>=15 & nPos<80) {
-   fc="LQH"
- } else if (nPos>=80) {
-   fc="LQHPT"
- }
+ fc <- character(length(nPos))
+ fc[nPos<10] <- "L"
+ fc[nPos>=10 & nPos<15] <- "LQ"
+ fc[nPos>=15 & nPos<80] <- "LQH"
+ fc[nPos>=80] <- "LQHPT"
  return(fc)
 }
+
+# maxent_default_fc <- function(nPos) {
+#  if (nPos<10) {
+#    fc="L"
+#  } else if (nPos>=10 & nPos<15) {  # 
+#    fc="LQ"
+#  } else if (nPos>=15 & nPos<80) {
+#    fc="LQH"
+#  } else if (nPos>=80) {
+#    fc="LQHPT"
+#  }
+#  return(fc)
+# }
