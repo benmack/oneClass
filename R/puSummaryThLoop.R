@@ -55,8 +55,8 @@ puSummaryThLoop <- function(data, lev = NULL, model = NULL,
   
   if (is.null(thresholds)) {
     generateThresholds <- function(data) {
-      th_rng <- c(quantile(data[data[, "obs"]=="un", "pos"], .5),
-                  quantile(data[data[, "obs"]=="pos", "pos"], .5)) 
+      th_rng <- c(quantile(data[data[, "obs"]=="un", "pos"], .2),
+                  quantile(data[data[, "obs"]=="pos", "pos"], .8)) 
       thresholds <- seq(th_rng[1], th_rng[2], length.out=50)
       return(thresholds)
     }
