@@ -8,12 +8,8 @@
 #' @param nPos number of positive training samples 
 #' @examples
 #' \dontrun{
-#' maxent_default_fc(9)
-#' maxent_default_fc(10)
-#' maxent_default_fc(14)
-#' maxent_default_fc(15)
-#' maxent_default_fc(79)
-#' maxent_default_fc(80)
+#' # lower and upper bounds
+#' maxent_default_fc(c(-Inf, 9, 10, 14, 15, 79, 80, Inf))
 #' }
 #' @export
 maxent_default_fc <- function(nPos) {
@@ -24,16 +20,3 @@ maxent_default_fc <- function(nPos) {
  fc[nPos>=80] <- "LQHPT"
  return(fc)
 }
-
-# maxent_default_fc <- function(nPos) {
-#  if (nPos<10) {
-#    fc="L"
-#  } else if (nPos>=10 & nPos<15) {  # 
-#    fc="LQ"
-#  } else if (nPos>=15 & nPos<80) {
-#    fc="LQH"
-#  } else if (nPos>=80) {
-#    fc="LQHPT"
-#  }
-#  return(fc)
-# }

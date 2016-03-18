@@ -14,12 +14,8 @@ maxent_default_fc(nPos)
 }
 \examples{
 \dontrun{
-maxent_default_fc(9)
-maxent_default_fc(10)
-maxent_default_fc(14)
-maxent_default_fc(15)
-maxent_default_fc(79)
-maxent_default_fc(80)
+# lower and upper bounds
+maxent_default_fc(c(-Inf, 9, 10, 14, 15, 79, 80, Inf))
 }
 }
 
