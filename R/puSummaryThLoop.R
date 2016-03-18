@@ -48,7 +48,8 @@
 puSummaryThLoop <- function(data, lev = NULL, model = NULL, 
                             thresholds = NULL, 
                             maximize=c("puF", "puF1"), 
-                            returnAll=FALSE) {   
+                            returnAll=FALSE, 
+                            calcAUC=FALSE) {   
   
   if (!all(levels(data[, "pred"]) == levels(data[, "obs"]))) 
     stop("levels of observed and predicted data do not match")
@@ -63,14 +64,14 @@ puSummaryThLoop <- function(data, lev = NULL, model = NULL,
     thresholds <- generateThresholds(data)
   }
   
-  dummy <- puSummary(data)
+  dummy <- puSummary(data, calcAUC=FALSE)
   rtrn <- matrix(NA, length(thresholds), length(dummy))
   colnames(rtrn) <- names(dummy)
   
   for (i in seq(along.with=thresholds) ) {
     th <- thresholds[i]
     data[, "pred"] <- ifelse(data[, "pos"]>=th, "pos", "un")
-    rtrn[i, ] <- puSummary(data)
+    rtrn[i, ] <- puSummary(data, calcAUC=FALSE)
   }
   rtrn <- data.frame(th = thresholds, rtrn)
   if (!returnAll) {

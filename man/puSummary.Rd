@@ -4,7 +4,7 @@
 \alias{puSummary}
 \title{puSummary}
 \usage{
-puSummary(data, lev = NULL, model = NULL)
+puSummary(data, lev = NULL, model = NULL, calcAUC = TRUE)
 }
 \arguments{
 \item{data}{a data frame or matrix with columns \code{obs}, \code{pred}, and \code{pos}.

@@ -50,7 +50,7 @@
 #' @importFrom pROC roc
 #' @rdname puSummary
 #' @export 
-puSummary <- function(data, lev = NULL, model = NULL) { # , metrics=c("puAuc", "puF", "tpr", "ppp")
+puSummary <- function(data, lev = NULL, model = NULL, calcAUC=TRUE) { # , metrics=c("puAuc", "puF", "tpr", "ppp")
   
   #if (nrow(data)>11)
   #  browser()
@@ -61,13 +61,15 @@ puSummary <- function(data, lev = NULL, model = NULL) { # , metrics=c("puAuc", "
   if (!all(levels(data[, "pred"]) == levels(data[, "obs"]))) 
     stop("levels of observed and predicted data do not match")
   
-  ans <- require(pROC, quietly = TRUE, warn.conflicts = FALSE)
-  if (!ans)
-    warning("The pu-performance metric 'aucPu' will not be available.")
+  if (calcAUC) {
+    ans <- require(pROC, quietly = TRUE, warn.conflicts = FALSE)
+    if (!ans)
+      warning("The pu-performance metric 'aucPu' will not be available.")
+    rocObject <- try(pROC::roc(response=data$obs, predictor=data[, 'pos'], 
+                               levels=c('pos', 'un')), silent = TRUE)
+    puAuc <- ifelse (class(rocObject)[1] == "try-error", 0, rocObject$auc)
+  }
   
-  rocObject <- try(pROC::roc(response=data$obs, predictor=data[, 'pos'], 
-                             levels=c('pos', 'un')), silent = TRUE)
-  puAuc <- ifelse (class(rocObject)[1] == "try-error", 0, rocObject$auc)
   
   tp <- sum(data[,"pred"]=="pos" & data[,"obs"]=="pos")
   fn <- sum(data[,"pred"]!="pos" & data[,"obs"]=="pos")
@@ -92,8 +94,11 @@ puSummary <- function(data, lev = NULL, model = NULL) { # , metrics=c("puAuc", "
   
   # negD01 <- .negD01(tpr=tpr, ppp=ppp) #.negD01:::
   
-  out <- c(tpr=tpr, puP=puP, ppp=ppp, puAuc=puAuc, puF=puF, puF1=puF1, pn=pn) #, "SensPu", "SpecPu")
-  
+  if (calcAUC) {
+    out <- c(tpr=tpr, puP=puP, ppp=ppp, puAuc=puAuc, puF=puF, puF1=puF1, pn=pn) #, "SensPu", "SpecPu")
+  } else {
+    out <- c(tpr=tpr, puP=puP, ppp=ppp, puF=puF, puF1=puF1, pn=pn)
+  }
   return(out)
   
 }
