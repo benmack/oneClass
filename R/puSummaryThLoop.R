@@ -81,13 +81,30 @@ puSummaryThLoop <- function(data, lev = NULL, model = NULL,
     #     rtrn <- rtrn[idx.max, ]
     #     names(rtrn) <- paste("th.", names(rtrn), sep="")
     #     return( c("th" = thresholds[idx.max], rtrn) )
-    idx.max <- sapply(maximize, function(met) which(rtrn[, met]==max(rtrn[, met], na.rm=T))) 
-    rtrn <- lapply(1:length(maximize), function(i) {
-      rtrn.row <- rtrn[idx.max[i], ]
-      colnames(rtrn.row) <- paste(maximize[i], colnames(rtrn.row), sep=".")
-      rtrn.row
-    })
-    rtrn <- do.call(cbind, rtrn)
+    rtrn <- maximize_puMetric(rtrn, maximize)
   }
   return(rtrn)
+}
+
+#' Title
+#'
+#' @param x Data frame containing pu-metric values (columns) 
+#' for a sequence of thresholds (rows).  
+#' @param metric A character (vector). The metrics to be 
+#' maximized. Must exist as column name in \code{x}. 
+#' 
+#' @return
+#' @export
+maximize_puMetric <- function (x, metric) {
+  idx.max <- sapply(
+    metric, function(met) 
+      which(x[, met]==max(x[, met], na.rm=T))[1]) 
+  x <- lapply(1:length(metric), function(i) {
+    x.row <- x[idx.max[i], ]
+    colnames(x.row) <- paste(metric[i], 
+                                colnames(x.row), sep=".")
+    x.row
+  })
+  x <- do.call(cbind, x)
+  x
 }
