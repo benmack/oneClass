@@ -83,6 +83,10 @@ puSummaryThLoop <- function(data, lev = NULL, model = NULL,
     #     return( c("th" = thresholds[idx.max], rtrn) )
     rtrn <- maximize_puMetric(rtrn, maximize)
   }
+  if (calcAUC) {
+    dummy <- oneClass:::puSummary(data, calcAUC=TRUE)
+    rtrn[, "AUC"] <- dummy["puAuc"]
+  }
   return(rtrn)
 }
 
