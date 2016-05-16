@@ -6,7 +6,7 @@ modelInfo <-
        parameters=data.frame(parameter = c("sigma", "nu"), 
                                class = rep("numeric", 2),
                                label = c("Sigma", "Nu")),
-       grid = function(x, y, len = NULL, seedGrid=NULL) {
+       grid = function(x, y, len = NULL, seedGrid=NULL, ...) {
          grid <- expand.grid(sigma=c(.001, .01, .1, 1, 10, 100),  # ocsvm parameters
                              nu=c(.01, .05, .1, .15, .2, .25) )
          return(grid)

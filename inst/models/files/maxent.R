@@ -8,7 +8,7 @@ modelInfo <-
          data.frame(parameter = c("fc", "beta"), 
                     class = rep("numeric", 1),
                     label = c("Beta")),
-       grid = function(x, y, len = NULL) {
+       grid = function(x, y, len = NULL, ...) {
          grid <- expand.grid(fc=c("D"),
                              beta = 2^c(-1:5))
          colnames(grid) <- c("fc", "beta")

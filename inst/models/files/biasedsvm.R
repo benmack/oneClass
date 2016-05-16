@@ -7,7 +7,7 @@ modelInfo <-
          data.frame(parameter = c("sigma", "cNeg", "cMultiplier"), 
                     class = rep("numeric", 3),
                     label = c("Sigma", "Cost (U)", "Multiplier Cost (P)")),
-       grid = function(x, y, len = NULL, seedGrid=NULL) {
+       grid = function(x, y, len = NULL, seedGrid=NULL, ...) {
          grid <- expand.grid(sigma=c(.1, 1, 10, 100),  
                              cNeg=2^seq(-10, 15, 3),
                              cMultiplier=2^seq(2, 15, 2) ) 
