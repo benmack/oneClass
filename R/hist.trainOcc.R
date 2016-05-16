@@ -129,8 +129,18 @@ hist.trainOcc <- function(x, predUn=NULL, th=NULL, cab=NULL, main=NULL,
   
   if (!is.null(predUn)) {
     predictive.value <- predUn
-    if (is.null(xlim))
-      xlim <- range(predictive.value, na.rm=T)
+    if (is.null(xlim)) {
+      if (.is.raster(predictive.value)) 
+      {
+        if (!is.finite(predictive.value@data@min) |
+            !is.finite(predictive.value@data@max))
+          predictive.value <- setMinMax(predictive.value)
+        xlim <- c(predictive.value@data@min, 
+                  predictive.value@data@max)
+      } else {
+        xlim <- range(predictive.value, na.rm=T)
+      }
+    }
   } else if (!is.null(x$predUn)) {
     predictive.value <- x$predUn
     if (is.null(xlim))

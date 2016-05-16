@@ -52,17 +52,26 @@ predict.trainOcc <- function(object, newdata, type = "prob", allowParallel=TRUE,
     {
       if (is.null(mask)) 
       {
-        predictions <- spatial.tools::predict_rasterEngine(object, newdata=newdata, type = type, ...)
+        predictions <- 
+          spatial.tools::predict_rasterEngine(object, 
+                                              newdata=newdata,
+                                              type = type, ...)
       } else
       {
-        predictions <- spatial.tools::rasterEngine(inraster=newdata,mask=mask,fun=.trainOcc_raster_predict,
-                             processing_unit="chunk",
-                             args=list(ocModel=object,type="prob",disable_masking=FALSE))
+        predictions <- 
+          spatial.tools::rasterEngine(inraster=newdata, 
+                                      mask=mask,
+                                      fun=.trainOcc_raster_predict,
+                                      processing_unit="chunk",
+                                      args=list(ocModel=object,type="prob",
+                                                disable_masking=FALSE))
       }
     } else 
     {
       predictions <- predict(object=newdata, model=object, type=type, fun=predict.train)
     }
+    if (nlayers(predictions)==1 & class(predictions)[[1]]!="RasterLayer")
+      predictions <- raster(predictions, layer=1)
   } else if (class(newdata)=='rasterTiled') 
   {
     predictions <- predict(object=newdata, model=object, type = type, allowParallel=allowParallel, ...)
@@ -76,7 +85,6 @@ predict.trainOcc <- function(object, newdata, type = "prob", allowParallel=TRUE,
       predictions <- predictions[]
     }
   }
-  
   
   return(predictions)
 }
