@@ -16,6 +16,9 @@
 #' @param allowParallel should parallel processing be allowed. 
 #' @param returnRaster default \code{TRUE}
 #' @param mask if given and if \code{returnRaster=TRUE} only predictions of the valid cells are returned.
+#' @param noWarnWithParRasPred Supresses warning when predicting in parallel with spatial.tools.
+#' It always causes the following warning message for each worker: 
+#' "In .local(x, ...) : min value not known, use setMinMax".
 #' @param ... other arguments that can be passed to \code{\link{predict.train}}.
 #' @return the predicted data, eventually returned as \code{rasterLayer}.
 #' @method predict trainOcc
@@ -40,7 +43,7 @@
 #' stopCluster(cl)
 #' }
 #' @export
-predict.trainOcc <- function(object, newdata, type = "prob", allowParallel=TRUE, returnRaster=TRUE, mask=NULL, ...) { 
+predict.trainOcc <- function(object, newdata, type = "prob", allowParallel=TRUE, returnRaster=TRUE, mask=NULL, noWarnWithParRasPred=TRUE, ...) { 
   
   if (is.data.frame(newdata) | is.matrix(newdata)) 
   {
@@ -50,12 +53,17 @@ predict.trainOcc <- function(object, newdata, type = "prob", allowParallel=TRUE,
   {
     if ( any(search()%in%"package:foreach") ) #require('spatial.tools', quietly=TRUE)
     {
+      if (noWarnWithParRasPred) {
+        oldw <- getOption("warn")
+        options(warn = -1)
+      }
       if (is.null(mask)) 
       {
         predictions <- 
           spatial.tools::predict_rasterEngine(object, 
-                                              newdata=newdata,
+                                              newdata=setMinMax(newdata),
                                               type = type, ...)
+        
       } else
       {
         predictions <- 
@@ -66,10 +74,15 @@ predict.trainOcc <- function(object, newdata, type = "prob", allowParallel=TRUE,
                                       args=list(ocModel=object,type="prob",
                                                 disable_masking=FALSE))
       }
+      if (noWarnWithParRasPred) {
+        options(warn = oldw)
+      }
+      
     } else 
     {
       predictions <- predict(object=newdata, model=object, type=type, fun=predict.train)
     }
+    # predictions <- setMinMax(predictions)
     if (nlayers(predictions)==1 & class(predictions)[[1]]!="RasterLayer")
       predictions <- raster(predictions, layer=1)
   } else if (class(newdata)=='rasterTiled') 

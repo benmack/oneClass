@@ -1,8 +1,8 @@
 Package: oneClass
 Type: Package
 Title: One-class classification in the absence of test data
-Version: 0.1-2
-Date: 2014-10-16
+Version: 1.0
+Date: 2015-05-26
 Author: Benjamin Mack
 Maintainer: Benjamin Mack <knecmab@gmail.com>
 Description: oneClass implements the one-class classifiers one-class SVM,
@@ -16,18 +16,18 @@ Description: oneClass implements the one-class classifiers one-class SVM,
     absence of a representative and complete test data.
     The package is developed for one-class land cover classification and
     also handles raster data.
-License: GPL-2
+License: MIT
 LazyLoad: yes
 Depends:
-    caret
+    caret,
+    pROC,
+    kernlab
 Imports:
     raster,
     spatial.tools,
-    pROC,
     dismo,
     foreach
 Suggests:
-    kernlab,
     rJava,
     RColorBrewer,
     testthat,

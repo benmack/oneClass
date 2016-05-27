@@ -5,10 +5,10 @@
 #' The first two are the binary observed, predicted outcomes and the latter one the 
 #' continous outcome for the positive class. 
 #' @param lev a character vector of factors levels for the response (default is \code{NULL}).
-#' @param model a character string for the model name (as taken form the method argument of train (default is \code{NULL}).
+#' @param model a character string for the model name (as taken form the method argument of train) (default is \code{NULL}).
 #' @param thresholds thresholds for which to calcualte the performance metrics 
 #' @param maximize Charater (vector). The metrics to be maximized. 
-#' Must correspond to a name of the vector returned by \code{puSummary).
+#' Must correspond to a name of the vector returned by \code{puSummary}.
 #' @param returnAll return metrics for all thresholds.
 #' @return A vector of performance estimates.
 #'@return a numeric vector containing reasonable thresholds 
@@ -97,7 +97,7 @@ puSummaryThLoop <- function(data, lev = NULL, model = NULL,
 #' @param metric A character (vector). The metrics to be 
 #' maximized. Must exist as column name in \code{x}. 
 #' 
-#' @return
+#' @return 
 #' @export
 maximize_puMetric <- function (x, metric) {
   idx.max <- sapply(

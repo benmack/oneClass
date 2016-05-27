@@ -16,7 +16,7 @@
 #' also available in the package \code{oneClass}.
 #' 
 #' @seealso The package vignette gives a illustrative introduction to one-class 
-#' classification and the package \code{oneClass} (\url{../doc/oneClassIntro.pdf}) 
+#' classification and the package \code{oneClass} (\url{../doc/oneClassIntro.html}) 
 #' 
 #' @import caret
 #' @import raster

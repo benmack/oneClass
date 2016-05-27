@@ -18,6 +18,7 @@
 #' @param col a colour to be used to fill the bars.
 #' @param border the color of the border around the bars.
 #' @param add_calBoxplot bool. Should the positive calibration predictions be plotted? Defaults to \code{TRUE}.  
+#' @parm noWarnRasHist Supresses warning when histogram is derived from raster.
 #' @param ... other arguments that can be passed to \code{\link{plot}}. 
 #' @return Diagnostic distributions plot.
 #' @method hist trainOcc
@@ -115,7 +116,8 @@
 #' @export
 hist.trainOcc <- function(x, predUn=NULL, th=NULL, cab=NULL, main=NULL, 
                           ylim=NULL, breaks='Scott', col="grey", border=NA, 
-                          xlim=NULL, add_calBoxplot=TRUE, ...) { # 
+                          xlim=NULL, add_calBoxplot=TRUE, 
+                          noWarnRasHist=FALSE, ...) { # 
   if (!is.null(x$holdOut$pos) & !is.null(x$holdOut$un)) {
     hop <- list(pos = x$holdOut$pos, un = x$holdOut$un)
   } else {
@@ -125,7 +127,7 @@ hist.trainOcc <- function(x, predUn=NULL, th=NULL, cab=NULL, main=NULL,
   trSet_pos <- x$trainingData[x$trainingData[,ncol(x$trainingData)]=="pos", 
                               -ncol(x$trainingData)]
   pred_tr_pos <- predict(x, trSet_pos)
-   
+  
   
   if (!is.null(predUn)) {
     predictive.value <- predUn
@@ -152,7 +154,14 @@ hist.trainOcc <- function(x, predUn=NULL, th=NULL, cab=NULL, main=NULL,
       xlim <- range(c(unlist(hop$un), unlist(hop$pos)), na.rm=T)
   }
   
-  h <- hist(predictive.value, plot=FALSE, breaks=breaks, ...)
+  if (.is.raster(predictive.value) & noWarnRasHist) {
+    oldw <- getOption("warn")
+    options(warn = -1)
+    h <- hist(predictive.value, plot=FALSE, breaks=breaks, ...)
+    options(warn = oldw)
+  } else {
+    h <- hist(predictive.value, plot=FALSE, breaks=breaks, ...)
+  }
   h$xname <- "predictive value"
   
   
@@ -174,10 +183,10 @@ hist.trainOcc <- function(x, predUn=NULL, th=NULL, cab=NULL, main=NULL,
   }
   
   if (is.null(main)) {
-      parvals <- sapply(x$bestTune, 
-             function(parval) 
-               ifelse(is.numeric(parval), signif(parval,3), as.character(parval)))
-      signif(x$bestTune[is.numeric(x$bestTune)],3)
+    parvals <- sapply(x$bestTune, 
+                      function(parval) 
+                        ifelse(is.numeric(parval), signif(parval,3), as.character(parval)))
+    signif(x$bestTune[is.numeric(x$bestTune)],3)
     main <- paste(paste(names(x$bestTune), parvals, collapse=" / "), 
                   paste("\nrow", modelPosition(x)$row, "/ #U", length(predictive.value)))
   }

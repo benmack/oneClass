@@ -14,9 +14,12 @@ continous outcome for the positive class.}
 
 \item{lev}{a character vector of factors levels for the response (default is \code{NULL}).}
 
-\item{model}{a character string for the model name (as taken form the method argument of train (default is \code{NULL}).}
+\item{model}{a character string for the model name (as taken form the method argument of train) (default is \code{NULL}).}
 
 \item{thresholds}{thresholds for which to calcualte the performance metrics}
+
+\item{maximize}{Charater (vector). The metrics to be maximized. 
+Must correspond to a name of the vector returned by \code{puSummary}.}
 
 \item{returnAll}{return metrics for all thresholds.}
 }

@@ -7,7 +7,8 @@
 \usage{
 \method{hist}{trainOcc}(x, predUn = NULL, th = NULL, cab = NULL,
   main = NULL, ylim = NULL, breaks = "Scott", col = "grey",
-  border = NA, xlim = NULL, add_calBoxplot = TRUE, ...)
+  border = NA, xlim = NULL, add_calBoxplot = TRUE,
+  noWarnRasHist = FALSE, ...)
 }
 \arguments{
 \item{x}{an object of class \code{\link{trainOcc}}.}

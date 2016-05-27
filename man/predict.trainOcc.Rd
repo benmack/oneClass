@@ -5,7 +5,8 @@
 \title{Predict method for \code{\link{trainOcc}} objects.}
 \usage{
 \method{predict}{trainOcc}(object, newdata, type = "prob",
-  allowParallel = TRUE, returnRaster = TRUE, mask = NULL, ...)
+  allowParallel = TRUE, returnRaster = TRUE, mask = NULL,
+  noWarnWithParRasPred = TRUE, ...)
 }
 \arguments{
 \item{object}{a \code{\link{trainOcc}} object}
@@ -19,6 +20,10 @@
 \item{returnRaster}{default \code{TRUE}}
 
 \item{mask}{if given and if \code{returnRaster=TRUE} only predictions of the valid cells are returned.}
+
+\item{noWarnWithParRasPred}{Supresses warning when predicting in parallel with spatial.tools.
+It always causes the following warning message for each worker: 
+"In .local(x, ...) : min value not known, use setMinMax".}
 
 \item{...}{other arguments that can be passed to \code{\link{predict.train}}.}
 }

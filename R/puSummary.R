@@ -77,7 +77,8 @@ puSummary <- function(data, lev = NULL, model = NULL, calcAUC=TRUE) { # , metric
   
   tpr <- tp/(tp+fn)
   ppp <- (sum(data[,"pred"]=="pos")/length(data[,"pred"]))
-  puP <- tp/(tp+fpPu)
+  puP <- tp/(tp+fpPu) # precision
+  puP[is.na(puP)] <- 0
   puF <- (tpr^2)/ppp
   puF1 <- 2 * ( (puP*tpr) / (puP+tpr) )
   

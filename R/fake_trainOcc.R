@@ -1,14 +1,11 @@
 #' Title
 #'
-#' @param results 
-#' @param metric 
-#' @param control_method 
+#' @param results ...
+#' @param metric ... 
+#' @param control_method ... 
 #'
-#' @return
-#' @export
-#'
-#' @examples
-fake_trainOcc_bsvm <- function(results, metric=NULL, 
+#' @return ???
+.fake_trainOcc_bsvm <- function(results, metric=NULL, 
                                control_method="none") {
 
   method="biasedsvm"
