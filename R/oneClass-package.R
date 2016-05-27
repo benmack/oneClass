@@ -15,7 +15,7 @@
 #' and tools, e.g. investigation of resampling distributions, from the \code{caret} package are 
 #' also available in the package \code{oneClass}.
 #' 
-#' @seealso The package vignette gives a illustrative introduction to one-class 
+#' @seealso The package vignette gives an illustrative introduction to one-class 
 #' classification and the package \code{oneClass} (\url{../doc/oneClassIntro.html}) 
 #' 
 #' @import caret
