@@ -5,12 +5,14 @@
 #' This is a translation of the code found in the \code{inconsistency_occ} function of the MATLAB \code{dd_toolbox} (http://prlab.tudelft.nl/david-tax/dd_tools.html). 
 #' For more information, see also Tax & Mueller (2004). 
 #' 
-#' @param x Data matrix with positive data only. Observations/features in rows/columns. 
+#' @param x Data matrix with positive data only. Observations/features in rows/columns.
 #' @param target_fnr Target false positive rate and the nu parameter for the one-svc
 #' @param sigmas  Vector of inverse kernel widths for the Radial Basis kernel function ordered from low (simple model) to high (complex model) values. 
 #' @param k Number of cross-validation folds used to estimate the empirical false positive rate.
 #' @param sigma_thr consistency threshold in terms of sigma-bounds.
 #' @param seed A seed value for the cross-validation split.
+#' @param selectLastConsistent If TRUE the model just before passing the consistency threshold is selected. If FALSE the one after the threshold. Defaults to FALSE as this is the default in the dd_toolbox.
+#' @param oneMoreComplexity Calculate the false positive rate for one more model after the consistency threshold has been passed. Might be interesting for plotting.
 #'
 #' @return Trained OCSVM model. 
 #' @export
@@ -28,11 +30,40 @@ consistent_ocsvm <- function(x, target_fnr=.1,
                              k=10,
                              sigma_thr=2, 
                              seed=NULL,
-                             oneMoreAfterSelection=TRUE) {
+                             selectLastConsistent=FALSE,
+                             oneMoreComplexity=TRUE) {
   
   fracrej=target_fnr
   range=sigmas
   nrbags=k; rm(k)
+  
+  if ("DUMMY_RESPONSE_DUMMY" %in% colnames(x))
+    stop("x cannot have a variable called DUMMY_RESPONSE_DUMMY.")
+  x <- cbind(DUMMY_RESPONSE_DUMMY=as.factor(rep(1, nrow(x))), x)
+  
+  myksvm <- function(x, nu, sigma) {
+#     ksvm(DUMMY_RESPONSE_DUMMY~., # looks odd but with a formula we can pass factors!
+#          data=x, type="one-svc", kernel = "rbfdot",
+#          kpar = list(sigma=sigma),
+#          nu = fracrej, cross=0)
+   ksvm(DUMMY_RESPONSE_DUMMY~., data=x, type="one-svc",
+        kernel = "rbfdot",
+        kpar = list(sigma = sigma), 
+        nu = nu, cross=0)
+  }
+
+  get_est_fpr <- 
+    function (x, fracrej, sigma, index, index.te, nrbags) {
+      err <- vector("numeric", nrbags)
+      for (i in 1:nrbags) {
+        xtr <- x[index[[i]],]
+        xte <- x[index.te[[i]],]
+        mod.i <-  myksvm(xtr, nu=fracrej, sigma=sigma)
+        pred.i <- predict(mod.i, xte[, -1])
+        err[i] <- 1-mean(pred.i)
+      }
+      return(err)
+    }
   
   nrrange = length(range);
   if (nrrange<2)
@@ -58,18 +89,9 @@ consistent_ocsvm <- function(x, target_fnr=.1,
   k = 1
   fracout <- rep(NA, length(sigmas))
   I = nrbags
-  err <- vector("numeric", nrbags)
-  for (i in 1:nrbags) {
-    # Compute the target error on the leave-out bags
-    xtr <- x[index[[i]],]
-    xte <- x[index.te[[i]],]
-    mod.i <-  ksvm(x = as.matrix(xtr), y = NULL,
-                   kernel = "rbfdot",
-                   kpar = list(sigma = range[k]),
-                   nu = fracrej)
-    pred.i <- predict(mod.i, xte)
-    err[i] = 1-mean(pred.i)
-  }
+  err <- get_est_fpr(x=x, fracrej=fracrej, sigma=range[k], 
+                     index=index, index.te=index.te, nrbags=nrbags)
+
   # This one should at least satisfy the bound, else the model is already
   # too complex?!
   if (mean(err)>err_thr) {
@@ -83,37 +105,25 @@ consistent_ocsvm <- function(x, target_fnr=.1,
         err_thr, "@", k, "(sigma=", range[k], ")")
     k = k+1;
     I = nrbags;
-    for (i in 1:nrbags) {
-      # Compute the target error on the leave-out bags
-      xtr <- x[index[[i]],]
-      xte <- x[index.te[[i]],]
-      mod.i <-  ksvm(x = as.matrix(xtr), y = NULL,
-                     kernel = "rbfdot",
-                     kpar = list(sigma = range[k]),
-                     nu = fracrej)
-      pred.i <- predict(mod.i, xte)
-      err[i] = 1-mean(pred.i)
-    }
+    err <- get_est_fpr(x=x, fracrej=fracrej, sigma=range[k], 
+                       index=index, index.te=index.te, nrbags=nrbags)
     fracout[k] = mean(err)
   }
-  cat("  SELECTED! \nest_fnr => th :", fracout[k], " => ", 
-      err_thr, "@", k, "(sigma=", range[k], ")\n")
+  if(selectLastConsistent) {
+    k.sel <- k-1
+    cat("  SELECTED! \nest_fnr => th :", fracout[k], " => ", 
+        err_thr, "@", k, "(sigma=", range[k], ")\n")
+  } else {
+    k.sel <- k
+    cat("\nest_fnr => th :", fracout[k], " => ", 
+        err_thr, "@", k, "(sigma=", range[k], ")  SELECTED!\n")
+  }
   
-  
-  if (oneMoreAfterSelection) {
+  if (oneMoreComplexity) {
     k = k+1;
     I = nrbags;
-    for (i in 1:nrbags) {
-      # Compute the target error on the leave-out bags
-      xtr <- x[index[[i]],]
-      xte <- x[index.te[[i]],]
-      mod.i <-  ksvm(x = as.matrix(xtr), y = NULL,
-                     kernel = "rbfdot",
-                     kpar = list(sigma = range[k]),
-                     nu = fracrej)
-      pred.i <- predict(mod.i, xte)
-      err[i] = 1-mean(pred.i)
-    }
+    err <- get_est_fpr(x=x, fracrej=fracrej, sigma=range[k], 
+                       index=index, index.te=index.te, nrbags=nrbags)
     fracout[k] = mean(err)
     cat("est_fnr => th :", fracout[k], " => ", 
         err_thr, "@", k, "(sigma=", range[k], ")\n")
@@ -121,10 +131,7 @@ consistent_ocsvm <- function(x, target_fnr=.1,
   }
   
   # So, the final classifier becomes:
-  mod <-  ksvm(x = as.matrix(x), y = NULL,
-               kernel = "rbfdot",
-               kpar = list(sigma = range[k-1]),
-               nu = fracrej)
+  mod <- myksvm(x, nu=fracrej, sigma=range[k.sel])
   attr(mod, "est_fnr") <- data.frame(sigma=sigmas,
                                      est_fnr=fracout)
   attr(mod, "consistency_threshold") <- err_thr
