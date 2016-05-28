@@ -29,6 +29,9 @@ c(min(sapply(1:100, function(i) range(sigest(P)))[1,]),
 tuneGrid = expand.grid(sigma=c(0.1, .25, .5, .75, 1, 2.5, 5), 
                        nu=c(0.01, 0.05, 0.1)) # , 0.125, 0.15, 0.175, 0.2
 
+tuneGrid = expand.grid(sigma=c(0.1, .25, .5, .75, 1, 2.5, 5), 
+                       nu=c(0.1)) # , 0.125, 0.15, 0.175, 0.2
+
 model <- trainOcc(x=bananas$tr[, -1], y=bananas$tr[, 1], 
                   method="ocsvm", index=index, tuneGrid=tuneGrid)
 
@@ -38,8 +41,16 @@ featurespace(update(model, modRow=m), 0,
              main=paste(names(model$results[m, 1:3]), model$results[m, 1:3], collapse="|"))
 signif(model$results[m, ], 2)
 
+# ----
+# inconsistency tuning by Tax $ Müller (2004)
+et <- 0.1 # user defined error (false negative rate) on the target class
+M <- nrow(P)
+
+#
+inconsistency_criteria <- et + ( 2 * sqrt(M*et*(1-et)) )
 
 
 
 
-
+E_ethat <- M*et
+V_ethat <- M*et*(1-et)
