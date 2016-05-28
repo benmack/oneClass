@@ -1,8 +1,8 @@
 Package: oneClass
 Type: Package
 Title: One-class classification in the absence of test data
-Version: 0.2.0
-Date: 2015-05-26
+Version: 0.3.0
+Date: 2015-05-29
 Author: Benjamin Mack
 Maintainer: Benjamin Mack <knecmab@gmail.com>
 Description: oneClass implements the one-class classifiers one-class SVM,
