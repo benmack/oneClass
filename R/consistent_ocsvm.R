@@ -13,7 +13,10 @@
 #' @param seed A seed value for the cross-validation split.
 #' @param selectLastConsistent If TRUE the model just before passing the consistency threshold is selected. If FALSE the one after the threshold. Defaults to FALSE as this is the default in the dd_toolbox.
 #' @param oneMoreComplexity Calculate the false positive rate for one more model after the consistency threshold has been passed. Might be interesting for plotting.
-#'
+#' @param refineGrid Re-selection with a grid refined between the sigma before and after the selected one? Defaults to FALSE
+#' @param refineFun a function that takes a numeric vector of length two, i.e. the new minimum and maximum of the sigma range and creates new values, usually between the two.
+#' Defaults to \\code{function(rng) seq(rng[1], rng[2], length.out=10))}. 
+#' @param verbose Print progress info? Defaults to TRUE. 
 #' @return Trained OCSVM model. 
 #' @export
 #' @references
@@ -31,7 +34,57 @@ consistent_ocsvm <- function(x, target_fnr=.1,
                              sigma_thr=2, 
                              seed=NULL,
                              selectLastConsistent=FALSE,
-                             oneMoreComplexity=TRUE) {
+                             oneMoreComplexity=TRUE,
+                             refineGrid=FALSE,
+                             refineFun=function(rng) seq(rng[1], rng[2], 
+                                                         length.out=10),
+                             verbose=TRUE) {
+  
+  mod <- .consistent_ocsvm(x, target_fnr=target_fnr, 
+                           sigmas=sigmas, # following Hsu 
+                           k=k,
+                           sigma_thr=sigma_thr, 
+                           seed=seed,
+                           selectLastConsistent=selectLastConsistent,
+                           oneMoreComplexity=oneMoreComplexity,
+                           verbose=verbose)
+  if (refineGrid) {
+    est_fnr <- attr(mod, "est_fnr")
+    idx_sel <- which(est_fnr==mod@kernelf@kpar$sigma)
+    new_rng <- c(est_fnr$sigma[idx_sel-1], est_fnr$sigma[idx_sel+1])
+    new_sigmas <- refineFun(new_rng)
+    # we do not do that since then we do not need to care
+    # if the first new sigma leads to an inconistent model
+    # new_sigmas <- new_sigmas[!new_sigmas %in% sigmas]
+    mod_new <- .consistent_ocsvm(x, target_fnr=target_fnr,
+                                 sigmas=new_sigmas, # NEW GRID
+                                 k=k,
+                                 sigma_thr=sigma_thr, 
+                                 seed=seed,
+                                 selectLastConsistent=selectLastConsistent,
+                                 oneMoreComplexity=oneMoreComplexity,
+                                 verbose=verbose)
+    est_fnr_new <- attr(mod_new, "est_fnr")
+    est_fnr <- rbind(est_fnr, est_fnr_new[!is.na(est_fnr_new$est_fnr), ])
+    est_fnr <- est_fnr[order(est_fnr$sigma), ]
+    est_fnr <- est_fnr[!duplicated(est_fnr), ]
+    attr(mod_new, "est_fnr") <- est_fnr
+    attr(mod_new, "sigma_selected") <- c(attr(mod_new, "sigma_selected"), 
+                                         attr(mod, "sigma_selected"))
+    
+  return(mod_new)
+  }
+  return(mod)
+}
+
+.consistent_ocsvm <- function(x, target_fnr=.1, 
+                              sigmas=2^seq(-8, 7), # following Hsu 
+                              k=10,
+                              sigma_thr=2, 
+                              seed=NULL,
+                              selectLastConsistent=FALSE,
+                              oneMoreComplexity=TRUE, 
+                              verbose=TRUE) {
   
   fracrej=target_fnr
   range=sigmas
@@ -42,16 +95,16 @@ consistent_ocsvm <- function(x, target_fnr=.1,
   x <- cbind(DUMMY_RESPONSE_DUMMY=as.factor(rep(1, nrow(x))), x)
   
   myksvm <- function(x, nu, sigma) {
-#     ksvm(DUMMY_RESPONSE_DUMMY~., # looks odd but with a formula we can pass factors!
-#          data=x, type="one-svc", kernel = "rbfdot",
-#          kpar = list(sigma=sigma),
-#          nu = fracrej, cross=0)
-   ksvm(DUMMY_RESPONSE_DUMMY~., data=x, type="one-svc",
-        kernel = "rbfdot",
-        kpar = list(sigma = sigma), 
-        nu = nu, cross=0)
+    #     ksvm(DUMMY_RESPONSE_DUMMY~., # looks odd but with a formula we can pass factors!
+    #          data=x, type="one-svc", kernel = "rbfdot",
+    #          kpar = list(sigma=sigma),
+    #          nu = fracrej, cross=0)
+    ksvm(DUMMY_RESPONSE_DUMMY~., data=x, type="one-svc",
+         kernel = "rbfdot",
+         kpar = list(sigma = sigma), 
+         nu = nu, cross=0)
   }
-
+  
   get_est_fpr <- 
     function (x, fracrej, sigma, index, index.te, nrbags) {
       err <- vector("numeric", nrbags)
@@ -91,7 +144,7 @@ consistent_ocsvm <- function(x, target_fnr=.1,
   I = nrbags
   err <- get_est_fpr(x=x, fracrej=fracrej, sigma=range[k], 
                      index=index, index.te=index.te, nrbags=nrbags)
-
+  
   # This one should at least satisfy the bound, else the model is already
   # too complex?!
   if (mean(err)>err_thr) {
@@ -101,8 +154,9 @@ consistent_ocsvm <- function(x, target_fnr=.1,
   
   # Go through the other parameter settings until it becomes inconsistent:
   while ((k<nrrange) & (fracout[k] < err_thr)) {
-    cat("\nest_fnr  < th :", fracout[k], "  < ", 
-        err_thr, "@", k, "(sigma=", range[k], ")")
+    if (verbose)
+      cat("\nest_fnr  < th :", fracout[k], "  < ", 
+          err_thr, "@", k, "(sigma=", range[k], ")")
     k = k+1;
     I = nrbags;
     err <- get_est_fpr(x=x, fracrej=fracrej, sigma=range[k], 
@@ -111,12 +165,14 @@ consistent_ocsvm <- function(x, target_fnr=.1,
   }
   if(selectLastConsistent) {
     k.sel <- k-1
-    cat("  SELECTED! \nest_fnr => th :", fracout[k], " => ", 
-        err_thr, "@", k, "(sigma=", range[k], ")\n")
+    if (verbose)
+      cat("  SELECTED! \nest_fnr => th :", fracout[k], " => ", 
+          err_thr, "@", k, "(sigma=", range[k], ")\n")
   } else {
     k.sel <- k
-    cat("\nest_fnr => th :", fracout[k], " => ", 
-        err_thr, "@", k, "(sigma=", range[k], ")  SELECTED!\n")
+    if (verbose)
+      cat("\nest_fnr => th :", fracout[k], " => ", 
+          err_thr, "@", k, "(sigma=", range[k], ")  SELECTED!\n")
   }
   
   if (oneMoreComplexity) {
@@ -125,8 +181,9 @@ consistent_ocsvm <- function(x, target_fnr=.1,
     err <- get_est_fpr(x=x, fracrej=fracrej, sigma=range[k], 
                        index=index, index.te=index.te, nrbags=nrbags)
     fracout[k] = mean(err)
-    cat("est_fnr => th :", fracout[k], " => ", 
-        err_thr, "@", k, "(sigma=", range[k], ")\n")
+    if (verbose)
+      cat("est_fnr => th :", fracout[k], " => ", 
+          err_thr, "@", k, "(sigma=", range[k], ")\n")
     k=k-1
   }
   
@@ -135,6 +192,7 @@ consistent_ocsvm <- function(x, target_fnr=.1,
   attr(mod, "est_fnr") <- data.frame(sigma=sigmas,
                                      est_fnr=fracout)
   attr(mod, "consistency_threshold") <- err_thr
+  attr(mod, "sigma_selected") <- range[k.sel]
   return(mod)
 }
 
@@ -155,6 +213,5 @@ plot_consistent_ocsvm <- function(x) {
   plot(log(est_fnr$sigma), est_fnr$est_fnr, xlab="log(sigma)", ylab="FPR",
        main = paste0("Consistency threshold = ", signif(attr(x, "consistency_threshold"), 2), "\nsigma = ", signif(x@kernelf@kpar$sigma, 2)))
   abline(h=attr(x, "consistency_threshold"))
-  abline(v=log(x@kernelf@kpar$sigma))
+  abline(v=log(attr(x, "sigma_selected")))
 }
-

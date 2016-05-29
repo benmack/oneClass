@@ -6,7 +6,8 @@
 \usage{
 consistent_ocsvm(x, target_fnr = 0.1, sigmas = 2^seq(-8, 7), k = 10,
   sigma_thr = 2, seed = NULL, selectLastConsistent = FALSE,
-  oneMoreComplexity = TRUE)
+  oneMoreComplexity = TRUE, refineGrid = FALSE, refineFun = function(rng)
+  seq(rng[1], rng[2], length.out = 10), verbose = TRUE)
 }
 \arguments{
 \item{x}{Data matrix with positive data only. Observations/features in rows/columns.}
@@ -24,6 +25,13 @@ consistent_ocsvm(x, target_fnr = 0.1, sigmas = 2^seq(-8, 7), k = 10,
 \item{selectLastConsistent}{If TRUE the model just before passing the consistency threshold is selected. If FALSE the one after the threshold. Defaults to FALSE as this is the default in the dd_toolbox.}
 
 \item{oneMoreComplexity}{Calculate the false positive rate for one more model after the consistency threshold has been passed. Might be interesting for plotting.}
+
+\item{refineGrid}{Re-selection with a grid refined between the sigma before and after the selected one? Defaults to FALSE}
+
+\item{refineFun}{a function that takes a numeric vector of length two, i.e. the new minimum and maximum of the sigma range and creates new values, usually between the two.
+Defaults to \\code{function(rng) seq(rng[1], rng[2], length.out=10))}.}
+
+\item{verbose}{Print progress info? Defaults to TRUE.}
 }
 \value{
 Trained OCSVM model.
