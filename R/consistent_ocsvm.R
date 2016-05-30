@@ -20,7 +20,7 @@
 #' @return Trained OCSVM model. 
 #' @export
 #' @references
-#' Tax, D.M.J. & Mueller, K.-R., 2004. A consistency-based model selection for one-class classification. In Proceedings of the 17th International Conference on Pattern Recognition, 2004. ICPR 2004. IEEE, pp. 363–366 Vol.3. Available at: http://ieeexplore.ieee.org/lpdocs/epic03/wrapper.htm?arnumber=1334542.
+#' Tax, D.M.J. & Mueller, K. R., 2004. A consistency-based model selection for one-class classification. In Proceedings of the 17th International Conference on Pattern Recognition, 2004. ICPR 2004. IEEE, pp. 363 to 366 Vol.3. Available at: http://ieeexplore.ieee.org/lpdocs/epic03/wrapper.htm?arnumber=1334542.
 #' Tax, D.M.J., 2015. DDtools, the Data Description Toolbox for Matlab.
 #' @examples
 #' data(bananas)
