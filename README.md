@@ -11,9 +11,9 @@ Therefore, a part of classical data frames it also contains methods to predict r
 Note that the package is in developement and needs further testing. 
 Also some documentation might still be incomplete.
 
-However the most important functionalities should work well and are described [here](https://github.com/benmack/oneClass/blob/master/notebooks/oneClassIntro.ipynb). 
+However the most important functionalities should work well and are described in the [introductory vignette](https://github.com/benmack/oneClass/blob/master/notebooks/oneClassIntro.ipynb). 
 
-If you encounter a bug or have any problem with the package please document the issue [here](https://github.com/benmack/oneClass/issues) or contact me (knecmab@gmail.com). 
+If you encounter a bug, unclear/lacking documentation or any other problem with the package please use the [issue tracker](https://github.com/benmack/oneClass/issues) or contact me (knecmab@gmail.com). 
 
 
 Installation
