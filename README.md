@@ -1,5 +1,5 @@
-oneClass
-========
+oneClass: An R Package for One-Class Classification.
+====================================================
 
 One-class classification in the absence of test data.
 
@@ -17,7 +17,7 @@ If you encounter a bug, unclear/lacking documentation or any other problem with 
 
 
 Installation
-========
+============
 
 You can install it from within R with the package devtools and the following command:
 
