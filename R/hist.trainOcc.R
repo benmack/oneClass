@@ -18,7 +18,7 @@
 #' @param col a colour to be used to fill the bars.
 #' @param border the color of the border around the bars.
 #' @param add_calBoxplot bool. Should the positive calibration predictions be plotted? Defaults to \code{TRUE}.  
-#' @parm noWarnRasHist Supresses warning when histogram is derived from raster.
+#' @param noWarnRasHist Supresses warning when histogram is derived from raster.
 #' @param ... other arguments that can be passed to \code{\link{plot}}. 
 #' @return Diagnostic distributions plot.
 #' @method hist trainOcc

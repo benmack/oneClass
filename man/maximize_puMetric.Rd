@@ -7,11 +7,14 @@
 maximize_puMetric(x, metric)
 }
 \arguments{
-\item{x}{Data frame containing pu-metric values (columns) 
-for a sequence of thresholds (rows).}
+\item{x}{data frame containing pu-metric values (columns) 
+for a sequence of thresholds (rows)}
 
-\item{metric}{A character (vector). The metrics to be 
+\item{metric}{a character (vector). The metrics to be 
 maximized. Must exist as column name in \code{x}.}
+}
+\value{
+named vector with maximized metrics
 }
 \description{
 Title

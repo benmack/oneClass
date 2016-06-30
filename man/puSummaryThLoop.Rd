@@ -24,9 +24,7 @@ Must correspond to a name of the vector returned by \code{puSummary}.}
 \item{returnAll}{return metrics for all thresholds.}
 }
 \value{
-A vector of performance estimates.
-
-a numeric vector containing reasonable thresholds
+values of performance metrics
 }
 \description{
 An example for a PU summary function which derives the maximum performance metric over a set of thresholds. Here 50 thresholds between the medians of the positive and unlabeled hold out predictions.

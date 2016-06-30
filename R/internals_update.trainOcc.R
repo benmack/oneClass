@@ -1,5 +1,4 @@
 ### first aggregate the hold-out predictions and calculate the performance 
-#'@export
 .calc_performanceAP <- function(mm, object, colsParam, 
                                 puSummaryFunction) { 
   dt <- holdOutPredictions( object, 

@@ -32,6 +32,8 @@ elements \code{colors} (vector of \code{R} colors, length n) and \code{breaks} (
 
 \item{add_calBoxplot}{bool. Should the positive calibration predictions be plotted? Defaults to \code{TRUE}.}
 
+\item{noWarnRasHist}{Supresses warning when histogram is derived from raster.}
+
 \item{...}{other arguments that can be passed to \code{\link{plot}}.}
 }
 \value{

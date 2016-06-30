@@ -1,10 +1,3 @@
-#' Title
-#'
-#' @param results ...
-#' @param metric ... 
-#' @param control_method ... 
-#'
-#' @return ???
 .fake_trainOcc_bsvm <- function(results, metric=NULL, 
                                control_method="none") {
 

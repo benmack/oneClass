@@ -10,9 +10,8 @@
 #' @param maximize Charater (vector). The metrics to be maximized. 
 #' Must correspond to a name of the vector returned by \code{puSummary}.
 #' @param returnAll return metrics for all thresholds.
-#' @return A vector of performance estimates.
-#'@return a numeric vector containing reasonable thresholds 
-#'@examples
+#' @return values of performance metrics
+#' @examples
 #' \dontrun{
 #'data(bananas)
 #'tuneGrid <- expand.grid(sigma=c(1:10)*rep(c(.1, 1), each=10), 
@@ -92,12 +91,12 @@ puSummaryThLoop <- function(data, lev = NULL, model = NULL,
 
 #' Title
 #'
-#' @param x Data frame containing pu-metric values (columns) 
-#' for a sequence of thresholds (rows).  
-#' @param metric A character (vector). The metrics to be 
+#' @param x data frame containing pu-metric values (columns) 
+#' for a sequence of thresholds (rows)  
+#' @param metric a character (vector). The metrics to be 
 #' maximized. Must exist as column name in \code{x}. 
 #' 
-#' @return 
+#' @return named vector with maximized metrics 
 #' @export
 maximize_puMetric <- function (x, metric) {
   idx.max <- sapply(
@@ -106,7 +105,7 @@ maximize_puMetric <- function (x, metric) {
   x <- lapply(1:length(metric), function(i) {
     x.row <- x[idx.max[i], ]
     colnames(x.row) <- paste(metric[i], 
-                                colnames(x.row), sep=".")
+                             colnames(x.row), sep=".")
     x.row
   })
   x <- do.call(cbind, x)

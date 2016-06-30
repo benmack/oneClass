@@ -2,20 +2,32 @@
 % Please edit documentation in R/bananas_trainset.R
 \name{bananas_trainset}
 \alias{bananas_trainset}
-\title{Title}
+\title{bananas toy data set}
 \usage{
 bananas_trainset(nP = 50, nU = 100, nN = 0, seed = NULL)
 }
 \arguments{
-\item{nP}{}
+\item{nP}{number of positive samples}
 
-\item{nU}{}
+\item{nU}{number of unlabeled samples}
 
-\item{nN}{}
+\item{nN}{number of negative samples}
 
-\item{seed}{}
+\item{seed}{seed point}
+}
+\value{
+data frame with columns y (class label), x1 & x2 (predictor variables)
 }
 \description{
-Title
+bananas toy data set
+}
+\examples{
+\dontrun{
+trset <- bananas_trainset(nP=50, nU=100, nN=0, seed=0)
+plot(trset[, -1], col=(trset$y=="un")+1)
+
+trset <- bananas_trainset(nP=50, nU=0, nN=100, seed=0)
+plot(trset[, -1], col=(trset$y=="neg")+1)
+}
 }
 
