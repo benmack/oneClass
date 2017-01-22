@@ -1,14 +1,39 @@
-citHeader('If you use oneClass in published research, please cite the following paper:')
+citHeader('If you use oneClass in published research, please consider citation of the following papers:')
 
 citEntry(entry='Article',
          title = 'Can I Trust My One-Class Classification',
          author = personList(as.person('Benjamin Mack'), as.person('Ribana Roscher') , as.person('Bjoern Waske')),
          year = 2014,
          journal = 'Remote Sensing',
-         volume = 12,
+         volume = 6,
          number = 9,
          pages = 8779--8802,
          doi = '10.3390/rs6098779', 
          url = 'http://www.mdpi.com/2072-4292/6/9/8779',
-         textVersion = 'Mack, B.; Roscher, R.; Waske, B. Can I Trust My One-Class Classification? Remote Sens. 2014, 6, 8779-8802.' 
+         textVersion = 'Mack, B.; Roscher, R.; Waske, B. Can I Trust My One-Class Classification? Remote Sensing, 2014, 6 (9), 8779-8802. DOI: 10.3390/rs6098779' 
+         )
+
+citEntry(entry='Article',
+  title = 'In-depth comparisons of MaxEnt, biased SVM and one-class SVM for one-class classification of remote sensing data.',
+  author = personList(as.person('Benjamin Mack'), as.person ('Bjoern Waske')),
+  year = 2017,
+  journal = 'Remote Sensing Letters',
+  volume = 8,
+  number = 3,
+  pages = 290--299,
+  doi = '10.1080/2150704X.2016.1265689',
+  url = 'https://www.tandfonline.com/doi/full/10.1080/2150704X.2016.1265689',
+  textVersion = 'Mack, B.; Waske, B. In-depth comparisons of MaxEnt, biased SVM and one-class SVM for one-class classification of remote sensing data. Remote Sensing Letters, 2017, 8 (3), 290-299. DOI: 10.1080/2150704X.2016.1265689'
+  )
+  
+citEntry(entry='Article',
+  title = 'Mapping raised bogs with an iterative one-class classification approach',
+  author = personList(as.person('Benjamin Mack'), as.person('Ribana Roscher'), as.person('Stefanie Stenzel'), as.person('Hannes Feilhauer'), as.person('Sebastian Schmidtlein'), as.person('Bjoern Waske')),
+  year = 2016,
+  journal = 'ISPRS Journal of Photogrammetry and Remote Sensing',
+  volume = 120,
+  doi = '10.1016/j.isprsjprs.2016.07.008',
+  pages = 53--64,
+  url = 'http://linkinghub.elsevier.com/retrieve/pii/S0924271616302180',
+  textVersion = 'Mack, B.; Roscher, R.; Stenzel, S.; Feilhauer, H.; Schmidtlein, S.; Waske, B. Mapping raised bogs with an iterative one-class classification approach. ISPRS Journal of Photogrammetry and Remote Sensing, 2016, 12, 53-64. DOI: 10.1016/j.isprsjprs.2016.07.008'
 )
