@@ -1,7 +1,7 @@
 Package: oneClass
 Type: Package
 Title: One-class classification in the absence of test data
-Version: 0.4.0
+Version: 0.5.0
 Date: 2015-05-29
 Author: Benjamin Mack
 Maintainer: Benjamin Mack <knecmab@gmail.com>
@@ -16,7 +16,7 @@ Description: oneClass implements the one-class classifiers one-class SVM,
     absence of a representative and complete test data.
     The package is developed for one-class land cover classification and
     also handles raster data.
-License: MIT
+License: GPLv3+
 LazyLoad: yes
 Depends:
     caret,
