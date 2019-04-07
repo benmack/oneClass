@@ -23,3 +23,17 @@ You can install it from within R with the package **devtools** and the following
 ```
 install_github('benmack/oneClass')
 ```
+## Development
+
+You can develop and use the **oneClass** source code in a Docker container build from the 
+[*benmack/r-oneclass-deps*](https://github.com/benmack/r-oneclass-deps) image. 
+Prerequisites are that you have Docker installed and local copy of the **oneClass** source code on your machine.
+
+Run the following command in a terminal:
+
+    docker run -i -p 8787:8787 -e PASSWORD=<password of your choice> -v <path containing the local copy of the oneClass repository>:/home/rstudio/oneClass benmack/r-oneclass-deps:3.5.3
+
+And go to *http://localhost:8787/* in your browser where you can log in with the user *rstudio* and the password of your choice to connect to RStudio. 
+In RStudio you should find the *oneClass* folder under the files in which you can start the *oneClass.Rproj*.
+
+**Note that the Dockerimage is optimized and for not as slim as it could be and that *maxent.jar* is not yet included in the image (see https://hub.docker.com/r/benmack/r-oneclass-deps).**
