@@ -37,3 +37,7 @@ And go to *http://localhost:8787/* in your browser where you can log in with the
 In RStudio you should find the *oneClass* folder under the files in which you can start the *oneClass.Rproj*.
 
 **Note that the Dockerimage is optimized and for not as slim as it could be and that *maxent.jar* is not yet included in the image (see https://hub.docker.com/r/benmack/r-oneclass-deps).**
+
+The following package looks like a very interesting future base image on top of which oneClass might be installed without much of a setup cost because it contains most if not all dependencies, including maxent:
+
+    docker run -rm -p 8888:8888 -e JUPYTER_ENABLE_LAB=yes -v ${PWD}:/home/jovyan/work scioquiver/notebooks:cgspatial-notebook
